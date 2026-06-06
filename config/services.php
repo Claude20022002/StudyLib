@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'claude' => [
+        'key' => env('CLAUDE_API_KEY'),
+        'url' => env('CLAUDE_API_URL', 'https://api.anthropic.com/v1/messages'),
+        'model' => env('CLAUDE_MODEL', 'claude-3-5-sonnet-latest'),
+    ],
+
+    'youtube' => [
+        'key' => env('YOUTUBE_API_KEY'),
+    ],
+
 ];

@@ -15,7 +15,7 @@ class RepositoryServiceProvider extends ServiceProvider
      *
      * @var array<class-string, class-string>
      */
-    private array $bindings = [
+    private array $repositories = [
         Contracts\UserRepositoryInterface::class => Eloquent\UserRepository::class,
         Contracts\FiliereRepositoryInterface::class => Eloquent\FiliereRepository::class,
         Contracts\ModuleRepositoryInterface::class => Eloquent\ModuleRepository::class,
@@ -33,7 +33,7 @@ class RepositoryServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        foreach ($this->bindings as $contract => $implementation) {
+        foreach ($this->repositories as $contract => $implementation) {
             $this->app->bind($contract, $implementation);
         }
     }
