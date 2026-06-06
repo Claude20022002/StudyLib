@@ -10,7 +10,7 @@ use App\Models\Document;
 use App\Repositories\Contracts\DocumentRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Carbon;
+use Carbon\CarbonInterface;
 
 /**
  * @extends BaseRepository<Document>
@@ -69,7 +69,7 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
             ->get();
     }
 
-    public function countApprovedSince(Carbon $since, ?string $filiereId = null, ?Carbon $until = null): int
+    public function countApprovedSince(CarbonInterface $since, ?string $filiereId = null, ?CarbonInterface $until = null): int
     {
         return $this->model->newQuery()
             ->visible()
