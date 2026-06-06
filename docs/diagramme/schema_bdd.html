@@ -1,0 +1,131 @@
+<style>
+#erd-container { padding: 0.5rem 0; }
+#erd-container svg { width: 100%; }
+</style>
+<div id="erd-container"></div>
+<script type="module">
+import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+await document.fonts.ready;
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  fontFamily: '"Anthropic Sans", sans-serif',
+  themeVariables: {
+    darkMode: dark,
+    fontSize: '13px',
+    fontFamily: '"Anthropic Sans", sans-serif',
+    lineColor: dark ? '#9c9a92' : '#73726c',
+    textColor: dark ? '#c2c0b6' : '#3d3d3a',
+  },
+});
+const diagram = `erDiagram
+  USERS ||--o{ DOCUMENTS : "uploade"
+  USERS ||--o{ INTERNSHIP_REVIEWS : "poste"
+  USERS ||--o{ PROJECT_IDEAS : "propose"
+  USERS ||--o{ EVENTS : "crée"
+  DOCUMENTS ||--o{ DOCUMENT_RATINGS : "reçoit"
+  USERS ||--o{ DOCUMENT_RATINGS : "note"
+  MODULES ||--o{ DOCUMENTS : "contient"
+  FILIERES ||--o{ USERS : "appartient"
+  FILIERES ||--o{ INTERNSHIP_REVIEWS : "filtre"
+  FILIERES ||--o{ PROJECT_IDEAS : "suggère"
+  COMPANIES ||--o{ INTERNSHIP_REVIEWS : "liée"
+
+  USERS {
+    uuid id PK
+    string name
+    string email
+    string filiere FK
+    int year_level
+    enum role "student, admin"
+    timestamp created_at
+  }
+  DOCUMENTS {
+    uuid id PK
+    uuid user_id FK
+    uuid module_id FK
+    enum type "cours, examen, td, tp"
+    string title
+    string file_path
+    int year_concern
+    int downloads
+    timestamp created_at
+  }
+  MODULES {
+    uuid id PK
+    string name
+    string code
+    string filiere FK
+    int semester
+  }
+  INTERNSHIP_REVIEWS {
+    uuid id PK
+    uuid user_id FK
+    uuid company_id FK
+    string filiere FK
+    int year_level
+    text description
+    int rating
+    int year_done
+  }
+  COMPANIES {
+    uuid id PK
+    string name
+    string city
+    string sector
+  }
+  PROJECT_IDEAS {
+    uuid id PK
+    uuid user_id FK
+    string title
+    text description
+    string filiere FK
+    enum level "l1,l2,l3,m1,m2"
+    enum source "student, ai"
+    string repo_url
+  }
+  EVENTS {
+    uuid id PK
+    uuid user_id FK
+    string title
+    text description
+    date event_date
+    string location
+    string image_url
+  }
+  FILIERES {
+    uuid id PK
+    string name
+    string code
+  }
+  DOCUMENT_RATINGS {
+    uuid id PK
+    uuid user_id FK
+    uuid document_id FK
+    int score
+  }
+`;
+const { svg } = await mermaid.render('erd-svg', diagram);
+document.getElementById('erd-container').innerHTML = svg;
+
+document.querySelectorAll('#erd-container svg .node').forEach(node => {
+  const firstPath = node.querySelector('path[d]');
+  if (!firstPath) return;
+  const d = firstPath.getAttribute('d');
+  const nums = d.match(/-?[\d.]+/g)?.map(Number);
+  if (!nums || nums.length < 8) return;
+  const xs = [nums[0], nums[2], nums[4], nums[6]];
+  const ys = [nums[1], nums[3], nums[5], nums[7]];
+  const x = Math.min(...xs), y = Math.min(...ys);
+  const w = Math.max(...xs) - x, h = Math.max(...ys) - y;
+  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  rect.setAttribute('x', x); rect.setAttribute('y', y);
+  rect.setAttribute('width', w); rect.setAttribute('height', h);
+  rect.setAttribute('rx', '8');
+  for (const a of ['fill', 'stroke', 'stroke-width', 'class', 'style']) {
+    if (firstPath.hasAttribute(a)) rect.setAttribute(a, firstPath.getAttribute(a));
+  }
+  firstPath.replaceWith(rect);
+});
+</script>

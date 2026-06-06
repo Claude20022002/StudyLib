@@ -1,0 +1,106 @@
+/* =========================================================
+   StudyLib — Design Tokens
+   Plateforme collaborative de ressources pédagogiques HESTIM
+   Mode clair prioritaire · Mobile-first · Inter
+   ========================================================= */
+
+:root {
+  /* ----- COULEURS : Primaire ----- */
+  --color-primary:        #1D4ED8;  /* Bleu profond — actions, liens, focus */
+  --color-primary-hover:  #1E40AF;  /* Survol */
+  --color-primary-active: #1E3A8A;  /* Pressé */
+  --color-primary-soft:   #DBEAFE;  /* Surface bleu clair, fonds de section */
+  --color-primary-tint:   #EFF6FF;  /* Tint très léger, hover de lignes */
+  --color-on-primary:     #FFFFFF;  /* Texte sur bleu */
+
+  /* ----- COULEURS : Neutres (slate) ----- */
+  --color-ink:        #0F172A;  /* Texte principal / titres */
+  --color-ink-soft:   #334155;  /* Texte secondaire */
+  --color-muted:      #64748B;  /* Texte tertiaire, labels, placeholders */
+  --color-border:     #E2E8F0;  /* Bordures, séparateurs */
+  --color-border-strong: #CBD5E1; /* Bordures marquées */
+  --color-surface:    #F8FAFC;  /* Fond de page */
+  --color-surface-2:  #F1F5F9;  /* Fond alterné, zones inactives */
+  --color-card:       #FFFFFF;  /* Surfaces élevées, cartes */
+
+  /* ----- COULEURS : Sémantiques ----- */
+  --color-success:      #16A34A;  /* Succès, validé */
+  --color-success-soft: #DCFCE7;
+  --color-success-ink:  #166534;
+
+  --color-warning:      #D97706;  /* Ambre — alertes, en attente */
+  --color-warning-soft: #FEF3C7;
+  --color-warning-ink:  #92400E;
+
+  --color-danger:       #DC2626;  /* Erreurs, destructif */
+  --color-danger-soft:  #FEE2E2;
+  --color-danger-ink:   #991B1B;
+
+  --color-info:         #0EA5E9;  /* Information neutre */
+  --color-info-soft:    #E0F2FE;
+  --color-info-ink:     #075985;
+
+  /* ----- TYPOGRAPHIE ----- */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Échelle (mobile-first, 1.250 — tierce majeure) */
+  --text-display: 40px;  /* Hero / page d'accueil */
+  --text-h1:      32px;
+  --text-h2:      26px;
+  --text-h3:      20px;
+  --text-h4:      17px;
+  --text-body:    15px;  /* Corps par défaut */
+  --text-sm:      13px;  /* Légendes, méta */
+  --text-xs:      12px;  /* Badges, overlines */
+
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold:600;
+  --weight-bold:    700;
+
+  --leading-tight:  1.2;
+  --leading-snug:   1.35;
+  --leading-normal: 1.55;
+
+  --tracking-tight: -0.02em;
+  --tracking-wide:   0.04em;
+
+  /* ----- ESPACEMENT (base 4) ----- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* ----- RAYONS (14–18 px cœur de marque) ----- */
+  --radius-sm:  10px;  /* Inputs compacts, badges */
+  --radius-md:  14px;  /* Boutons, champs */
+  --radius-lg:  18px;  /* Cartes, modales */
+  --radius-xl:  24px;  /* Grandes surfaces */
+  --radius-full: 999px;
+
+  /* ----- OMBRES (légères) ----- */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.12), 0 4px 8px rgba(15, 23, 42, 0.05);
+  --shadow-focus: 0 0 0 3px rgba(29, 78, 216, 0.25);  /* Anneau de focus */
+
+  /* ----- TRANSITIONS ----- */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur: 180ms;
+  --dur-slow: 280ms;
+
+  /* ----- LAYOUT ----- */
+  --header-h: 64px;
+  --sidebar-w: 264px;
+  --container: 1200px;
+}

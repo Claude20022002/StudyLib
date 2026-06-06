@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyLib — Connexion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); font-size: var(--text-body); line-height: var(--leading-normal);
+  color: var(--color-ink); background: var(--color-surface); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+::selection { background: var(--color-primary-soft); color: var(--color-primary-active); }
+svg { display: block; }
+
+.page { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+
+/* ===== Left: form ===== */
+.form-side { display: flex; flex-direction: column; padding: var(--space-8) var(--space-8) var(--space-6); }
+.brand { display: flex; align-items: center; gap: var(--space-3); }
+.brand-mark { width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0; color: #fff;
+  background: linear-gradient(140deg, var(--color-primary), var(--color-primary-active));
+  display: grid; place-items: center; font-weight: 700; font-size: 18px; box-shadow: var(--shadow-sm); }
+.brand-name { font-weight: 700; font-size: var(--text-h4); letter-spacing: var(--tracking-tight); }
+.back-link { margin-left: auto; font-size: var(--text-sm); color: var(--color-muted); display: inline-flex;
+  align-items: center; gap: 6px; transition: color var(--dur) var(--ease); }
+.back-link:hover { color: var(--color-primary); }
+
+.form-center { flex: 1; display: grid; place-items: center; padding: var(--space-8) 0; }
+.form-card { width: 100%; max-width: 400px; }
+.form-head { margin-bottom: var(--space-8); }
+.form-head h1 { font-size: var(--text-h1); letter-spacing: var(--tracking-tight); line-height: 1.1; }
+.form-head p { color: var(--color-ink-soft); margin-top: var(--space-2); }
+
+.field { display: flex; flex-direction: column; gap: 7px; margin-bottom: var(--space-5); }
+.field-label-row { display: flex; align-items: baseline; justify-content: space-between; }
+.field label { font-size: var(--text-sm); font-weight: 600; color: var(--color-ink-soft); }
+.forgot { font-size: var(--text-sm); color: var(--color-primary); font-weight: 500; transition: color var(--dur) var(--ease); }
+.forgot:hover { color: var(--color-primary-hover); text-decoration: underline; }
+
+.input-wrap { position: relative; }
+.input-wrap .lead-ico { position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  width: 18px; height: 18px; color: var(--color-muted); pointer-events: none; }
+.input { width: 100%; height: 50px; padding: 0 14px 0 44px; font-size: var(--text-body); font-family: inherit;
+  color: var(--color-ink); background: var(--color-card); border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md); transition: border var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+.input::placeholder { color: var(--color-muted); }
+.input:hover { border-color: var(--color-muted); }
+.input:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
+.input:focus ~ .lead-ico { color: var(--color-primary); }
+.field.error .input { border-color: var(--color-danger); }
+.field.error .input:focus { box-shadow: 0 0 0 3px rgba(220,38,38,.22); }
+.field.success .input { border-color: var(--color-success); }
+.pw-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px;
+  border: 0; background: transparent; color: var(--color-muted); display: grid; place-items: center; border-radius: 7px; }
+.pw-toggle:hover { color: var(--color-ink); background: var(--color-surface-2); }
+.msg { font-size: var(--text-sm); display: none; align-items: center; gap: 6px; }
+.msg svg { width: 15px; height: 15px; flex-shrink: 0; }
+.field.error .msg.error { display: flex; color: var(--color-danger-ink); }
+.field.success .msg.success { display: flex; color: var(--color-success-ink); }
+.field-hint { font-size: var(--text-sm); color: var(--color-muted); }
+
+/* domain reminder */
+.domain-note { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4);
+  background: var(--color-primary-tint); border: 1px solid var(--color-primary-soft); border-radius: var(--radius-md);
+  font-size: var(--text-sm); color: var(--color-primary-active); margin-bottom: var(--space-6); }
+.domain-note svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--color-primary); }
+.domain-note b { font-weight: 600; }
+
+.submit { width: 100%; height: 50px; border: 0; border-radius: var(--radius-md); background: var(--color-primary);
+  color: #fff; font-size: var(--text-h4); font-weight: 600; display: flex; align-items: center; justify-content: center;
+  gap: var(--space-2); transition: all var(--dur) var(--ease); box-shadow: var(--shadow-sm); }
+.submit:hover { background: var(--color-primary-hover); box-shadow: var(--shadow-md); }
+.submit:active { background: var(--color-primary-active); }
+.submit:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.submit.is-loading { pointer-events: none; }
+.submit .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
+  border-radius: 50%; animation: spin .7s linear infinite; display: none; }
+.submit.is-loading .spinner { display: block; }
+.submit.is-loading .submit-label { opacity: .85; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* global form banner (success / error) */
+.form-banner { display: none; align-items: flex-start; gap: var(--space-3); padding: var(--space-4);
+  border-radius: var(--radius-md); margin-bottom: var(--space-6); font-size: var(--text-sm); }
+.form-banner.show { display: flex; }
+.form-banner .b-ico { width: 34px; height: 34px; border-radius: var(--radius-sm); display: grid; place-items: center; flex-shrink: 0; }
+.form-banner .b-title { font-weight: 600; font-size: var(--text-body); }
+.form-banner.success { background: var(--color-success-soft); }
+.form-banner.success { color: var(--color-success-ink); }
+.form-banner.success .b-ico { background: #fff; color: var(--color-success); }
+.form-banner.fail { background: var(--color-danger-soft); color: var(--color-danger-ink); }
+.form-banner.fail .b-ico { background: #fff; color: var(--color-danger); }
+
+.signup-line { text-align: center; margin-top: var(--space-6); font-size: var(--text-sm); color: var(--color-muted); }
+.signup-line a { color: var(--color-primary); font-weight: 600; }
+.form-foot { font-size: var(--text-xs); color: var(--color-muted); text-align: center; }
+
+/* demo helper */
+.demo-hint { margin-top: var(--space-5); font-size: var(--text-xs); color: var(--color-muted);
+  background: var(--color-surface-2); border: 1px dashed var(--color-border-strong); border-radius: var(--radius-sm);
+  padding: 10px var(--space-4); font-family: var(--font-mono); line-height: 1.6; }
+.demo-hint b { color: var(--color-ink-soft); }
+
+/* ===== Right: illustration ===== */
+.art-side { position: relative; overflow: hidden; padding: var(--space-12);
+  display: flex; flex-direction: column; justify-content: center;
+  background:
+    radial-gradient(80% 60% at 80% 10%, rgba(255,255,255,.14), transparent 60%),
+    linear-gradient(155deg, var(--color-primary), var(--color-primary-active)); color: #fff; }
+.art-grid-bg { position: absolute; inset: 0; opacity: .14;
+  background-image: linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px);
+  background-size: 44px 44px; mask-image: radial-gradient(70% 70% at 60% 40%, #000, transparent 80%); }
+.art-inner { position: relative; max-width: 420px; }
+.art-quote { font-size: var(--text-h2); font-weight: 600; line-height: 1.3; letter-spacing: var(--tracking-tight); text-wrap: balance; }
+.art-sub { margin-top: var(--space-4); opacity: .85; font-size: var(--text-h4); }
+.art-card { margin-top: var(--space-10); background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
+  border-radius: var(--radius-lg); padding: var(--space-5); backdrop-filter: blur(6px); display: flex; align-items: center; gap: var(--space-4); }
+.art-card .ac-ico { width: 46px; height: 46px; border-radius: var(--radius-md); background: rgba(255,255,255,.18);
+  display: grid; place-items: center; flex-shrink: 0; }
+.ac-title { font-weight: 600; }
+.ac-sub { font-size: var(--text-sm); opacity: .82; }
+.art-stats { display: flex; gap: var(--space-8); margin-top: var(--space-10); }
+.art-stat .num { font-size: var(--text-h2); font-weight: 700; letter-spacing: var(--tracking-tight); }
+.art-stat .lbl { font-size: var(--text-sm); opacity: .82; }
+
+/* ===== Responsive ===== */
+@media (max-width: 920px) {
+  .page { grid-template-columns: 1fr; }
+  .art-side { display: none; }
+  .form-side { min-height: 100vh; }
+}
+@media (max-width: 480px) {
+  .form-side { padding: var(--space-6) var(--space-5); }
+  .form-center { padding: var(--space-6) 0; }
+  .form-head h1 { font-size: var(--text-h2); }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== FORM ===== -->
+  <div class="form-side">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <span class="brand-name">StudyLib</span>
+      <a class="back-link" href="StudyLib Landing.html">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
+        Retour
+      </a>
+    </div>
+
+    <div class="form-center">
+      <form class="form-card" id="loginForm" novalidate>
+        <div class="form-head">
+          <h1>Bon retour&nbsp;👋</h1>
+          <p>Connectez-vous pour accéder à la bibliothèque de votre promo.</p>
+        </div>
+
+        <div class="form-banner" id="banner">
+          <div class="b-ico" id="bannerIco"></div>
+          <div><div class="b-title" id="bannerTitle"></div><div id="bannerText"></div></div>
+        </div>
+
+        <div class="domain-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span>Seules les adresses <b>@hestim.ma</b> sont acceptées.</span>
+        </div>
+
+        <div class="field" id="emailField">
+          <label for="email">Email institutionnel</label>
+          <div class="input-wrap">
+            <svg class="lead-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            <input class="input" id="email" type="email" inputmode="email" autocomplete="email" placeholder="prenom.nom@hestim.ma">
+          </div>
+          <div class="msg error"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg><span id="emailMsg">Veuillez saisir une adresse @hestim.ma valide.</span></div>
+          <div class="msg success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg><span>Adresse institutionnelle reconnue.</span></div>
+        </div>
+
+        <div class="field" id="pwField">
+          <div class="field-label-row">
+            <label for="password">Mot de passe</label>
+            <a class="forgot" href="#" id="forgot">Mot de passe oublié&nbsp;?</a>
+          </div>
+          <div class="input-wrap">
+            <svg class="lead-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            <input class="input" id="password" type="password" autocomplete="current-password" placeholder="Votre mot de passe" style="padding-right:48px">
+            <button class="pw-toggle" type="button" id="pwToggle" aria-label="Afficher le mot de passe">
+              <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="msg error"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg><span id="pwMsg">Le mot de passe est requis.</span></div>
+        </div>
+
+        <button class="submit" type="submit" id="submitBtn">
+          <span class="spinner"></span>
+          <span class="submit-label">Se connecter</span>
+        </button>
+
+        <div class="signup-line">Pas encore de compte&nbsp;? <a href="#">Activez votre accès HESTIM</a></div>
+
+        <div class="demo-hint">
+          <b>Démo — testez les états :</b><br>
+          ✓ Succès : <b>etudiant@hestim.ma</b> · n'importe quel mot de passe<br>
+          ✕ Erreur : un autre domaine, ou laissez vide
+        </div>
+      </form>
+    </div>
+
+    <div class="form-foot">© 2026 StudyLib · Plateforme réservée à la communauté HESTIM</div>
+  </div>
+
+  <!-- ===== ILLUSTRATION ===== -->
+  <aside class="art-side">
+    <div class="art-grid-bg"></div>
+    <div class="art-inner">
+      <div class="art-quote">« Tous vos cours, examens, stages et projets au même endroit. »</div>
+      <div class="art-sub">Rejoignez la bibliothèque collaborative de votre promo.</div>
+
+      <div class="art-card">
+        <div class="ac-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div><div class="ac-title">Nouvelle fiche disponible</div><div class="ac-sub">Algèbre linéaire — S3 · noté 4,8★</div></div>
+      </div>
+
+      <div class="art-stats">
+        <div class="art-stat"><div class="num">1 240+</div><div class="lbl">ressources</div></div>
+        <div class="art-stat"><div class="num">38</div><div class="lbl">filières</div></div>
+        <div class="art-stat"><div class="num">100%</div><div class="lbl">vérifiées</div></div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+var form = document.getElementById('loginForm');
+var email = document.getElementById('email');
+var pw = document.getElementById('password');
+var emailField = document.getElementById('emailField');
+var pwField = document.getElementById('pwField');
+var emailMsg = document.getElementById('emailMsg');
+var submitBtn = document.getElementById('submitBtn');
+var banner = document.getElementById('banner');
+
+function clearState(field){ field.classList.remove('error','success'); }
+
+// live success on valid hestim email
+email.addEventListener('input', function(){
+  banner.className = 'form-banner';
+  var v = email.value.trim().toLowerCase();
+  if(v.endsWith('@hestim.ma') && v.length > '@hestim.ma'.length){ emailField.classList.remove('error'); emailField.classList.add('success'); }
+  else { emailField.classList.remove('success'); }
+});
+pw.addEventListener('input', function(){ clearState(pwField); banner.className='form-banner'; });
+
+// password visibility
+document.getElementById('pwToggle').addEventListener('click', function(){
+  var showing = pw.type === 'text';
+  pw.type = showing ? 'password' : 'text';
+  document.getElementById('eyeIcon').innerHTML = showing
+    ? '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>'
+    : '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-10-7-10-7a18 18 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 10 7 10 7a18 18 0 0 1-2.16 3.19M1 1l22 22M9.9 9.9a3 3 0 0 0 4.2 4.2"/>';
+});
+
+function showBanner(type, title, text){
+  banner.className = 'form-banner show ' + type;
+  document.getElementById('bannerTitle').textContent = title;
+  document.getElementById('bannerText').textContent = text;
+  document.getElementById('bannerIco').innerHTML = type === 'success'
+    ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>'
+    : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>';
+}
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  clearState(emailField); clearState(pwField); banner.className='form-banner';
+  var v = email.value.trim().toLowerCase();
+  var ok = true;
+
+  if(!v){ emailMsg.textContent = "L'email institutionnel est requis."; emailField.classList.add('error'); ok = false; }
+  else if(!/^[^\s@]+@hestim\.ma$/.test(v)){ emailMsg.textContent = "Seules les adresses @hestim.ma sont acceptées."; emailField.classList.add('error'); ok = false; }
+  else { emailField.classList.add('success'); }
+
+  if(!pw.value){ pwField.classList.add('error'); ok = false; }
+
+  if(!ok){ showBanner('fail', 'Connexion impossible', 'Vérifiez les champs surlignés ci-dessous.'); return; }
+
+  // loading -> success
+  submitBtn.classList.add('is-loading');
+  document.querySelector('.submit-label').textContent = 'Connexion…';
+  setTimeout(function(){
+    submitBtn.classList.remove('is-loading');
+    document.querySelector('.submit-label').textContent = 'Connecté';
+    showBanner('success', 'Connexion réussie', 'Redirection vers votre bibliothèque…');
+  }, 1100);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyLib — Projets CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); font-size: var(--text-body); line-height: var(--leading-normal);
+  color: var(--color-ink); background: var(--color-surface); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; }
+::selection { background: var(--color-primary-soft); color: var(--color-primary-active); }
+svg { display: block; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); height: 40px;
+  padding: 0 var(--space-4); border-radius: var(--radius-md); font-size: var(--text-sm); font-weight: 600;
+  border: 1px solid transparent; transition: all var(--dur) var(--ease); white-space: nowrap; }
+.btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.btn--primary { background: var(--color-primary); color: #fff; box-shadow: var(--shadow-sm); }
+.btn--primary:hover { background: var(--color-primary-hover); }
+.btn--secondary { background: var(--color-card); color: var(--color-ink); border-color: var(--color-border-strong); }
+.btn--secondary:hover { background: var(--color-surface-2); border-color: var(--color-muted); }
+.btn--ghost { background: transparent; color: var(--color-ink-soft); }
+.btn--ghost:hover { background: var(--color-surface-2); color: var(--color-ink); }
+.btn .ico { width: 16px; height: 16px; }
+.badge { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 9px; border-radius: var(--radius-full);
+  font-size: var(--text-xs); font-weight: 600; line-height: 1; white-space: nowrap; }
+.badge--primary { background: var(--color-primary-soft); color: var(--color-primary-active); }
+.badge--neutral { background: var(--color-surface-2); color: var(--color-ink-soft); }
+.badge--success { background: var(--color-success-soft); color: var(--color-success-ink); }
+.badge--warning { background: var(--color-warning-soft); color: var(--color-warning-ink); }
+.badge--ai { background: linear-gradient(120deg, var(--color-primary-soft), #E0E7FF); color: var(--color-primary-active); }
+
+/* Shell */
+.app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+.sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; z-index: 30;
+  background: var(--color-card); border-right: 1px solid var(--color-border); display: flex; flex-direction: column; }
+.sb-brand { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-5); }
+.brand-mark { width: 36px; height: 36px; border-radius: 11px; flex-shrink: 0; color: #fff;
+  background: linear-gradient(140deg, var(--color-primary), var(--color-primary-active));
+  display: grid; place-items: center; font-weight: 700; font-size: 17px; box-shadow: var(--shadow-sm); }
+.brand-name { font-weight: 700; font-size: var(--text-h4); letter-spacing: var(--tracking-tight); }
+.sb-nav { flex: 1; overflow-y: auto; padding: var(--space-2) var(--space-3); display: flex; flex-direction: column; gap: 2px; }
+.sb-link { display: flex; align-items: center; gap: var(--space-3); padding: 10px var(--space-3); border-radius: var(--radius-sm);
+  color: var(--color-ink-soft); font-size: var(--text-sm); font-weight: 500; transition: all var(--dur) var(--ease); }
+.sb-link .ico { width: 19px; height: 19px; color: var(--color-muted); flex-shrink: 0; }
+.sb-link:hover { background: var(--color-surface-2); color: var(--color-ink); }
+.sb-link.is-active { background: var(--color-primary-soft); color: var(--color-primary-active); font-weight: 600; }
+.sb-link.is-active .ico { color: var(--color-primary); }
+.sb-count { margin-left: auto; font-size: var(--text-xs); color: var(--color-muted); background: var(--color-surface-2);
+  border-radius: var(--radius-full); padding: 1px 8px; font-weight: 600; }
+.sb-foot { padding: var(--space-3); border-top: 1px solid var(--color-border); }
+
+.main { grid-column: 2; display: flex; flex-direction: column; min-width: 0; }
+.topbar { position: sticky; top: 0; z-index: 20; height: var(--header-h); background: rgba(255,255,255,.85);
+  backdrop-filter: saturate(180%) blur(10px); border-bottom: 1px solid var(--color-border);
+  display: flex; align-items: center; gap: var(--space-4); padding: 0 var(--space-6); }
+.topbar h1 { font-size: var(--text-h3); font-weight: 700; letter-spacing: var(--tracking-tight); }
+.topbar-spacer { flex: 1; }
+.icon-btn { width: 40px; height: 40px; border-radius: var(--radius-md); border: 1px solid transparent; background: transparent;
+  color: var(--color-ink-soft); display: grid; place-items: center; transition: background var(--dur) var(--ease); position: relative; }
+.icon-btn:hover { background: var(--color-surface-2); }
+.icon-btn .nd { position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; border-radius: 5px; background: var(--color-danger); border: 2px solid var(--color-card); }
+.avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--color-primary-soft); color: var(--color-primary-active);
+  display: grid; place-items: center; font-size: var(--text-sm); font-weight: 700; }
+.mobile-only { display: none; }
+
+.content { flex: 1; padding: var(--space-6); max-width: 1400px; width: 100%; }
+
+/* Hero compact */
+.hero { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+  padding: var(--space-6); margin-bottom: var(--space-5); display: flex; align-items: center; gap: var(--space-5); }
+.hero-ico { width: 56px; height: 56px; border-radius: var(--radius-md); flex-shrink: 0; display: grid; place-items: center;
+  background: var(--color-primary-soft); color: var(--color-primary); }
+.hero-txt h2 { font-size: clamp(20px, 2.6vw, 26px); font-weight: 700; letter-spacing: var(--tracking-tight); line-height: 1.15; }
+.hero-txt p { font-size: var(--text-sm); color: var(--color-muted); margin-top: 4px; }
+.hero-spacer { flex: 1; }
+.hero-ai-btn { flex-shrink: 0; }
+
+.lib { display: grid; grid-template-columns: 248px 1fr; gap: var(--space-5); align-items: start; }
+.filters { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+  padding: var(--space-5); position: sticky; top: calc(var(--header-h) + var(--space-6)); }
+.filters-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); }
+.filters-head h3 { font-size: var(--text-h4); font-weight: 600; }
+.filters-head button { font-size: var(--text-xs); color: var(--color-primary); font-weight: 600; background: none; border: 0; }
+.fgroup { padding: var(--space-4) 0; border-top: 1px solid var(--color-border); }
+.fgroup:first-of-type { border-top: 0; padding-top: 0; }
+.fgroup > .flabel { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-muted); font-weight: 700; margin-bottom: var(--space-3); display: block; }
+.fselect { width: 100%; height: 40px; padding: 0 var(--space-3); font-size: var(--text-sm); color: var(--color-ink);
+  background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; transition: border var(--dur) var(--ease); }
+.fselect:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
+.fchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.fchip { height: 30px; padding: 0 12px; border-radius: var(--radius-full); border: 1px solid var(--color-border);
+  background: var(--color-surface); color: var(--color-ink-soft); font-size: var(--text-xs); font-weight: 600; transition: all var(--dur) var(--ease); }
+.fchip:hover { border-color: var(--color-border-strong); }
+.fchip.on { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+
+.results-bar { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); flex-wrap: wrap; }
+.results-count { font-size: var(--text-sm); color: var(--color-ink-soft); }
+.results-count b { color: var(--color-ink); }
+.rb-spacer { flex: 1; }
+.sortwrap select { height: 38px; padding: 0 36px 0 12px; font-size: var(--text-sm); font-weight: 600; color: var(--color-ink);
+  background: var(--color-card); border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; }
+.sortwrap select:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
+
+/* Project cards */
+.projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: var(--space-4); }
+.project { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5);
+  cursor: pointer; transition: box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--dur) var(--ease); display: flex; flex-direction: column; gap: var(--space-3); }
+.project:hover { box-shadow: var(--shadow-md); border-color: var(--color-border-strong); transform: translateY(-2px); }
+.pj-top { display: flex; align-items: flex-start; gap: var(--space-3); }
+.pj-source { display: inline-flex; align-items: center; gap: 5px; font-size: var(--text-xs); font-weight: 600; padding: 4px 9px; border-radius: var(--radius-full); flex-shrink: 0; }
+.pj-source.etudiant { background: var(--color-surface-2); color: var(--color-ink-soft); }
+.pj-source.ia { background: linear-gradient(120deg, var(--color-primary-soft), #E0E7FF); color: var(--color-primary-active); }
+.pj-source svg { width: 12px; height: 12px; }
+.pj-title { font-size: var(--text-h4); font-weight: 600; line-height: 1.25; text-wrap: pretty; }
+.pj-desc { font-size: var(--text-sm); color: var(--color-ink-soft); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pj-skills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pj-meta { display: flex; align-items: center; gap: var(--space-4); padding-top: var(--space-3); border-top: 1px solid var(--color-border); margin-top: auto; font-size: var(--text-xs); color: var(--color-muted); }
+.pj-meta .mi { display: inline-flex; align-items: center; gap: 5px; }
+.pj-meta .mi svg { width: 13px; height: 13px; }
+.diff-dots { display: inline-flex; gap: 2px; }
+.diff-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-border-strong); }
+.diff-dot.on { background: var(--color-warning); }
+.pj-foot { display: flex; align-items: center; justify-content: space-between; }
+.pj-doers { display: flex; align-items: center; }
+.pj-doers .av { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--color-card); background: var(--color-primary-soft);
+  color: var(--color-primary-active); display: grid; place-items: center; font-size: 9px; font-weight: 700; margin-left: -7px; }
+.pj-doers .av:first-child { margin-left: 0; }
+.pj-doers .more { font-size: var(--text-xs); color: var(--color-muted); margin-left: 7px; }
+
+.sk { background: linear-gradient(100deg, var(--color-surface-2) 30%, #eef2f7 50%, var(--color-surface-2) 70%); background-size: 200% 100%; animation: shimmer 1.3s infinite linear; border-radius: var(--radius-lg); }
+@keyframes shimmer { to { background-position: -200% 0; } }
+.state { display: none; text-align: center; padding: var(--space-16) var(--space-6); background: var(--color-card); border: 1px dashed var(--color-border-strong); border-radius: var(--radius-lg); grid-column: 1/-1; }
+.state.show { display: block; }
+.state-ico { width: 64px; height: 64px; margin: 0 auto var(--space-4); border-radius: var(--radius-xl); background: var(--color-primary-soft); color: var(--color-primary); display: grid; place-items: center; }
+.state h3 { font-size: var(--text-h3); font-weight: 600; }
+.state p { color: var(--color-muted); max-width: 38ch; margin: var(--space-2) auto var(--space-5); }
+.is-hidden { display: none !important; }
+
+/* ===== AI module (secondary) ===== */
+.ai-module { margin-top: var(--space-8); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; background: var(--color-card); }
+.ai-head { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-5); background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border); }
+.ai-badge-ico { width: 38px; height: 38px; border-radius: var(--radius-md); flex-shrink: 0; display: grid; place-items: center;
+  background: linear-gradient(140deg, var(--color-primary), var(--color-primary-active)); color: #fff; }
+.ai-head h3 { font-size: var(--text-h4); font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.ai-head p { font-size: var(--text-xs); color: var(--color-muted); margin-top: 1px; }
+.ai-body { padding: var(--space-5); }
+.ai-form { display: grid; grid-template-columns: 1fr 1fr 2fr auto; gap: var(--space-3); align-items: end; }
+.ai-field label { font-size: var(--text-xs); font-weight: 600; color: var(--color-ink-soft); display: block; margin-bottom: 6px; }
+.ai-input, .ai-select { width: 100%; height: 42px; padding: 0 var(--space-3); font-size: var(--text-sm); color: var(--color-ink);
+  background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); transition: all var(--dur) var(--ease); }
+.ai-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+.ai-input:focus, .ai-select:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--shadow-focus); background: var(--color-card); }
+.ai-gen { height: 42px; }
+.ai-results { margin-top: var(--space-5); display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.ai-card { border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); background: var(--color-surface); display: flex; flex-direction: column; gap: var(--space-2); }
+.ai-card .num { width: 24px; height: 24px; border-radius: 7px; background: var(--color-primary-soft); color: var(--color-primary-active); display: grid; place-items: center; font-size: var(--text-xs); font-weight: 700; }
+.ai-card h4 { font-size: var(--text-sm); font-weight: 600; line-height: 1.3; }
+.ai-card p { font-size: var(--text-xs); color: var(--color-ink-soft); }
+.ai-card .ac-skills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
+.ai-empty { text-align: center; padding: var(--space-8) var(--space-6); color: var(--color-muted); font-size: var(--text-sm); }
+.ai-empty svg { width: 32px; height: 32px; color: var(--color-border-strong); margin: 0 auto var(--space-3); }
+.ai-sk { height: 132px; }
+
+/* ===== Drawer ===== */
+.scrim { position: fixed; inset: 0; background: rgba(15,23,42,.45); backdrop-filter: blur(1px); z-index: 50; opacity: 0; visibility: hidden; transition: opacity var(--dur-slow) var(--ease), visibility var(--dur-slow); }
+.scrim.open { opacity: 1; visibility: visible; }
+.drawer { position: fixed; top: 0; right: 0; height: 100vh; width: 560px; max-width: 94vw; background: var(--color-card); z-index: 51;
+  box-shadow: var(--shadow-lg); transform: translateX(100%); transition: transform var(--dur-slow) var(--ease); display: flex; flex-direction: column; }
+.drawer.open { transform: translateX(0); }
+.drawer-head { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border); }
+.drawer-head .dh-close { margin-left: auto; }
+.drawer-body { flex: 1; overflow-y: auto; padding: var(--space-6); }
+.drawer-foot { padding: var(--space-4) var(--space-6); border-top: 1px solid var(--color-border); display: flex; gap: var(--space-3); background: var(--color-surface); }
+.drawer-foot .btn { flex: 1; height: 46px; font-size: var(--text-body); }
+
+.det-title { font-size: var(--text-h2); font-weight: 700; letter-spacing: var(--tracking-tight); line-height: 1.15; }
+.det-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: var(--space-3) 0; }
+.det-quick { display: flex; flex-wrap: wrap; gap: var(--space-5); padding: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); margin: var(--space-4) 0 var(--space-5); }
+.det-quick .q { display: flex; flex-direction: column; gap: 2px; }
+.det-quick .q .k { font-size: var(--text-xs); color: var(--color-muted); text-transform: uppercase; letter-spacing: var(--tracking-wide); font-weight: 600; }
+.det-quick .q .v { font-size: var(--text-sm); color: var(--color-ink); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.det-section { margin-top: var(--space-6); }
+.det-section h4 { font-size: var(--text-h4); font-weight: 600; margin-bottom: var(--space-3); display: flex; align-items: center; gap: 8px; }
+.det-section h4 svg { width: 17px; height: 17px; color: var(--color-primary); }
+.det-section p { font-size: var(--text-sm); color: var(--color-ink-soft); }
+.det-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+.det-list li { font-size: var(--text-sm); color: var(--color-ink-soft); display: flex; gap: var(--space-3); }
+.det-list li svg { width: 16px; height: 16px; color: var(--color-success); flex-shrink: 0; margin-top: 2px; }
+.steps { list-style: none; counter-reset: s; display: flex; flex-direction: column; gap: var(--space-3); }
+.steps li { display: flex; gap: var(--space-3); font-size: var(--text-sm); color: var(--color-ink-soft); }
+.steps li::before { counter-increment: s; content: counter(s); width: 26px; height: 26px; border-radius: 50%; background: var(--color-primary-soft);
+  color: var(--color-primary-active); font-weight: 700; font-size: var(--text-xs); display: grid; place-items: center; flex-shrink: 0; }
+.tip { display: flex; gap: var(--space-3); padding: var(--space-4); background: var(--color-warning-soft); border-radius: var(--radius-md); }
+.tip svg { width: 18px; height: 18px; color: var(--color-warning); flex-shrink: 0; margin-top: 1px; }
+.tip p { font-size: var(--text-sm); color: var(--color-warning-ink); }
+.github-link { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); transition: all var(--dur) var(--ease); }
+.github-link:hover { border-color: var(--color-primary); background: var(--color-primary-tint); }
+.github-link .gh-ico { width: 38px; height: 38px; border-radius: var(--radius-sm); background: var(--color-ink); color: #fff; display: grid; place-items: center; flex-shrink: 0; }
+.github-link .gh-t { font-size: var(--text-sm); font-weight: 600; }
+.github-link .gh-s { font-size: var(--text-xs); color: var(--color-muted); }
+.doers-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.doer { display: flex; align-items: center; gap: var(--space-3); }
+.doer .av { width: 38px; height: 38px; border-radius: 50%; background: var(--color-primary-soft); color: var(--color-primary-active); display: grid; place-items: center; font-size: var(--text-sm); font-weight: 700; flex-shrink: 0; }
+.doer .nm { font-size: var(--text-sm); font-weight: 600; }
+.doer .pr { font-size: var(--text-xs); color: var(--color-muted); }
+.doer .gh { margin-left: auto; }
+
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); z-index: 70; background: var(--color-ink); color: #fff;
+  padding: 12px 20px; border-radius: var(--radius-md); font-size: var(--text-sm); font-weight: 600; box-shadow: var(--shadow-lg); opacity: 0;
+  transition: opacity .2s, transform .2s; display: flex; align-items: center; gap: 8px; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast svg { width: 16px; height: 16px; color: var(--color-success); }
+
+.mobile-filter-btn { display: none; }
+.bottom-nav { display: none; }
+@media (max-width: 1080px) {
+  .lib { grid-template-columns: 1fr; }
+  .filters { position: fixed; top: 0; left: 0; height: 100vh; width: 320px; max-width: 88vw; z-index: 45; border-radius: 0; transform: translateX(-100%); transition: transform var(--dur-slow) var(--ease); overflow-y: auto; }
+  .filters.open { transform: translateX(0); box-shadow: var(--shadow-lg); }
+  .mobile-filter-btn { display: inline-flex; }
+  .ai-form { grid-template-columns: 1fr 1fr; }
+  .ai-form .ai-field.wide { grid-column: 1 / -1; }
+  .ai-gen { grid-column: 1 / -1; }
+  .ai-results { grid-template-columns: 1fr; }
+}
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .main { grid-column: 1; }
+  .content { padding: var(--space-4) var(--space-4) 88px; }
+  .topbar { padding: 0 var(--space-4); }
+  .mobile-only { display: grid; }
+  .hero { flex-wrap: wrap; }
+  .hero-ai-btn { width: 100%; }
+  .bottom-nav { display: block; position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; height: 64px; background: rgba(255,255,255,.94); backdrop-filter: blur(12px); border-top: 1px solid var(--color-border); }
+  .bn-inner { display: grid; grid-template-columns: repeat(5,1fr); height: 64px; }
+  .bn-link { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--color-muted); font-size: 10px; font-weight: 600; }
+  .bn-link svg { width: 22px; height: 22px; }
+  .bn-link.is-active { color: var(--color-primary); }
+}
+@media (max-width: 560px) { .ai-form { grid-template-columns: 1fr; } .drawer { width: 100%; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sb-brand"><div class="brand-mark">S</div><span class="brand-name">StudyLib</span></div>
+    <nav class="sb-nav">
+      <a class="sb-link" href="StudyLib Dashboard.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Accueil</a>
+      <a class="sb-link" href="StudyLib Bibliothèque.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Bibliothèque<span class="sb-count">1.2k</span></a>
+      <a class="sb-link" href="StudyLib Stages.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM9 5h6v2H9z"/></svg>Stages<span class="sb-count">24</span></a>
+      <a class="sb-link is-active"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>Projets<span class="sb-count">8</span></a>
+      <a class="sb-link"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Événements<span class="sb-count">5</span></a>
+      <a class="sb-link"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Mes dépôts<span class="sb-count">7</span></a>
+    </nav>
+    <div class="sb-foot">
+      <button class="btn btn--primary" style="width:100%" onclick="document.getElementById('aiModule').scrollIntoView({behavior:'smooth'})"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.3 6.3 4.9 4.9M19.1 19.1l-1.4-1.4M17.7 6.3l1.4-1.4M4.9 19.1l1.4-1.4"/><circle cx="12" cy="12" r="3"/></svg>Idées IA</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="brand-mark mobile-only" style="width:34px;height:34px;font-size:16px">S</div>
+      <h1>Projets CV</h1>
+      <div class="topbar-spacer"></div>
+      <button class="btn btn--secondary mobile-filter-btn" onclick="openFilters()" style="display:none"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filtres</button>
+      <button class="icon-btn" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="nd"></span></button>
+      <span class="avatar">CM</span>
+    </header>
+
+    <main class="content">
+      <!-- Hero compact -->
+      <div class="hero">
+        <div class="hero-ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="hero-txt">
+          <h2>Trouvez un projet pertinent pour votre filière</h2>
+          <p>Des idées concrètes pour étoffer votre CV — proposées par la promo ou générées pour votre profil.</p>
+        </div>
+        <div class="hero-spacer"></div>
+        <button class="btn btn--secondary hero-ai-btn" onclick="document.getElementById('aiModule').scrollIntoView({behavior:'smooth'})"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.3 6.3 4.9 4.9M19.1 19.1l-1.4-1.4M17.7 6.3l1.4-1.4M4.9 19.1l1.4-1.4"/><circle cx="12" cy="12" r="3"/></svg>Générer des idées IA</button>
+      </div>
+
+      <div class="lib">
+        <aside class="filters" id="filters">
+          <div class="filters-head"><h3>Filtres</h3><button onclick="resetFilters()">Réinitialiser</button></div>
+          <div class="fgroup"><label class="flabel">Filière</label>
+            <select class="fselect" id="fFiliere"><option value="">Toutes</option><option>Génie Informatique</option><option>Génie Civil</option><option>Génie Industriel</option><option>Génie Électrique</option></select></div>
+          <div class="fgroup"><label class="flabel">Niveau</label>
+            <select class="fselect" id="fNiveau"><option value="">Tous</option><option>L1</option><option>L2</option><option>L3</option><option>M1</option><option>M2</option></select></div>
+          <div class="fgroup"><label class="flabel">Difficulté</label>
+            <div class="fchips" id="fDiff"><button class="fchip" data-v="Débutant">Débutant</button><button class="fchip" data-v="Intermédiaire">Intermédiaire</button><button class="fchip" data-v="Avancé">Avancé</button></div></div>
+          <div class="fgroup"><label class="flabel">Durée estimée</label>
+            <select class="fselect" id="fDuree"><option value="">Toutes</option><option>1-2 semaines</option><option>1 mois</option><option>2-3 mois</option><option>Semestre complet</option></select></div>
+          <div class="fgroup"><label class="flabel">Stack</label>
+            <div class="fchips" id="fStack"><button class="fchip" data-v="Web">Web</button><button class="fchip" data-v="Mobile">Mobile</button><button class="fchip" data-v="Data">Data / IA</button><button class="fchip" data-v="Systèmes">Systèmes</button><button class="fchip" data-v="IoT">IoT</button></div></div>
+          <button class="btn btn--primary mobile-only" style="width:100%;margin-top:var(--space-4);display:none" onclick="closeFilters()">Voir les résultats</button>
+        </aside>
+
+        <section>
+          <div class="results-bar">
+            <span class="results-count" id="count">— projets</span>
+            <div class="rb-spacer"></div>
+            <div class="sortwrap"><select id="sortSelect"><option value="populaire">Tri : Populaires</option><option value="facile">Tri : Plus accessibles</option><option value="court">Tri : Plus courts</option></select></div>
+          </div>
+          <div class="projects" id="grid"></div>
+
+          <!-- ===== AI module (secondary) ===== -->
+          <div class="ai-module" id="aiModule">
+            <div class="ai-head">
+              <div class="ai-badge-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.3 6.3 4.9 4.9M19.1 19.1l-1.4-1.4M17.7 6.3l1.4-1.4M4.9 19.1l1.4-1.4"/><circle cx="12" cy="12" r="3.5"/></svg></div>
+              <div>
+                <h3>Générer 3 idées pour mon profil <span class="badge badge--ai">IA</span></h3>
+                <p>Un coup de pouce quand la bibliothèque ne suffit pas. Décrivez votre profil, l'IA propose des pistes.</p>
+              </div>
+            </div>
+            <div class="ai-body">
+              <div class="ai-form">
+                <div class="ai-field"><label for="aiFiliere">Filière</label>
+                  <select class="ai-select" id="aiFiliere"><option>Génie Informatique</option><option>Génie Civil</option><option>Génie Industriel</option><option>Génie Électrique</option></select></div>
+                <div class="ai-field"><label for="aiNiveau">Niveau</label>
+                  <select class="ai-select" id="aiNiveau"><option>L1</option><option>L2</option><option selected>L3</option><option>M1</option><option>M2</option></select></div>
+                <div class="ai-field wide"><label for="aiInterets">Centres d'intérêt</label>
+                  <input class="ai-input" id="aiInterets" placeholder="ex. développement web, intelligence artificielle, jeux vidéo…"></div>
+                <button class="btn btn--primary ai-gen" id="aiGen" onclick="genIdeas()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 3v4M3 5h4M6 17v4M4 19h4M13 3l2.5 6.5L22 12l-6.5 2.5L13 21l-2.5-6.5L4 12l6.5-2.5z"/></svg>Générer</button>
+              </div>
+              <div class="ai-results" id="aiResults">
+                <div class="ai-empty" style="grid-column:1/-1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg>
+                  Renseignez votre profil puis cliquez sur « Générer » — 3 idées de projets apparaîtront ici.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <div class="bn-inner">
+    <a class="bn-link" href="StudyLib Dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Accueil</a>
+    <a class="bn-link" href="StudyLib Bibliothèque.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Biblio</a>
+    <a class="bn-link" href="StudyLib Stages.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>Stages</a>
+    <a class="bn-link is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>Projets</a>
+    <a class="bn-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>Profil</a>
+  </div>
+</nav>
+
+<!-- ===== Detail drawer ===== -->
+<div class="scrim" id="detScrim" onclick="closeDrawer()"></div>
+<aside class="drawer" id="detDrawer" role="dialog" aria-label="Fiche projet">
+  <div class="drawer-head">
+    <strong style="font-size:var(--text-sm);color:var(--color-muted)">Fiche projet</strong>
+    <button class="icon-btn dh-close" onclick="closeDrawer()" aria-label="Fermer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="drawer-body" id="detBody"></div>
+  <div class="drawer-foot">
+    <button class="btn btn--secondary" onclick="closeDrawer()">Fermer</button>
+    <button class="btn btn--primary" onclick="toast('Projet ajouté à votre CV')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Ajouter à mon CV</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg><span id="toastMsg"></span></div>
+
+<script>
+var PROJECTS = [
+  { title:"Plateforme d'entraide entre étudiants", desc:"Une web app où les étudiants posent des questions et s'entraident par matière, avec votes et badges.",
+    skills:["React","Node.js","PostgreSQL"], stack:"Web", filiere:"Génie Informatique", niveau:"L3", diff:2, diffLabel:"Intermédiaire", duree:"2-3 mois", source:"etudiant", pop:42,
+    obj:"Concevoir une application full-stack complète, de la base de données à l'interface, en gérant l'authentification et un système de réputation.",
+    livrables:["Application web déployée","Dépôt GitHub documenté","Schéma de base de données","Démo vidéo de 3 min"],
+    steps:["Cadrer les fonctionnalités et maquetter les écrans clés","Modéliser la base de données (utilisateurs, questions, votes)","Développer l'API REST et l'authentification","Construire l'interface React et brancher l'API","Déployer et rédiger le README"],
+    tech:["React","Node.js","Express","PostgreSQL","JWT"],
+    tip:"Mettez en avant l'architecture et vos choix techniques dans le README — les recruteurs adorent comprendre votre raisonnement.",
+    github:"github.com/promo-gi/entraide-etudiants",
+    doers:[{n:"Yasmine A.",p:"GI · Promo 2025"},{n:"Mehdi K.",p:"GI · Promo 2024"},{n:"Omar T.",p:"GI · Promo 2025"}] },
+  { title:"Détecteur de plagiat de code par IA", desc:"Un outil qui compare des fichiers de code et détecte les similarités à l'aide d'embeddings.",
+    skills:["Python","NLP","Scikit-learn"], stack:"Data", filiere:"Génie Informatique", niveau:"M1", diff:3, diffLabel:"Avancé", duree:"2-3 mois", source:"etudiant", pop:38,
+    obj:"Mettre en pratique le traitement du langage et le machine learning sur un problème concret et utile à la communauté.",
+    livrables:["Modèle entraîné","Interface de comparaison","Rapport d'évaluation des performances"],
+    steps:["Constituer un jeu de données de fichiers de code","Extraire des représentations (embeddings)","Calculer la similarité et fixer un seuil","Évaluer précision/rappel","Emballer dans une petite interface"],
+    tech:["Python","Scikit-learn","Transformers","Streamlit"],
+    tip:"Documentez vos métriques (précision, rappel) avec des graphiques — ça montre une vraie démarche scientifique.",
+    github:"", doers:[{n:"Hamza B.",p:"GI · Promo 2024"},{n:"Sara L.",p:"GI · Promo 2025"}] },
+  { title:"App mobile de suivi de chantier", desc:"Application mobile pour photographier l'avancement d'un chantier et générer un rapport hebdomadaire.",
+    skills:["Flutter","Firebase"], stack:"Mobile", filiere:"Génie Civil", niveau:"L3", diff:2, diffLabel:"Intermédiaire", duree:"1 mois", source:"etudiant", pop:21,
+    obj:"Découvrir le développement mobile cross-platform appliqué à un cas métier du génie civil.",
+    livrables:["APK Android","Synchronisation cloud","Export PDF du rapport"],
+    steps:["Définir le parcours utilisateur sur le terrain","Construire l'interface Flutter","Brancher Firebase (auth + stockage photos)","Générer un PDF de rapport","Tester sur le terrain"],
+    tech:["Flutter","Dart","Firebase","Cloud Storage"],
+    tip:"Une démo filmée sur un vrai chantier vaut mille mots dans un entretien.",
+    github:"github.com/promo-gc/suivi-chantier", doers:[{n:"Imane R.",p:"GC · Promo 2025"}] },
+  { title:"Tableau de bord énergétique IoT", desc:"Capteurs connectés mesurant la consommation électrique, avec dashboard temps réel.",
+    skills:["Arduino","MQTT","Grafana"], stack:"IoT", filiere:"Génie Électrique", niveau:"M1", diff:3, diffLabel:"Avancé", duree:"Semestre complet", source:"etudiant", pop:29,
+    obj:"Relier l'électronique embarquée et la visualisation de données en temps réel.",
+    livrables:["Montage capteurs","Broker MQTT configuré","Dashboard Grafana"],
+    steps:["Monter les capteurs sur microcontrôleur","Publier les mesures via MQTT","Stocker dans une base time-series","Construire le dashboard Grafana","Analyser les pics de consommation"],
+    tech:["Arduino","ESP32","MQTT","InfluxDB","Grafana"],
+    tip:"Montrez le schéma électronique ET les courbes de données : le mélange hardware/software impressionne.",
+    github:"", doers:[{n:"Nada E.",p:"GE · Promo 2023"},{n:"Omar T.",p:"GE · Promo 2024"}] },
+  { title:"Optimisation de tournées de livraison", desc:"Algorithme qui calcule les meilleurs itinéraires pour une flotte de véhicules.",
+    skills:["Python","Optimisation"], stack:"Data", filiere:"Génie Industriel", niveau:"M2", diff:3, diffLabel:"Avancé", duree:"2-3 mois", source:"etudiant", pop:17,
+    obj:"Appliquer la recherche opérationnelle à un problème logistique réel (VRP).",
+    livrables:["Solveur fonctionnel","Comparatif d'algorithmes","Visualisation des tournées sur carte"],
+    steps:["Formaliser le problème (VRP)","Implémenter une heuristique de base","Améliorer avec une métaheuristique","Visualiser sur une carte","Comparer les performances"],
+    tech:["Python","OR-Tools","Folium","Pandas"],
+    tip:"Quantifiez le gain (% de km économisés) : un chiffre concret marque les esprits.",
+    github:"github.com/promo-gind/vrp-solver", doers:[{n:"Mehdi K.",p:"GIND · Promo 2024"}] },
+  { title:"Portfolio personnel animé", desc:"Site portfolio responsive avec animations soignées pour présenter ses projets.",
+    skills:["HTML/CSS","JavaScript"], stack:"Web", filiere:"Génie Informatique", niveau:"L1", diff:1, diffLabel:"Débutant", duree:"1-2 semaines", source:"etudiant", pop:55,
+    obj:"Premier projet idéal : maîtriser les bases du web et créer un support de présentation réutilisable.",
+    livrables:["Site déployé","Code propre et commenté","Version mobile soignée"],
+    steps:["Choisir une structure de page","Intégrer le HTML/CSS responsive","Ajouter des animations légères","Déployer sur GitHub Pages"],
+    tech:["HTML","CSS","JavaScript","GitHub Pages"],
+    tip:"Soignez la version mobile : la plupart des recruteurs ouvriront votre lien sur téléphone.",
+    github:"github.com/promo-gi/portfolio-starter", doers:[{n:"Sara L.",p:"GI · Promo 2025"},{n:"Yasmine A.",p:"GI · Promo 2025"},{n:"Hamza B.",p:"GI · Promo 2024"}] }
+];
+
+var state = { filiere:"", niveau:"", diff:"", duree:"", stack:"", sort:"populaire" };
+function initials(n){ var p=n.replace(/[^A-Za-zÀ-ÿ ]/g,'').split(' ').filter(Boolean); return ((p[0]||'')[0]||'')+((p[1]||'')[0]||''); }
+function diffDots(n){ var s='<span class="diff-dots">'; for(var i=1;i<=3;i++) s+='<span class="diff-dot'+(i<=n?' on':'')+'"></span>'; return s+'</span>'; }
+function srcBadge(s){ return s==='ia' ? '<span class="pj-source ia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.3 6.3 4.9 4.9M19.1 19.1l-1.4-1.4M17.7 6.3l1.4-1.4M4.9 19.1l1.4-1.4"/><circle cx="12" cy="12" r="3"/></svg>IA</span>' : '<span class="pj-source etudiant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>Étudiant</span>'; }
+
+function apply(){
+  var list = PROJECTS.filter(function(p){
+    if(state.filiere && p.filiere!==state.filiere) return false;
+    if(state.niveau && p.niveau!==state.niveau) return false;
+    if(state.diff && p.diffLabel!==state.diff) return false;
+    if(state.duree && p.duree!==state.duree) return false;
+    if(state.stack && p.stack!==state.stack) return false;
+    return true;
+  });
+  if(state.sort==='facile') list.sort(function(a,b){ return a.diff-b.diff; });
+  else if(state.sort==='court') list.sort(function(a,b){ return a.steps.length-b.steps.length; });
+  else list.sort(function(a,b){ return b.pop-a.pop; });
+  return list;
+}
+
+function cardHTML(p, i){
+  var doers = p.doers.slice(0,3).map(function(d){ return '<span class="av">'+initials(d.n)+'</span>'; }).join('');
+  var more = p.doers.length>3 ? '<span class="more">+'+(p.doers.length-3)+'</span>' : '<span class="more">'+p.doers.length+' réalisé'+(p.doers.length>1?'s':'')+'</span>';
+  return '<article class="project" onclick="openDetail('+i+')">'+
+    '<div class="pj-top">'+srcBadge(p.source)+'<span class="badge badge--neutral">'+p.niveau+'</span><span class="badge badge--primary">'+p.stack+'</span></div>'+
+    '<div class="pj-title">'+p.title+'</div>'+
+    '<div class="pj-desc">'+p.desc+'</div>'+
+    '<div class="pj-skills">'+p.skills.map(function(s){ return '<span class="badge badge--neutral">'+s+'</span>'; }).join('')+'</div>'+
+    '<div class="pj-meta"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>'+p.duree+'</span><span class="mi">'+diffDots(p.diff)+p.diffLabel+'</span></div>'+
+    '<div class="pj-foot"><div class="pj-doers">'+doers+more+'</div><span class="btn btn--ghost" style="pointer-events:none">Voir le détail →</span></div>'+
+  '</article>';
+}
+
+function render(){
+  var list=apply();
+  document.getElementById('count').innerHTML='<b>'+list.length+'</b> projet'+(list.length>1?'s':'');
+  var grid=document.getElementById('grid');
+  if(list.length===0){ grid.innerHTML='<div class="state show"><div class="state-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M8 11h6"/></svg></div><h3>Aucun projet trouvé</h3><p>Aucun projet ne correspond à vos filtres. Élargissez les critères ou demandez des idées à l\'IA ci-dessous.</p><button class="btn btn--primary" onclick="document.getElementById(\'aiModule\').scrollIntoView({behavior:\'smooth\'})">Générer des idées IA</button></div>'; return; }
+  grid.innerHTML = list.map(function(p){ return cardHTML(p, PROJECTS.indexOf(p)); }).join('');
+}
+
+function openDetail(i){
+  var p=PROJECTS[i];
+  var doers = p.doers.map(function(d){ return '<div class="doer"><span class="av">'+initials(d.n)+'</span><div><div class="nm">'+d.n+'</div><div class="pr">'+d.p+'</div></div>'+(p.github?'<a class="gh btn btn--ghost btn--sm" href="#" onclick="event.preventDefault()">GitHub</a>':'')+'</div>'; }).join('');
+  document.getElementById('detBody').innerHTML =
+    '<div class="det-tags">'+srcBadge(p.source)+'<span class="badge badge--neutral">'+p.filiere+'</span><span class="badge badge--neutral">'+p.niveau+'</span><span class="badge badge--primary">'+p.stack+'</span></div>'+
+    '<div class="det-title">'+p.title+'</div>'+
+    '<div class="det-quick">'+
+      '<div class="q"><span class="k">Durée</span><span class="v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;color:var(--color-muted)"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>'+p.duree+'</span></div>'+
+      '<div class="q"><span class="k">Difficulté</span><span class="v">'+diffDots(p.diff)+p.diffLabel+'</span></div>'+
+      '<div class="q"><span class="k">Réalisé par</span><span class="v">'+p.doers.length+' étudiant'+(p.doers.length>1?'s':'')+'</span></div>'+
+    '</div>'+
+    '<div class="det-section"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.5" fill="currentColor"/></svg>Objectifs</h4><p>'+p.obj+'</p></div>'+
+    '<div class="det-section"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Livrables</h4><ul class="det-list">'+p.livrables.map(function(l){ return '<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>'+l+'</li>'; }).join('')+'</ul></div>'+
+    '<div class="det-section"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg>Étapes</h4><ol class="steps">'+p.steps.map(function(s){ return '<li>'+s+'</li>'; }).join('')+'</ol></div>'+
+    '<div class="det-section"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg>Technologies</h4><div class="pj-skills">'+p.tech.map(function(t){ return '<span class="badge badge--primary">'+t+'</span>'; }).join('')+'</div></div>'+
+    '<div class="det-section"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg>Conseil portfolio</h4><div class="tip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg><p>'+p.tip+'</p></div></div>'+
+    (p.github ? '<div class="det-section"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5 4.6 4.6 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6 .8 5 1 5 1a4.6 4.6 0 0 0-.1 3.5A5 5 0 0 0 3.5 8c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V21"/></svg>Code source</h4><a class="github-link" href="#" onclick="event.preventDefault()"><span class="gh-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5 4.6 4.6 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6 .8 5 1 5 1a4.6 4.6 0 0 0-.1 3.5A5 5 0 0 0 3.5 8c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V21"/></svg></span><div><div class="gh-t">Voir le dépôt</div><div class="gh-s">'+p.github+'</div></div><svg style="margin-left:auto;width:16px;height:16px;color:var(--color-muted)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg></a></div>' : '') +
+    '<div class="det-section"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Étudiants l\'ayant réalisé</h4><div class="doers-list">'+doers+'</div></div>';
+  document.getElementById('detScrim').classList.add('open');
+  document.getElementById('detDrawer').classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('detBody').scrollTop=0;
+}
+function closeDrawer(){ document.getElementById('detScrim').classList.remove('open'); document.getElementById('detDrawer').classList.remove('open'); document.body.style.overflow=''; }
+
+/* filters */
+document.getElementById('fFiliere').addEventListener('change', function(){ state.filiere=this.value; render(); });
+document.getElementById('fNiveau').addEventListener('change', function(){ state.niveau=this.value; render(); });
+document.getElementById('fDuree').addEventListener('change', function(){ state.duree=this.value; render(); });
+document.getElementById('sortSelect').addEventListener('change', function(){ state.sort=this.value; render(); });
+document.querySelectorAll('#fDiff .fchip').forEach(function(c){ c.addEventListener('click', function(){ var on=c.classList.contains('on'); document.querySelectorAll('#fDiff .fchip').forEach(function(x){ x.classList.remove('on'); }); if(!on){ c.classList.add('on'); state.diff=c.dataset.v; } else state.diff=''; render(); }); });
+document.querySelectorAll('#fStack .fchip').forEach(function(c){ c.addEventListener('click', function(){ var on=c.classList.contains('on'); document.querySelectorAll('#fStack .fchip').forEach(function(x){ x.classList.remove('on'); }); if(!on){ c.classList.add('on'); state.stack=c.dataset.v; } else state.stack=''; render(); }); });
+function resetFilters(){ state={ filiere:"", niveau:"", diff:"", duree:"", stack:"", sort:state.sort }; document.getElementById('fFiliere').value=''; document.getElementById('fNiveau').value=''; document.getElementById('fDuree').value=''; document.querySelectorAll('.fchip').forEach(function(x){ x.classList.remove('on'); }); render(); }
+function openFilters(){ document.getElementById('filters').classList.add('open'); }
+function closeFilters(){ document.getElementById('filters').classList.remove('open'); }
+document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeDrawer(); closeFilters(); } });
+
+/* ===== AI generation (simulated) ===== */
+var IDEA_BANK = {
+  "Génie Informatique": [
+    { t:"API de recommandation de cours", d:"Un service qui suggère des ressources StudyLib selon l'historique de l'étudiant.", s:["Python","FastAPI","ML"] },
+    { t:"Extension navigateur de révision", d:"Transforme n'importe quelle page en fiches de révision avec quiz généré.", s:["JavaScript","Chrome API"] },
+    { t:"Chatbot d'orientation filière", d:"Assistant qui guide les nouveaux étudiants vers la bonne filière selon leurs goûts.", s:["Python","NLP","React"] },
+    { t:"Visualiseur d'algorithmes de tri", d:"Animation interactive pour comprendre les algorithmes classiques.", s:["JavaScript","Canvas","D3.js"] }
+  ],
+  "Génie Civil": [
+    { t:"Calculateur de structures simplifié", d:"Outil web de dimensionnement de poutres avec visualisation des contraintes.", s:["JavaScript","Three.js"] },
+    { t:"Suivi BIM collaboratif", d:"Plateforme de partage de maquettes numériques entre étudiants.", s:["React","IFC.js"] },
+    { t:"Estimateur d'empreinte carbone béton", d:"Calcule l'impact CO₂ de différents choix de matériaux.", s:["Python","Streamlit"] }
+  ],
+  "Génie Industriel": [
+    { t:"Jumeau numérique de ligne de production", d:"Simulation d'un atelier pour optimiser les flux.", s:["Python","SimPy"] },
+    { t:"Tableau de bord OEE", d:"Suivi en temps réel de la performance des machines.", s:["React","InfluxDB"] },
+    { t:"Optimiseur de planning d'équipes", d:"Génère des plannings respectant les contraintes RH.", s:["Python","OR-Tools"] }
+  ],
+  "Génie Électrique": [
+    { t:"Station météo connectée", d:"Capteurs IoT publiant les données sur un dashboard temps réel.", s:["ESP32","MQTT","Grafana"] },
+    { t:"Contrôle domotique vocal", d:"Pilotage d'appareils par commandes vocales locales.", s:["Raspberry Pi","Python"] },
+    { t:"Banc de test de batteries", d:"Mesure et trace les cycles de charge/décharge.", s:["Arduino","Python","Matplotlib"] }
+  ]
+};
+function genIdeas(){
+  var fil=document.getElementById('aiFiliere').value;
+  var niv=document.getElementById('aiNiveau').value;
+  var interets=document.getElementById('aiInterets').value.trim();
+  var btn=document.getElementById('aiGen'); btn.disabled=true; var old=btn.innerHTML; btn.innerHTML='<span style="display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite"></span> Génération…';
+  var res=document.getElementById('aiResults');
+  res.innerHTML='<div class="sk ai-sk"></div><div class="sk ai-sk"></div><div class="sk ai-sk"></div>';
+  setTimeout(function(){
+    var bank=(IDEA_BANK[fil]||IDEA_BANK["Génie Informatique"]).slice();
+    bank.sort(function(){ return Math.random()-0.5; });
+    var picks=bank.slice(0,3);
+    res.innerHTML = picks.map(function(p,idx){
+      var tail = interets ? ' Adapté à votre intérêt pour « '+interets+' ».' : '';
+      return '<div class="ai-card"><div class="num">'+(idx+1)+'</div><h4>'+p.t+'</h4><p>'+p.d+tail+'</p><div class="ac-skills">'+p.s.map(function(s){ return '<span class="badge badge--neutral">'+s+'</span>'; }).join('')+'<span class="badge badge--neutral">'+niv+'</span></div></div>';
+    }).join('');
+    btn.disabled=false; btn.innerHTML=old;
+    toast('3 idées générées pour votre profil');
+  }, 1100);
+}
+var spinStyle=document.createElement('style'); spinStyle.textContent='@keyframes spin{to{transform:rotate(360deg)}}'; document.head.appendChild(spinStyle);
+
+/* toast */
+var toastEl=document.getElementById('toast'), toastTimer;
+function toast(msg){ document.getElementById('toastMsg').textContent=msg; toastEl.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(function(){ toastEl.classList.remove('show'); }, 2400); }
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyLib — Mon profil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); font-size: var(--text-body); line-height: var(--leading-normal);
+  color: var(--color-ink); background: var(--color-surface); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+input, select { font-family: inherit; }
+::selection { background: var(--color-primary-soft); color: var(--color-primary-active); }
+svg { display: block; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); height: 40px;
+  padding: 0 var(--space-4); border-radius: var(--radius-md); font-size: var(--text-sm); font-weight: 600;
+  border: 1px solid transparent; transition: all var(--dur) var(--ease); white-space: nowrap; }
+.btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.btn--primary { background: var(--color-primary); color: #fff; box-shadow: var(--shadow-sm); }
+.btn--primary:hover { background: var(--color-primary-hover); }
+.btn--secondary { background: var(--color-card); color: var(--color-ink); border-color: var(--color-border-strong); }
+.btn--secondary:hover { background: var(--color-surface-2); border-color: var(--color-muted); }
+.btn--ghost { background: transparent; color: var(--color-ink-soft); }
+.btn--ghost:hover { background: var(--color-surface-2); color: var(--color-ink); }
+.btn--danger { background: var(--color-card); color: var(--color-danger); border-color: var(--color-danger-soft); }
+.btn--danger:hover { background: var(--color-danger-soft); }
+.btn--sm { height: 34px; padding: 0 var(--space-3); font-size: var(--text-xs); border-radius: var(--radius-sm); }
+.btn .ico { width: 16px; height: 16px; }
+.badge { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 9px; border-radius: var(--radius-full);
+  font-size: var(--text-xs); font-weight: 600; line-height: 1; white-space: nowrap; }
+.badge--primary { background: var(--color-primary-soft); color: var(--color-primary-active); }
+.badge--neutral { background: var(--color-surface-2); color: var(--color-ink-soft); }
+.badge--success { background: var(--color-success-soft); color: var(--color-success-ink); }
+.badge--warning { background: var(--color-warning-soft); color: var(--color-warning-ink); }
+
+/* Shell */
+.app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+.sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; z-index: 30;
+  background: var(--color-card); border-right: 1px solid var(--color-border); display: flex; flex-direction: column; }
+.sb-brand { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-5); }
+.brand-mark { width: 36px; height: 36px; border-radius: 11px; flex-shrink: 0; color: #fff;
+  background: linear-gradient(140deg, var(--color-primary), var(--color-primary-active));
+  display: grid; place-items: center; font-weight: 700; font-size: 17px; box-shadow: var(--shadow-sm); }
+.brand-name { font-weight: 700; font-size: var(--text-h4); letter-spacing: var(--tracking-tight); }
+.sb-nav { flex: 1; overflow-y: auto; padding: var(--space-2) var(--space-3); display: flex; flex-direction: column; gap: 2px; }
+.sb-link { display: flex; align-items: center; gap: var(--space-3); padding: 10px var(--space-3); border-radius: var(--radius-sm);
+  color: var(--color-ink-soft); font-size: var(--text-sm); font-weight: 500; transition: all var(--dur) var(--ease); }
+.sb-link .ico { width: 19px; height: 19px; color: var(--color-muted); flex-shrink: 0; }
+.sb-link:hover { background: var(--color-surface-2); color: var(--color-ink); }
+.sb-link.is-active { background: var(--color-primary-soft); color: var(--color-primary-active); font-weight: 600; }
+.sb-link.is-active .ico { color: var(--color-primary); }
+.sb-count { margin-left: auto; font-size: var(--text-xs); color: var(--color-muted); background: var(--color-surface-2);
+  border-radius: var(--radius-full); padding: 1px 8px; font-weight: 600; }
+.sb-foot { padding: var(--space-3); border-top: 1px solid var(--color-border); }
+
+.main { grid-column: 2; display: flex; flex-direction: column; min-width: 0; }
+.topbar { position: sticky; top: 0; z-index: 20; height: var(--header-h); background: rgba(255,255,255,.85);
+  backdrop-filter: saturate(180%) blur(10px); border-bottom: 1px solid var(--color-border);
+  display: flex; align-items: center; gap: var(--space-4); padding: 0 var(--space-6); }
+.topbar h1 { font-size: var(--text-h3); font-weight: 700; letter-spacing: var(--tracking-tight); }
+.topbar-spacer { flex: 1; }
+.icon-btn { width: 40px; height: 40px; border-radius: var(--radius-md); border: 1px solid transparent; background: transparent;
+  color: var(--color-ink-soft); display: grid; place-items: center; transition: background var(--dur) var(--ease); position: relative; }
+.icon-btn:hover { background: var(--color-surface-2); }
+.icon-btn .nd { position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; border-radius: 5px; background: var(--color-danger); border: 2px solid var(--color-card); }
+.avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--color-primary-soft); color: var(--color-primary-active);
+  display: grid; place-items: center; font-size: var(--text-sm); font-weight: 700; }
+.mobile-only { display: none; }
+
+.content { flex: 1; padding: var(--space-6); max-width: 1200px; width: 100%; }
+
+/* ===== Profile header ===== */
+.profile-head { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-5); }
+.ph-cover { height: 96px; background: linear-gradient(120deg, var(--color-primary), var(--color-primary-active)); position: relative; }
+.ph-cover::after { content: ""; position: absolute; inset: 0; background: radial-gradient(70% 140% at 90% 0%, rgba(255,255,255,.18), transparent 60%); }
+.ph-body { padding: 0 var(--space-6) var(--space-6); display: flex; gap: var(--space-5); align-items: flex-end; flex-wrap: wrap; }
+.ph-avatar { width: 104px; height: 104px; border-radius: 50%; background: var(--color-primary-soft); color: var(--color-primary-active);
+  display: grid; place-items: center; font-size: 38px; font-weight: 700; border: 4px solid var(--color-card); margin-top: -52px; flex-shrink: 0; box-shadow: var(--shadow-sm); }
+.ph-info { flex: 1; min-width: 200px; padding-top: var(--space-4); }
+.ph-name { font-size: var(--text-h1); font-weight: 700; letter-spacing: var(--tracking-tight); line-height: 1.1; display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.verified { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 11px; border-radius: var(--radius-full);
+  background: var(--color-success-soft); color: var(--color-success-ink); font-size: var(--text-xs); font-weight: 700; }
+.verified svg { width: 13px; height: 13px; }
+.ph-meta { display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-2); flex-wrap: wrap; color: var(--color-muted); font-size: var(--text-sm); }
+.ph-meta .mi { display: inline-flex; align-items: center; gap: 6px; }
+.ph-meta .mi svg { width: 14px; height: 14px; }
+.ph-actions { display: flex; gap: var(--space-3); padding-top: var(--space-4); }
+
+/* ===== Stats + trust ===== */
+.overview { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-5); margin-bottom: var(--space-5); align-items: start; }
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+.stat { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); display: flex; gap: var(--space-4); align-items: center; }
+.stat-ico { width: 46px; height: 46px; border-radius: var(--radius-md); display: grid; place-items: center; flex-shrink: 0; }
+.stat-val { font-size: var(--text-h1); font-weight: 700; letter-spacing: var(--tracking-tight); line-height: 1; }
+.stat-label { font-size: var(--text-sm); color: var(--color-muted); margin-top: 4px; }
+
+/* Trust card */
+.trust-card { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); }
+.trust-card h3 { font-size: var(--text-h4); font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: var(--space-4); }
+.trust-card h3 svg { width: 18px; height: 18px; color: var(--color-primary); }
+.gauge { display: flex; align-items: center; gap: var(--space-4); }
+.ring { --pct: 92; width: 88px; height: 88px; border-radius: 50%; flex-shrink: 0;
+  background: conic-gradient(var(--color-success) calc(var(--pct)*1%), var(--color-border) 0); display: grid; place-items: center; }
+.ring::before { content: ""; position: absolute; }
+.ring-inner { width: 66px; height: 66px; border-radius: 50%; background: var(--color-card); display: grid; place-items: center; flex-direction: column; }
+.ring-num { font-size: var(--text-h3); font-weight: 700; letter-spacing: var(--tracking-tight); line-height: 1; }
+.ring-max { font-size: 10px; color: var(--color-muted); font-weight: 600; }
+.trust-detail { flex: 1; }
+.trust-level { font-size: var(--text-h4); font-weight: 700; color: var(--color-success-ink); }
+.trust-sub { font-size: var(--text-sm); color: var(--color-muted); margin-top: 2px; }
+.trust-bars { margin-top: var(--space-4); display: flex; flex-direction: column; gap: 9px; }
+.tb-row { display: flex; align-items: center; gap: var(--space-3); font-size: var(--text-xs); }
+.tb-row .tb-l { width: 96px; color: var(--color-ink-soft); font-weight: 600; flex-shrink: 0; }
+.tb-row .tb-bar { flex: 1; height: 6px; border-radius: 3px; background: var(--color-border); overflow: hidden; }
+.tb-row .tb-bar > span { display: block; height: 100%; border-radius: 3px; background: var(--color-primary); }
+.tb-row .tb-v { width: 28px; text-align: right; color: var(--color-muted); font-weight: 600; }
+
+/* ===== Tabs + layout ===== */
+.main-split { display: grid; grid-template-columns: 1fr 320px; gap: var(--space-5); align-items: start; }
+.tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-5); overflow-x: auto; }
+.tab { padding: var(--space-3) var(--space-4); border: 0; background: transparent; color: var(--color-muted); font-size: var(--text-sm);
+  font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; display: inline-flex; align-items: center; gap: 7px; transition: all var(--dur) var(--ease); }
+.tab svg { width: 16px; height: 16px; }
+.tab:hover { color: var(--color-ink); }
+.tab.is-active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+.tab .cnt { font-size: 11px; background: var(--color-surface-2); color: var(--color-ink-soft); border-radius: var(--radius-full); padding: 1px 7px; font-weight: 700; }
+.tab.is-active .cnt { background: var(--color-primary-soft); color: var(--color-primary-active); }
+
+.panel { display: none; }
+.panel.show { display: block; }
+
+/* item rows */
+.item-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.item { display: flex; align-items: center; gap: var(--space-4); background: var(--color-card); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); padding: var(--space-4); transition: box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+.item:hover { box-shadow: var(--shadow-sm); border-color: var(--color-border-strong); }
+.item-ico { width: 44px; height: 52px; border-radius: var(--radius-sm); flex-shrink: 0; display: grid; place-items: center; font-size: 10px; font-weight: 700;
+  background: var(--color-danger-soft); color: var(--color-danger-ink); }
+.item-body { flex: 1; min-width: 0; }
+.item-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 5px; }
+.item-title { font-size: var(--text-h4); font-weight: 600; line-height: 1.3; }
+.item-meta { display: flex; align-items: center; gap: var(--space-4); margin-top: 6px; font-size: var(--text-sm); color: var(--color-muted); flex-wrap: wrap; }
+.item-meta .mi { display: inline-flex; align-items: center; gap: 5px; }
+.item-meta .mi svg { width: 13px; height: 13px; }
+.stars { display: inline-flex; gap: 1px; }
+.star { width: 13px; height: 13px; color: var(--color-border-strong); }
+.star.on { color: #F59E0B; }
+.item-actions { display: flex; gap: var(--space-2); flex-shrink: 0; }
+
+.empty-tab { text-align: center; padding: var(--space-12) var(--space-6); background: var(--color-card); border: 1px dashed var(--color-border-strong); border-radius: var(--radius-lg); }
+.empty-tab .e-ico { width: 56px; height: 56px; margin: 0 auto var(--space-4); border-radius: var(--radius-xl); background: var(--color-primary-soft); color: var(--color-primary); display: grid; place-items: center; }
+.empty-tab h3 { font-size: var(--text-h4); font-weight: 600; }
+.empty-tab p { color: var(--color-muted); font-size: var(--text-sm); margin: var(--space-2) auto var(--space-4); max-width: 32ch; }
+
+/* ===== Settings ===== */
+.set-group { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); margin-bottom: var(--space-4); overflow: hidden; }
+.set-group-head { padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border); }
+.set-group-head h3 { font-size: var(--text-h4); font-weight: 600; }
+.set-group-head p { font-size: var(--text-xs); color: var(--color-muted); margin-top: 2px; }
+.set-row { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border); }
+.set-row:last-child { border-bottom: 0; }
+.set-row .sr-t { font-size: var(--text-sm); font-weight: 600; }
+.set-row .sr-s { font-size: var(--text-xs); color: var(--color-muted); margin-top: 2px; }
+.set-row .sr-main { flex: 1; min-width: 0; }
+.switch { width: 46px; height: 26px; border-radius: 999px; background: var(--color-border-strong); border: 0; position: relative; transition: background var(--dur) var(--ease); flex-shrink: 0; }
+.switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: var(--shadow-sm); transition: transform var(--dur) var(--ease); }
+.switch.on { background: var(--color-success); }
+.switch.on::after { transform: translateX(20px); }
+.set-input { height: 42px; padding: 0 var(--space-3); font-size: var(--text-sm); color: var(--color-ink); background: var(--color-surface);
+  border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); min-width: 240px; transition: all var(--dur) var(--ease); }
+.set-input:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--shadow-focus); background: var(--color-card); }
+.set-select { height: 42px; padding: 0 36px 0 var(--space-3); font-size: var(--text-sm); color: var(--color-ink); background: var(--color-surface);
+  border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); appearance: none; min-width: 200px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; }
+.set-select:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
+.input-prefix { display: flex; align-items: center; height: 42px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); overflow: hidden; background: var(--color-surface); }
+.input-prefix span { padding: 0 10px; font-size: var(--text-sm); color: var(--color-muted); background: var(--color-surface-2); height: 100%; display: flex; align-items: center; border-right: 1px solid var(--color-border); }
+.input-prefix input { border: 0; background: transparent; height: 100%; padding: 0 10px; font-size: var(--text-sm); min-width: 200px; }
+.input-prefix input:focus { outline: none; }
+.input-prefix:focus-within { border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
+.danger-zone { border-color: var(--color-danger-soft); }
+.danger-zone .set-group-head { border-color: var(--color-danger-soft); }
+
+/* ===== Timeline (rail) ===== */
+.rail { position: sticky; top: calc(var(--header-h) + var(--space-4)); }
+.rail-panel { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); }
+.rail-panel h3 { font-size: var(--text-h4); font-weight: 600; margin-bottom: var(--space-5); }
+.timeline { position: relative; padding-left: var(--space-6); }
+.timeline::before { content: ""; position: absolute; left: 10px; top: 4px; bottom: 4px; width: 2px; background: var(--color-border); }
+.tl-item { position: relative; padding-bottom: var(--space-5); }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-dot { position: absolute; left: calc(-1 * var(--space-6) + 4px); top: 2px; width: 16px; height: 16px; border-radius: 50%;
+  border: 3px solid var(--color-card); display: grid; place-items: center; }
+.tl-dot svg { width: 8px; height: 8px; color: #fff; }
+.tl-time { font-size: var(--text-xs); color: var(--color-muted); }
+.tl-text { font-size: var(--text-sm); color: var(--color-ink); margin-top: 2px; line-height: 1.4; }
+.tl-text b { font-weight: 600; }
+
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); z-index: 70; background: var(--color-ink); color: #fff;
+  padding: 12px 20px; border-radius: var(--radius-md); font-size: var(--text-sm); font-weight: 600; box-shadow: var(--shadow-lg); opacity: 0;
+  transition: opacity .2s, transform .2s; display: flex; align-items: center; gap: 8px; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast svg { width: 16px; height: 16px; color: var(--color-success); }
+
+.bottom-nav { display: none; }
+@media (max-width: 1080px) {
+  .overview { grid-template-columns: 1fr; }
+  .main-split { grid-template-columns: 1fr; }
+  .rail { position: static; }
+}
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .main { grid-column: 1; }
+  .content { padding: var(--space-4) var(--space-4) 88px; }
+  .topbar { padding: 0 var(--space-4); }
+  .mobile-only { display: grid; }
+  .bottom-nav { display: block; position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; height: 64px; background: rgba(255,255,255,.94); backdrop-filter: blur(12px); border-top: 1px solid var(--color-border); }
+  .bn-inner { display: grid; grid-template-columns: repeat(5,1fr); height: 64px; }
+  .bn-link { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--color-muted); font-size: 10px; font-weight: 600; }
+  .bn-link svg { width: 22px; height: 22px; }
+  .bn-link.is-active { color: var(--color-primary); }
+}
+@media (max-width: 560px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .gauge { flex-direction: column; text-align: center; }
+  .item { flex-wrap: wrap; }
+  .item-actions { width: 100%; }
+  .set-row { flex-wrap: wrap; }
+  .set-input, .set-select, .input-prefix { width: 100%; min-width: 0; }
+  .input-prefix input, .set-input { min-width: 0; width: 100%; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sb-brand"><div class="brand-mark">S</div><span class="brand-name">StudyLib</span></div>
+    <nav class="sb-nav">
+      <a class="sb-link" href="StudyLib Dashboard.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Accueil</a>
+      <a class="sb-link" href="StudyLib Bibliothèque.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Bibliothèque<span class="sb-count">1.2k</span></a>
+      <a class="sb-link" href="StudyLib Stages.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM9 5h6v2H9z"/></svg>Stages<span class="sb-count">24</span></a>
+      <a class="sb-link" href="StudyLib Projets CV.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>Projets<span class="sb-count">8</span></a>
+      <a class="sb-link" href="StudyLib Événements.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Événements<span class="sb-count">5</span></a>
+      <a class="sb-link"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Mes dépôts<span class="sb-count">7</span></a>
+    </nav>
+    <div class="sb-foot">
+      <a class="sb-link is-active"><span class="avatar" style="width:28px;height:28px;font-size:11px">CM</span>Mon profil</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="brand-mark mobile-only" style="width:34px;height:34px;font-size:16px">S</div>
+      <h1>Mon profil</h1>
+      <div class="topbar-spacer"></div>
+      <button class="icon-btn" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="nd"></span></button>
+      <span class="avatar">CM</span>
+    </header>
+
+    <main class="content">
+      <!-- Profile header -->
+      <div class="profile-head">
+        <div class="ph-cover"></div>
+        <div class="ph-body">
+          <div class="ph-avatar">CM</div>
+          <div class="ph-info">
+            <div class="ph-name">Cédric Mbarki <span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Email HESTIM vérifié</span></div>
+            <div class="ph-meta">
+              <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>Génie Informatique</span>
+              <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>L3 · Semestre 5</span>
+              <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>cedric.mbarki@hestim.ma</span>
+              <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Membre depuis sept. 2024</span>
+            </div>
+          </div>
+          <div class="ph-actions">
+            <button class="btn btn--secondary" onclick="toast('Profil — édition (démo)')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Modifier</button>
+            <button class="btn btn--primary" onclick="goTab('docs')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Déposer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats + trust -->
+      <div class="overview">
+        <div class="stats-grid">
+          <div class="stat"><div class="stat-ico" style="background:var(--color-primary-soft);color:var(--color-primary)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div><div><div class="stat-val">7</div><div class="stat-label">Documents déposés</div></div></div>
+          <div class="stat"><div class="stat-ico" style="background:var(--color-success-soft);color:var(--color-success)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></div><div><div class="stat-val">1 284</div><div class="stat-label">Téléchargements reçus</div></div></div>
+          <div class="stat"><div class="stat-ico" style="background:var(--color-warning-soft);color:var(--color-warning)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg></div><div><div class="stat-val">3</div><div class="stat-label">Avis de stage publiés</div></div></div>
+          <div class="stat"><div class="stat-ico" style="background:#F0EEFB;color:#6D28D9"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg></div><div><div class="stat-val">2</div><div class="stat-label">Projets partagés</div></div></div>
+        </div>
+
+        <div class="trust-card">
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>Indice de confiance</h3>
+          <div class="gauge">
+            <div class="ring" style="--pct:92; position:relative"><div class="ring-inner" style="flex-direction:column"><span class="ring-num">4,6</span><span class="ring-max">/ 5</span></div></div>
+            <div class="trust-detail">
+              <div class="trust-level">Contributeur de confiance</div>
+              <div class="trust-sub">Basé sur 214 notes reçues sur vos dépôts.</div>
+            </div>
+          </div>
+          <div class="trust-bars">
+            <div class="tb-row"><span class="tb-l">Qualité doc.</span><span class="tb-bar"><span style="width:94%"></span></span><span class="tb-v">4,7</span></div>
+            <div class="tb-row"><span class="tb-l">Fiabilité</span><span class="tb-bar"><span style="width:90%"></span></span><span class="tb-v">4,5</span></div>
+            <div class="tb-row"><span class="tb-l">Régularité</span><span class="tb-bar"><span style="width:84%; background:var(--color-success)"></span></span><span class="tb-v">4,2</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Split: tabs + timeline -->
+      <div class="main-split">
+        <section>
+          <div class="tabs">
+            <button class="tab is-active" data-tab="docs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Mes documents<span class="cnt">7</span></button>
+            <button class="tab" data-tab="stages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>Mes stages<span class="cnt">3</span></button>
+            <button class="tab" data-tab="projets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5"/></svg>Mes projets<span class="cnt">2</span></button>
+            <button class="tab" data-tab="favoris"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>Favoris<span class="cnt">18</span></button>
+            <button class="tab" data-tab="params"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H2a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 3.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H8a1.65 1.65 0 0 0 1-1.51V2a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V8a1.65 1.65 0 0 0 1.51 1H22a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Paramètres</button>
+          </div>
+
+          <!-- DOCS -->
+          <div class="panel show" id="panel-docs">
+            <div class="item-list">
+              <div class="item"><div class="item-ico">PDF</div><div class="item-body"><div class="item-tags"><span class="badge badge--primary">Cours</span><span class="badge badge--neutral">Bases de données</span><span class="badge badge--success"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Validé</span></div><div class="item-title">Modélisation relationnelle &amp; algèbre relationnelle</div><div class="item-meta"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>312</span><span class="mi"><span class="stars"><svg class="star on" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg></span>4,8</span><span class="mi">il y a 2 j</span></div></div><div class="item-actions"><button class="btn btn--ghost btn--sm">Voir</button><button class="btn btn--secondary btn--sm">Gérer</button></div></div>
+              <div class="item"><div class="item-ico" style="background:#F0EEFB;color:#6D28D9">PPT</div><div class="item-body"><div class="item-tags"><span class="badge badge--primary">Cours</span><span class="badge badge--neutral">Génie logiciel</span><span class="badge badge--success"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Validé</span></div><div class="item-title">Patterns de conception — support complet</div><div class="item-meta"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>95</span><span class="mi"><span class="stars"><svg class="star on" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg></span>4,3</span><span class="mi">il y a 1 sem.</span></div></div><div class="item-actions"><button class="btn btn--ghost btn--sm">Voir</button><button class="btn btn--secondary btn--sm">Gérer</button></div></div>
+              <div class="item"><div class="item-ico" style="background:var(--color-warning-soft);color:var(--color-warning-ink)">DOC</div><div class="item-body"><div class="item-tags"><span class="badge badge--neutral">TD</span><span class="badge badge--neutral">Réseaux</span><span class="badge badge--warning"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block"></span>En attente</span></div><div class="item-title">TP Réseaux — Configuration VLAN</div><div class="item-meta"><span class="mi">En cours de modération</span><span class="mi">il y a 1 j</span></div></div><div class="item-actions"><button class="btn btn--ghost btn--sm">Voir</button><button class="btn btn--secondary btn--sm">Gérer</button></div></div>
+            </div>
+          </div>
+
+          <!-- STAGES -->
+          <div class="panel" id="panel-stages">
+            <div class="item-list">
+              <div class="item"><div class="item-ico" style="background:var(--color-primary-soft);color:var(--color-primary-active)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg></div><div class="item-body"><div class="item-tags"><span class="badge badge--primary">Atlas Software</span><span class="badge badge--neutral">Casablanca</span><span class="badge badge--neutral">2025</span></div><div class="item-title">Stage développeur full-stack</div><div class="item-meta"><span class="mi"><span class="stars"><svg class="star on" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg></span>Noté 5/5</span><span class="mi">Publié anonymisé</span></div></div><div class="item-actions"><button class="btn btn--ghost btn--sm">Voir</button></div></div>
+              <div class="item"><div class="item-ico" style="background:var(--color-success-soft);color:var(--color-success-ink)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg></div><div class="item-body"><div class="item-tags"><span class="badge badge--primary">NovaTel</span><span class="badge badge--neutral">Rabat</span><span class="badge badge--neutral">2024</span></div><div class="item-title">Stage d'observation — réseaux</div><div class="item-meta"><span class="mi"><span class="stars"><svg class="star on" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg></span>Noté 4/5</span></div></div><div class="item-actions"><button class="btn btn--ghost btn--sm">Voir</button></div></div>
+            </div>
+          </div>
+
+          <!-- PROJETS -->
+          <div class="panel" id="panel-projets">
+            <div class="item-list">
+              <div class="item"><div class="item-ico" style="background:var(--color-primary-soft);color:var(--color-primary-active)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg></div><div class="item-body"><div class="item-tags"><span class="badge badge--primary">Web</span><span class="badge badge--neutral">React</span><span class="badge badge--neutral">Node.js</span></div><div class="item-title">Plateforme d'entraide entre étudiants</div><div class="item-meta"><span class="mi">3 étudiants l'ont réalisé</span><span class="mi">GitHub lié</span></div></div><div class="item-actions"><button class="btn btn--ghost btn--sm">Voir</button></div></div>
+              <div class="item"><div class="item-ico" style="background:#EAF6EF;color:var(--color-success-ink)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg></div><div class="item-body"><div class="item-tags"><span class="badge badge--primary">Web</span><span class="badge badge--neutral">HTML/CSS</span></div><div class="item-title">Portfolio personnel animé</div><div class="item-meta"><span class="mi">Projet débutant</span><span class="mi">GitHub lié</span></div></div><div class="item-actions"><button class="btn btn--ghost btn--sm">Voir</button></div></div>
+            </div>
+          </div>
+
+          <!-- FAVORIS -->
+          <div class="panel" id="panel-favoris">
+            <div class="item-list">
+              <div class="item"><div class="item-ico">PDF</div><div class="item-body"><div class="item-tags"><span class="badge badge--warning">Examen</span><span class="badge badge--neutral">Réseaux</span></div><div class="item-title">Annales 2024 — Examen final corrigé</div><div class="item-meta"><span class="mi">par Mehdi K.</span><span class="mi"><span class="stars"><svg class="star on" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg></span>4,9</span></div></div><div class="item-actions"><button class="btn btn--ghost btn--sm"><svg class="ico" viewBox="0 0 24 24" fill="var(--color-danger)" stroke="var(--color-danger)" stroke-width="2" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button><button class="btn btn--primary btn--sm">Télécharger</button></div></div>
+              <div class="item"><div class="item-ico" style="background:#F0EEFB;color:#6D28D9">PPT</div><div class="item-body"><div class="item-tags"><span class="badge badge--primary">Cours</span><span class="badge badge--neutral">Algorithmique</span></div><div class="item-title">Structures de données — support complet</div><div class="item-meta"><span class="mi">par Sara L.</span><span class="mi"><span class="stars"><svg class="star on" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg></span>4,9</span></div></div><div class="item-actions"><button class="btn btn--ghost btn--sm"><svg class="ico" viewBox="0 0 24 24" fill="var(--color-danger)" stroke="var(--color-danger)" stroke-width="2" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button><button class="btn btn--primary btn--sm">Télécharger</button></div></div>
+            </div>
+          </div>
+
+          <!-- PARAMS -->
+          <div class="panel" id="panel-params">
+            <div class="set-group">
+              <div class="set-group-head"><h3>Notifications email</h3><p>Choisissez ce que vous recevez par email.</p></div>
+              <div class="set-row"><div class="sr-main"><div class="sr-t">Nouveaux documents de ma filière</div><div class="sr-s">Quand un cours ou une fiche est ajouté en Génie Informatique</div></div><button class="switch on" onclick="this.classList.toggle('on');toast('Préférence enregistrée')"></button></div>
+              <div class="set-row"><div class="sr-main"><div class="sr-t">Réponses &amp; commentaires</div><div class="sr-s">Quand quelqu'un commente vos dépôts</div></div><button class="switch on" onclick="this.classList.toggle('on');toast('Préférence enregistrée')"></button></div>
+              <div class="set-row"><div class="sr-main"><div class="sr-t">Résumé hebdomadaire</div><div class="sr-s">Un récap des nouveautés chaque lundi</div></div><button class="switch" onclick="this.classList.toggle('on');toast('Préférence enregistrée')"></button></div>
+            </div>
+
+            <div class="set-group">
+              <div class="set-group-head"><h3>Confidentialité</h3><p>Contrôlez la visibilité de votre profil et de vos contributions.</p></div>
+              <div class="set-row"><div class="sr-main"><div class="sr-t">Profil visible par la promo</div><div class="sr-s">Votre nom apparaît sur vos documents publics</div></div><button class="switch on" onclick="this.classList.toggle('on');toast('Préférence enregistrée')"></button></div>
+              <div class="set-row"><div class="sr-main"><div class="sr-t">Avis de stage anonymisés par défaut</div><div class="sr-s">Seules vos initiales et votre filière sont montrées</div></div><button class="switch on" onclick="this.classList.toggle('on');toast('Préférence enregistrée')"></button></div>
+              <div class="set-row"><div class="sr-main"><div class="sr-t">Afficher mes statistiques publiquement</div><div class="sr-s">Téléchargements et indice de confiance visibles</div></div><button class="switch" onclick="this.classList.toggle('on');toast('Préférence enregistrée')"></button></div>
+            </div>
+
+            <div class="set-group">
+              <div class="set-group-head"><h3>Lien GitHub</h3><p>Associez votre compte pour relier vos projets.</p></div>
+              <div class="set-row"><div class="sr-main"><div class="sr-t">Nom d'utilisateur GitHub</div><div class="sr-s">Affiché sur vos projets partagés</div></div><div class="input-prefix"><span>github.com/</span><input id="ghInput" value="cedric-mbarki" placeholder="votre-pseudo"></div></div>
+            </div>
+
+            <div class="set-group">
+              <div class="set-group-head"><h3>Préférences de recommandation</h3><p>Affinez ce que l'IA et la bibliothèque vous suggèrent.</p></div>
+              <div class="set-row"><div class="sr-main"><div class="sr-t">Filière cible des recommandations</div><div class="sr-s">Par défaut, votre filière actuelle</div></div><select class="set-select"><option>Génie Informatique</option><option>Génie Civil</option><option>Génie Industriel</option><option>Génie Électrique</option></select></div>
+              <div class="set-row"><div class="sr-main"><div class="sr-t">Niveau ciblé</div><div class="sr-s">Niveau des ressources recommandées</div></div><select class="set-select"><option>L3 (mon niveau)</option><option>Tous niveaux</option><option>Niveau supérieur (M1)</option></select></div>
+              <div class="set-row"><div class="sr-main"><div class="sr-t">Inclure les suggestions IA</div><div class="sr-s">Idées de projets et résumés générés</div></div><button class="switch on" onclick="this.classList.toggle('on');toast('Préférence enregistrée')"></button></div>
+            </div>
+
+            <div class="set-group danger-zone">
+              <div class="set-group-head"><h3 style="color:var(--color-danger-ink)">Compte</h3><p>Actions liées à votre session.</p></div>
+              <div class="set-row"><div class="sr-main"><div class="sr-t">Se déconnecter</div><div class="sr-s">Fermer votre session sur cet appareil</div></div><a class="btn btn--danger" href="StudyLib Login.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>Déconnexion</a></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Timeline -->
+        <aside class="rail">
+          <div class="rail-panel">
+            <h3>Contributions récentes</h3>
+            <div class="timeline">
+              <div class="tl-item"><span class="tl-dot" style="background:var(--color-primary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><div class="tl-time">il y a 2 jours</div><div class="tl-text">Vous avez déposé <b>« Modélisation relationnelle »</b> en Bases de données.</div></div>
+              <div class="tl-item"><span class="tl-dot" style="background:#F59E0B"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .5-5.5 4.5 2 7L12 17l-6.5 4 2-7L2 9.5 9 9z"/></svg></span><div class="tl-time">il y a 4 jours</div><div class="tl-text">Vous avez noté <b>« Annales Réseaux 2024 »</b> 5 étoiles.</div></div>
+              <div class="tl-item"><span class="tl-dot" style="background:var(--color-warning)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span><div class="tl-time">il y a 6 jours</div><div class="tl-text">Votre avis sur <b>Atlas Software</b> a été publié.</div></div>
+              <div class="tl-item"><span class="tl-dot" style="background:#6D28D9"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span><div class="tl-time">il y a 1 semaine</div><div class="tl-text">Vous avez partagé le projet <b>« Plateforme d'entraide »</b>.</div></div>
+              <div class="tl-item"><span class="tl-dot" style="background:var(--color-success)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span><div class="tl-time">il y a 2 semaines</div><div class="tl-text"><b>« Patterns de conception »</b> a dépassé les 90 téléchargements.</div></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <div class="bn-inner">
+    <a class="bn-link" href="StudyLib Dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Accueil</a>
+    <a class="bn-link" href="StudyLib Bibliothèque.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Biblio</a>
+    <a class="bn-link" href="StudyLib Stages.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>Stages</a>
+    <a class="bn-link" href="StudyLib Projets CV.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>Projets</a>
+    <a class="bn-link is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>Profil</a>
+  </div>
+</nav>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg><span id="toastMsg"></span></div>
+
+<script>
+function goTab(name){
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('is-active', t.dataset.tab===name); });
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('show', p.id==='panel-'+name); });
+}
+document.querySelectorAll('.tab').forEach(function(t){ t.addEventListener('click', function(){ goTab(t.dataset.tab); }); });
+
+var toastEl=document.getElementById('toast'), toastTimer;
+function toast(msg){ document.getElementById('toastMsg').textContent=msg; toastEl.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(function(){ toastEl.classList.remove('show'); }, 2200); }
+</script>
+</body>
+</html>

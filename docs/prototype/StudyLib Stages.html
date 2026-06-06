@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyLib — Stages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); font-size: var(--text-body); line-height: var(--leading-normal);
+  color: var(--color-ink); background: var(--color-surface); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; }
+::selection { background: var(--color-primary-soft); color: var(--color-primary-active); }
+svg { display: block; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); height: 40px;
+  padding: 0 var(--space-4); border-radius: var(--radius-md); font-size: var(--text-sm); font-weight: 600;
+  border: 1px solid transparent; transition: all var(--dur) var(--ease); white-space: nowrap; }
+.btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.btn--primary { background: var(--color-primary); color: #fff; box-shadow: var(--shadow-sm); }
+.btn--primary:hover { background: var(--color-primary-hover); }
+.btn--secondary { background: var(--color-card); color: var(--color-ink); border-color: var(--color-border-strong); }
+.btn--secondary:hover { background: var(--color-surface-2); border-color: var(--color-muted); }
+.btn--ghost { background: transparent; color: var(--color-ink-soft); }
+.btn--ghost:hover { background: var(--color-surface-2); color: var(--color-ink); }
+.btn .ico { width: 16px; height: 16px; }
+.badge { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 9px; border-radius: var(--radius-full);
+  font-size: var(--text-xs); font-weight: 600; line-height: 1; white-space: nowrap; }
+.badge--primary { background: var(--color-primary-soft); color: var(--color-primary-active); }
+.badge--neutral { background: var(--color-surface-2); color: var(--color-ink-soft); }
+.badge--success { background: var(--color-success-soft); color: var(--color-success-ink); }
+.badge--warning { background: var(--color-warning-soft); color: var(--color-warning-ink); }
+
+/* Shell */
+.app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+.sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; z-index: 30;
+  background: var(--color-card); border-right: 1px solid var(--color-border); display: flex; flex-direction: column; }
+.sb-brand { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-5); }
+.brand-mark { width: 36px; height: 36px; border-radius: 11px; flex-shrink: 0; color: #fff;
+  background: linear-gradient(140deg, var(--color-primary), var(--color-primary-active));
+  display: grid; place-items: center; font-weight: 700; font-size: 17px; box-shadow: var(--shadow-sm); }
+.brand-name { font-weight: 700; font-size: var(--text-h4); letter-spacing: var(--tracking-tight); }
+.sb-nav { flex: 1; overflow-y: auto; padding: var(--space-2) var(--space-3); display: flex; flex-direction: column; gap: 2px; }
+.sb-link { display: flex; align-items: center; gap: var(--space-3); padding: 10px var(--space-3); border-radius: var(--radius-sm);
+  color: var(--color-ink-soft); font-size: var(--text-sm); font-weight: 500; transition: all var(--dur) var(--ease); }
+.sb-link .ico { width: 19px; height: 19px; color: var(--color-muted); flex-shrink: 0; }
+.sb-link:hover { background: var(--color-surface-2); color: var(--color-ink); }
+.sb-link.is-active { background: var(--color-primary-soft); color: var(--color-primary-active); font-weight: 600; }
+.sb-link.is-active .ico { color: var(--color-primary); }
+.sb-count { margin-left: auto; font-size: var(--text-xs); color: var(--color-muted); background: var(--color-surface-2);
+  border-radius: var(--radius-full); padding: 1px 8px; font-weight: 600; }
+.sb-foot { padding: var(--space-3); border-top: 1px solid var(--color-border); }
+
+.main { grid-column: 2; display: flex; flex-direction: column; min-width: 0; }
+.topbar { position: sticky; top: 0; z-index: 20; height: var(--header-h); background: rgba(255,255,255,.85);
+  backdrop-filter: saturate(180%) blur(10px); border-bottom: 1px solid var(--color-border);
+  display: flex; align-items: center; gap: var(--space-4); padding: 0 var(--space-6); }
+.topbar h1 { font-size: var(--text-h3); font-weight: 700; letter-spacing: var(--tracking-tight); }
+.topbar-spacer { flex: 1; }
+.icon-btn { width: 40px; height: 40px; border-radius: var(--radius-md); border: 1px solid transparent; background: transparent;
+  color: var(--color-ink-soft); display: grid; place-items: center; transition: background var(--dur) var(--ease); position: relative; }
+.icon-btn:hover { background: var(--color-surface-2); }
+.icon-btn .nd { position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; border-radius: 5px; background: var(--color-danger); border: 2px solid var(--color-card); }
+.avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--color-primary-soft); color: var(--color-primary-active);
+  display: grid; place-items: center; font-size: var(--text-sm); font-weight: 700; }
+.mobile-only { display: none; }
+
+.content { flex: 1; padding: var(--space-6); max-width: 1400px; width: 100%; }
+
+/* Search hero */
+.search-hero { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+  padding: var(--space-5); box-shadow: var(--shadow-xs); margin-bottom: var(--space-5); display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; }
+.big-search { position: relative; flex: 1; min-width: 240px; }
+.big-search .s-ico { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: var(--color-muted); pointer-events: none; }
+.big-search input { width: 100%; height: 52px; padding: 0 16px 0 48px; font-size: var(--text-h4); font-family: inherit; color: var(--color-ink);
+  background: var(--color-surface); border: 1.5px solid var(--color-border-strong); border-radius: var(--radius-md); transition: all var(--dur) var(--ease); }
+.big-search input::placeholder { color: var(--color-muted); font-weight: 400; }
+.big-search input:focus { outline: none; background: var(--color-card); border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
+.share-cta { height: 52px; padding: 0 var(--space-5); font-size: var(--text-body); }
+
+.lib { display: grid; grid-template-columns: 248px 1fr; gap: var(--space-5); align-items: start; }
+.filters { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+  padding: var(--space-5); position: sticky; top: calc(var(--header-h) + var(--space-6)); }
+.filters-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); }
+.filters-head h3 { font-size: var(--text-h4); font-weight: 600; }
+.filters-head button { font-size: var(--text-xs); color: var(--color-primary); font-weight: 600; background: none; border: 0; }
+.fgroup { padding: var(--space-4) 0; border-top: 1px solid var(--color-border); }
+.fgroup:first-of-type { border-top: 0; padding-top: 0; }
+.fgroup > .flabel { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-muted); font-weight: 700; margin-bottom: var(--space-3); display: block; }
+.fselect { width: 100%; height: 40px; padding: 0 var(--space-3); font-size: var(--text-sm); color: var(--color-ink);
+  background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; transition: border var(--dur) var(--ease); }
+.fselect:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
+.rating-filter { display: flex; gap: 4px; }
+.rf-star { width: 30px; height: 30px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface); display: grid; place-items: center; transition: all var(--dur) var(--ease); }
+.rf-star svg { width: 16px; height: 16px; color: var(--color-border-strong); }
+.rf-star.on { background: var(--color-warning-soft); border-color: #F59E0B; }
+.rf-star.on svg { color: #F59E0B; }
+.rf-hint { font-size: var(--text-xs); color: var(--color-muted); margin-top: 8px; }
+
+.results-bar { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); flex-wrap: wrap; }
+.results-count { font-size: var(--text-sm); color: var(--color-ink-soft); }
+.results-count b { color: var(--color-ink); }
+.rb-spacer { flex: 1; }
+.sortwrap select { height: 38px; padding: 0 36px 0 12px; font-size: var(--text-sm); font-weight: 600; color: var(--color-ink);
+  background: var(--color-card); border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; }
+.sortwrap select:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
+
+/* Company cards */
+.companies { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-4); }
+.company { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5);
+  cursor: pointer; transition: box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--dur) var(--ease); display: flex; flex-direction: column; gap: var(--space-3); }
+.company:hover { box-shadow: var(--shadow-md); border-color: var(--color-border-strong); transform: translateY(-2px); }
+.co-top { display: flex; gap: var(--space-3); align-items: flex-start; }
+.co-logo { width: 52px; height: 52px; border-radius: var(--radius-md); flex-shrink: 0; display: grid; place-items: center;
+  font-size: var(--text-h4); font-weight: 700; color: #fff; }
+.co-name { font-size: var(--text-h4); font-weight: 600; line-height: 1.2; }
+.co-loc { font-size: var(--text-sm); color: var(--color-muted); display: flex; align-items: center; gap: 5px; margin-top: 4px; flex-wrap: wrap; }
+.co-loc svg { width: 13px; height: 13px; }
+.co-rating { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3) 0; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+.rate-num { font-size: var(--text-h3); font-weight: 700; letter-spacing: var(--tracking-tight); }
+.stars { display: inline-flex; gap: 1px; }
+.star { width: 15px; height: 15px; color: var(--color-border-strong); }
+.star.on { color: #F59E0B; }
+.co-reviews { font-size: var(--text-sm); color: var(--color-muted); }
+.co-foot { display: flex; align-items: center; justify-content: space-between; }
+.co-sector { font-size: var(--text-xs); color: var(--color-muted); }
+.reco { display: inline-flex; align-items: center; gap: 5px; font-size: var(--text-xs); font-weight: 600; color: var(--color-primary-active);
+  background: var(--color-primary-soft); padding: 5px 10px; border-radius: var(--radius-full); }
+.reco svg { width: 12px; height: 12px; }
+
+/* Empty/loading */
+.sk { background: linear-gradient(100deg, var(--color-surface-2) 30%, #eef2f7 50%, var(--color-surface-2) 70%); background-size: 200% 100%; animation: shimmer 1.3s infinite linear; border-radius: var(--radius-lg); }
+@keyframes shimmer { to { background-position: -200% 0; } }
+.sk-card { height: 210px; }
+.state { display: none; text-align: center; padding: var(--space-16) var(--space-6); background: var(--color-card); border: 1px dashed var(--color-border-strong); border-radius: var(--radius-lg); grid-column: 1/-1; }
+.state.show { display: block; }
+.state-ico { width: 64px; height: 64px; margin: 0 auto var(--space-4); border-radius: var(--radius-xl); background: var(--color-primary-soft); color: var(--color-primary); display: grid; place-items: center; }
+.state h3 { font-size: var(--text-h3); font-weight: 600; }
+.state p { color: var(--color-muted); max-width: 38ch; margin: var(--space-2) auto var(--space-5); }
+.is-hidden { display: none !important; }
+
+/* ===== Drawer ===== */
+.scrim { position: fixed; inset: 0; background: rgba(15,23,42,.45); backdrop-filter: blur(1px); z-index: 50; opacity: 0; visibility: hidden; transition: opacity var(--dur-slow) var(--ease), visibility var(--dur-slow); }
+.scrim.open { opacity: 1; visibility: visible; }
+.drawer { position: fixed; top: 0; right: 0; height: 100vh; width: 560px; max-width: 94vw; background: var(--color-card); z-index: 51;
+  box-shadow: var(--shadow-lg); transform: translateX(100%); transition: transform var(--dur-slow) var(--ease); display: flex; flex-direction: column; }
+.drawer.open { transform: translateX(0); }
+.drawer-head { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border); }
+.drawer-head .dh-close { margin-left: auto; }
+.drawer-body { flex: 1; overflow-y: auto; padding: var(--space-6); }
+.drawer-foot { padding: var(--space-4) var(--space-6); border-top: 1px solid var(--color-border); display: flex; gap: var(--space-3); background: var(--color-surface); }
+.drawer-foot .btn { flex: 1; height: 46px; font-size: var(--text-body); }
+
+/* Detail header */
+.det-head { display: flex; gap: var(--space-4); align-items: flex-start; }
+.det-logo { width: 60px; height: 60px; border-radius: var(--radius-md); flex-shrink: 0; display: grid; place-items: center; color: #fff; font-size: var(--text-h3); font-weight: 700; }
+.det-name { font-size: var(--text-h2); font-weight: 700; letter-spacing: var(--tracking-tight); line-height: 1.1; }
+.det-sub { font-size: var(--text-sm); color: var(--color-muted); margin-top: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+/* score summary */
+.score-box { display: flex; gap: var(--space-5); align-items: center; background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); padding: var(--space-4); margin: var(--space-5) 0; }
+.score-big { text-align: center; }
+.score-big .n { font-size: 38px; font-weight: 700; letter-spacing: var(--tracking-tight); line-height: 1; }
+.score-big .o { font-size: var(--text-xs); color: var(--color-muted); }
+.score-bars { flex: 1; display: flex; flex-direction: column; gap: 7px; }
+.score-line { display: flex; align-items: center; gap: var(--space-3); font-size: var(--text-xs); }
+.score-line .sl-label { width: 92px; color: var(--color-ink-soft); font-weight: 600; flex-shrink: 0; }
+.score-line .sl-bar { flex: 1; height: 7px; border-radius: 4px; background: var(--color-border); overflow: hidden; }
+.score-line .sl-bar > span { display: block; height: 100%; border-radius: 4px; background: var(--color-primary); }
+.score-line .sl-val { width: 26px; text-align: right; color: var(--color-muted); font-weight: 600; }
+
+.det-section { margin-top: var(--space-6); }
+.det-section h4 { font-size: var(--text-h4); font-weight: 600; margin-bottom: var(--space-3); display: flex; align-items: center; gap: 8px; }
+.det-section h4 svg { width: 17px; height: 17px; color: var(--color-primary); }
+.det-section p { font-size: var(--text-sm); color: var(--color-ink-soft); }
+.tech-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.review-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); margin-top: var(--space-3); }
+.rc-head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
+.rc-av { width: 36px; height: 36px; border-radius: 50%; background: var(--color-primary-soft); color: var(--color-primary-active); display: grid; place-items: center; font-size: var(--text-xs); font-weight: 700; }
+.rc-who { font-size: var(--text-sm); font-weight: 600; }
+.rc-meta { font-size: var(--text-xs); color: var(--color-muted); }
+.rc-block { margin-top: var(--space-3); }
+.rc-block .lbl { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-muted); font-weight: 700; margin-bottom: 3px; }
+.rc-block p { font-size: var(--text-sm); color: var(--color-ink-soft); }
+.anon-note { font-size: var(--text-xs); color: var(--color-muted); display: flex; align-items: center; gap: 6px; margin-top: var(--space-2); }
+.anon-note svg { width: 13px; height: 13px; }
+
+/* Share form */
+.dfield { margin-bottom: var(--space-5); }
+.dfield > label { font-size: var(--text-sm); font-weight: 600; color: var(--color-ink-soft); display: block; margin-bottom: 7px; }
+.dinput, .dselect, .dtext { width: 100%; padding: 0 var(--space-4); font-size: var(--text-body); color: var(--color-ink);
+  background: var(--color-card); border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); transition: all var(--dur) var(--ease); }
+.dinput, .dselect { height: 44px; }
+.dtext { padding: 11px var(--space-4); min-height: 72px; resize: vertical; font-size: var(--text-sm); }
+.dselect { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+.dinput:focus, .dselect:focus, .dtext:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
+.dgrid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+/* 1-5 scale */
+.scale-row { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
+.scale-row:last-child { border-bottom: 0; }
+.scale-label { font-size: var(--text-sm); font-weight: 600; color: var(--color-ink); }
+.scale-stars { display: flex; gap: 4px; }
+.ss-btn { width: 30px; height: 30px; border: 0; background: transparent; display: grid; place-items: center; }
+.ss-btn svg { width: 22px; height: 22px; color: var(--color-border-strong); transition: color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+.ss-btn:hover svg { transform: scale(1.12); }
+.ss-btn svg.on { color: #F59E0B; }
+.anon-toggle { display: flex; gap: 12px; align-items: flex-start; margin-top: var(--space-2); padding: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; }
+.anon-toggle input { position: absolute; opacity: 0; }
+.fbox { width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--color-border-strong); flex-shrink: 0; display: grid; place-items: center; transition: all var(--dur) var(--ease); margin-top: 1px; }
+.fbox svg { width: 13px; height: 13px; color: #fff; opacity: 0; }
+.anon-toggle input:checked + .fbox { background: var(--color-primary); border-color: var(--color-primary); }
+.anon-toggle input:checked + .fbox svg { opacity: 1; }
+.anon-toggle .at-text { font-size: var(--text-sm); color: var(--color-ink-soft); }
+.anon-toggle .at-text b { color: var(--color-ink); }
+
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); z-index: 70; background: var(--color-ink); color: #fff;
+  padding: 12px 20px; border-radius: var(--radius-md); font-size: var(--text-sm); font-weight: 600; box-shadow: var(--shadow-lg); opacity: 0;
+  transition: opacity .2s, transform .2s; display: flex; align-items: center; gap: 8px; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast svg { width: 16px; height: 16px; color: var(--color-success); }
+
+.mobile-filter-btn { display: none; }
+.bottom-nav { display: none; }
+@media (max-width: 1080px) {
+  .lib { grid-template-columns: 1fr; }
+  .filters { position: fixed; top: 0; left: 0; height: 100vh; width: 320px; max-width: 88vw; z-index: 45; border-radius: 0; transform: translateX(-100%); transition: transform var(--dur-slow) var(--ease); overflow-y: auto; }
+  .filters.open { transform: translateX(0); box-shadow: var(--shadow-lg); }
+  .mobile-filter-btn { display: inline-flex; }
+}
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .main { grid-column: 1; }
+  .content { padding: var(--space-4) var(--space-4) 88px; }
+  .topbar { padding: 0 var(--space-4); }
+  .mobile-only { display: grid; }
+  .search-hero { flex-direction: column; align-items: stretch; }
+  .share-cta { width: 100%; }
+  .bottom-nav { display: block; position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; height: 64px; background: rgba(255,255,255,.94); backdrop-filter: blur(12px); border-top: 1px solid var(--color-border); }
+  .bn-inner { display: grid; grid-template-columns: repeat(5,1fr); height: 64px; }
+  .bn-link { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--color-muted); font-size: 10px; font-weight: 600; }
+  .bn-link svg { width: 22px; height: 22px; }
+  .bn-link.is-active { color: var(--color-primary); }
+}
+@media (max-width: 560px) { .dgrid2 { grid-template-columns: 1fr; } .drawer { width: 100%; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sb-brand"><div class="brand-mark">S</div><span class="brand-name">StudyLib</span></div>
+    <nav class="sb-nav">
+      <a class="sb-link" href="StudyLib Dashboard.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Accueil</a>
+      <a class="sb-link" href="StudyLib Bibliothèque.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Bibliothèque<span class="sb-count">1.2k</span></a>
+      <a class="sb-link is-active"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM9 5h6v2H9z"/></svg>Stages<span class="sb-count">24</span></a>
+      <a class="sb-link"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>Projets<span class="sb-count">8</span></a>
+      <a class="sb-link"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Événements<span class="sb-count">5</span></a>
+      <a class="sb-link"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Mes dépôts<span class="sb-count">7</span></a>
+    </nav>
+    <div class="sb-foot">
+      <button class="btn btn--primary" style="width:100%" onclick="openShare()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Partager mon retour</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="brand-mark mobile-only" style="width:34px;height:34px;font-size:16px">S</div>
+      <h1>Stages</h1>
+      <div class="topbar-spacer"></div>
+      <button class="btn btn--secondary mobile-filter-btn" onclick="openFilters()" style="display:none"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filtres</button>
+      <button class="icon-btn" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="nd"></span></button>
+      <span class="avatar">CM</span>
+    </header>
+
+    <main class="content">
+      <div class="search-hero">
+        <div class="big-search">
+          <svg class="s-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="searchInput" placeholder="Rechercher une entreprise, une ville, un secteur…">
+        </div>
+        <button class="btn btn--primary share-cta" onclick="openShare()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>Partager mon retour de stage</button>
+      </div>
+
+      <div class="lib">
+        <aside class="filters" id="filters">
+          <div class="filters-head"><h3>Filtres</h3><button onclick="resetFilters()">Réinitialiser</button></div>
+          <div class="fgroup"><label class="flabel">Filière</label>
+            <select class="fselect" id="fFiliere"><option value="">Toutes</option><option>Génie Informatique</option><option>Génie Civil</option><option>Génie Industriel</option><option>Génie Électrique</option></select></div>
+          <div class="fgroup"><label class="flabel">Niveau</label>
+            <select class="fselect" id="fNiveau"><option value="">Tous</option><option>L2</option><option>L3</option><option>M1</option><option>M2</option></select></div>
+          <div class="fgroup"><label class="flabel">Ville</label>
+            <select class="fselect" id="fVille"><option value="">Toutes</option><option>Casablanca</option><option>Rabat</option><option>Marrakech</option><option>Tanger</option></select></div>
+          <div class="fgroup"><label class="flabel">Secteur</label>
+            <select class="fselect" id="fSecteur"><option value="">Tous</option><option>IT / Logiciel</option><option>Télécom</option><option>Banque / Finance</option><option>Conseil</option><option>Industrie</option></select></div>
+          <div class="fgroup"><label class="flabel">Année du stage</label>
+            <select class="fselect" id="fAnnee"><option value="">Toutes</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option></select></div>
+          <div class="fgroup"><label class="flabel">Note minimale</label>
+            <div class="rating-filter" id="ratingFilter">
+              <button class="rf-star" data-v="1"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg></button>
+              <button class="rf-star" data-v="2"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg></button>
+              <button class="rf-star" data-v="3"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg></button>
+              <button class="rf-star" data-v="4"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg></button>
+              <button class="rf-star" data-v="5"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg></button>
+            </div>
+            <div class="rf-hint" id="rfHint">Toutes les notes</div>
+          </div>
+          <button class="btn btn--primary mobile-only" style="width:100%;margin-top:var(--space-4);display:none" id="applyBtn" onclick="closeFilters()">Voir les résultats</button>
+        </aside>
+
+        <section>
+          <div class="results-bar">
+            <span class="results-count" id="count">— entreprises</span>
+            <div class="rb-spacer"></div>
+            <div class="sortwrap"><select id="sortSelect"><option value="note">Tri : Mieux notées</option><option value="avis">Tri : Plus d'avis</option><option value="recent">Tri : Plus récentes</option></select></div>
+          </div>
+          <div class="companies" id="grid"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <div class="bn-inner">
+    <a class="bn-link" href="StudyLib Dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Accueil</a>
+    <a class="bn-link" href="StudyLib Bibliothèque.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Biblio</a>
+    <a class="bn-link is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>Stages</a>
+    <a class="bn-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>Projets</a>
+    <a class="bn-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>Profil</a>
+  </div>
+</nav>
+
+<!-- ===== Detail drawer ===== -->
+<div class="scrim" id="detScrim" onclick="closeDrawer('detScrim','detDrawer')"></div>
+<aside class="drawer" id="detDrawer" role="dialog" aria-label="Fiche entreprise">
+  <div class="drawer-head">
+    <strong style="font-size:var(--text-sm);color:var(--color-muted)">Fiche entreprise</strong>
+    <button class="icon-btn dh-close" onclick="closeDrawer('detScrim','detDrawer')" aria-label="Fermer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="drawer-body" id="detBody"></div>
+  <div class="drawer-foot">
+    <button class="btn btn--secondary" onclick="closeDrawer('detScrim','detDrawer')">Fermer</button>
+    <button class="btn btn--primary" onclick="openShare()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Ajouter mon retour</button>
+  </div>
+</aside>
+
+<!-- ===== Share drawer ===== -->
+<div class="scrim" id="shareScrim" onclick="closeDrawer('shareScrim','shareDrawer')"></div>
+<aside class="drawer" id="shareDrawer" role="dialog" aria-label="Partager mon retour">
+  <div class="drawer-head">
+    <div><div style="font-size:var(--text-h3);font-weight:600">Partager mon retour de stage</div><div style="font-size:var(--text-sm);color:var(--color-muted);margin-top:2px">Votre expérience aide la promo à mieux choisir.</div></div>
+    <button class="icon-btn dh-close" onclick="closeDrawer('shareScrim','shareDrawer')" aria-label="Fermer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="drawer-body">
+    <div class="dfield"><label for="sCompany">Entreprise</label><input class="dinput" id="sCompany" placeholder="Nom de l'entreprise"></div>
+    <div class="dgrid2">
+      <div class="dfield"><label for="sVille">Ville</label>
+        <select class="dselect" id="sVille"><option value="">Ville…</option><option>Casablanca</option><option>Rabat</option><option>Marrakech</option><option>Tanger</option></select></div>
+      <div class="dfield"><label for="sSecteur">Secteur</label>
+        <select class="dselect" id="sSecteur"><option value="">Secteur…</option><option>IT / Logiciel</option><option>Télécom</option><option>Banque / Finance</option><option>Conseil</option><option>Industrie</option></select></div>
+    </div>
+    <div class="dgrid2">
+      <div class="dfield"><label for="sNiveau">Niveau au stage</label>
+        <select class="dselect" id="sNiveau"><option value="">Niveau…</option><option>L2</option><option>L3</option><option>M1</option><option>M2</option></select></div>
+      <div class="dfield"><label for="sAnnee">Année du stage</label>
+        <select class="dselect" id="sAnnee"><option value="">Année…</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option></select></div>
+    </div>
+
+    <div class="dfield"><label>Notez votre expérience (1–5)</label>
+      <div style="border:1px solid var(--color-border);border-radius:var(--radius-md);padding:0 var(--space-4)">
+        <div class="scale-row"><span class="scale-label">Encadrement</span><div class="scale-stars" data-crit="encadrement"></div></div>
+        <div class="scale-row"><span class="scale-label">Ambiance</span><div class="scale-stars" data-crit="ambiance"></div></div>
+        <div class="scale-row"><span class="scale-label">Missions</span><div class="scale-stars" data-crit="missions"></div></div>
+        <div class="scale-row"><span class="scale-label">Apprentissage</span><div class="scale-stars" data-crit="apprentissage"></div></div>
+      </div>
+    </div>
+
+    <div class="dfield"><label for="sMissions">Missions réalisées</label><textarea class="dtext" id="sMissions" placeholder="Qu'avez-vous fait concrètement ?"></textarea></div>
+    <div class="dfield"><label for="sTech">Technologies utilisées</label><input class="dinput" id="sTech" placeholder="ex. React, Node.js, PostgreSQL (séparées par virgules)"></div>
+    <div class="dfield"><label for="sConseils">Conseils pour les futurs stagiaires</label><textarea class="dtext" id="sConseils" placeholder="Un conseil pour réussir ce stage ?"></textarea></div>
+
+    <label class="anon-toggle"><input type="checkbox" id="sAnon" checked><span class="fbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="at-text"><b>Publier de façon anonymisée</b> — seules vos initiales et votre filière seront visibles.</span></label>
+  </div>
+  <div class="drawer-foot">
+    <button class="btn btn--secondary" onclick="closeDrawer('shareScrim','shareDrawer')">Annuler</button>
+    <button class="btn btn--primary" id="shareSubmit" onclick="submitShare()">Publier mon retour</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg><span id="toastMsg"></span></div>
+
+<script>
+var COMPANIES = [
+  { name:"Atlas Software", color:"#1D4ED8", ville:"Casablanca", secteur:"IT / Logiciel", note:4.7, avis:18, filiere:"Génie Informatique", niveau:"L3", annee:2025, reco:true,
+    bars:{Encadrement:4.8,Ambiance:4.6,Missions:4.9,Apprentissage:4.7},
+    reviews:[
+      { who:"Yasmine A.", filiere:"Génie Informatique L3", annee:2025, note:5,
+        missions:"Développement d'un module de reporting interne en React, intégration d'une API REST et écriture de tests unitaires.",
+        tech:["React","Node.js","PostgreSQL","Jest"],
+        ambiance:"Équipe jeune et bienveillante, beaucoup d'entraide entre stagiaires.",
+        encadrement:"Tuteur très disponible, point hebdomadaire et revues de code régulières.",
+        conseils:"Préparez les bases de Git et n'hésitez pas à poser des questions dès le début." },
+      { who:"Mehdi K.", filiere:"Génie Informatique L3", annee:2024, note:4,
+        missions:"Maintenance d'une application interne et correction de bugs, participation aux sprints Agile.",
+        tech:["Vue.js","Express","MongoDB"],
+        ambiance:"Bonne ambiance, télétravail possible 2 jours par semaine.",
+        encadrement:"Encadrement correct mais parfois occupé en période de rush.",
+        conseils:"Renseignez-vous sur la méthodo Agile avant d'arriver." }
+    ] },
+  { name:"NovaTel", color:"#1F8A5B", ville:"Rabat", secteur:"Télécom", note:4.3, avis:11, filiere:"Génie Informatique", niveau:"L3", annee:2024, reco:true,
+    bars:{Encadrement:4.2,Ambiance:4.5,Missions:4.1,Apprentissage:4.3},
+    reviews:[
+      { who:"Sara L.", filiere:"Génie Informatique L3", annee:2024, note:4,
+        missions:"Automatisation de tests réseau et scripts Python pour la supervision.",
+        tech:["Python","Bash","Grafana"],
+        ambiance:"Cadre formel mais collègues accueillants.",
+        encadrement:"Encadrant pédagogue, beaucoup appris sur les réseaux.",
+        conseils:"Solides bases réseau recommandées (modèle OSI, TCP/IP)." }
+    ] },
+  { name:"CapFinance", color:"#92400E", ville:"Casablanca", secteur:"Banque / Finance", note:3.9, avis:7, filiere:"Génie Industriel", niveau:"M1", annee:2024, reco:false,
+    bars:{Encadrement:3.6,Ambiance:4.0,Missions:3.8,Apprentissage:4.1},
+    reviews:[
+      { who:"Omar T.", filiere:"Génie Industriel M1", annee:2024, note:4,
+        missions:"Analyse de données et automatisation de reportings Excel/VBA.",
+        tech:["Excel","VBA","Power BI"],
+        ambiance:"Environnement exigeant mais formateur.",
+        encadrement:"Encadrement irrégulier selon la charge de l'équipe.",
+        conseils:"Maîtrisez Excel avancé et soyez autonome." }
+    ] },
+  { name:"BuildPro", color:"#6D28D9", ville:"Marrakech", secteur:"Industrie", note:4.5, avis:9, filiere:"Génie Civil", niveau:"L3", annee:2025, reco:false,
+    bars:{Encadrement:4.6,Ambiance:4.4,Missions:4.5,Apprentissage:4.5},
+    reviews:[
+      { who:"Imane R.", filiere:"Génie Civil L3", annee:2025, note:5,
+        missions:"Suivi de chantier, métrés et participation aux réunions de coordination.",
+        tech:["AutoCAD","MS Project"],
+        ambiance:"Équipe terrain soudée, beaucoup de concret.",
+        encadrement:"Chef de projet impliqué, vrai mentorat.",
+        conseils:"Soyez curieux sur le terrain, posez des questions aux ouvriers." }
+    ] },
+  { name:"DataMind", color:"#0EA5E9", ville:"Casablanca", secteur:"Conseil", note:4.8, avis:14, filiere:"Génie Informatique", niveau:"M1", annee:2025, reco:true,
+    bars:{Encadrement:4.9,Ambiance:4.7,Missions:4.9,Apprentissage:4.8},
+    reviews:[
+      { who:"Hamza B.", filiere:"Génie Informatique M1", annee:2025, note:5,
+        missions:"Conception d'un pipeline de données et dashboards d'aide à la décision.",
+        tech:["Python","Airflow","dbt","Snowflake"],
+        ambiance:"Culture d'apprentissage exceptionnelle, mentorat fort.",
+        encadrement:"Suivi quotidien, objectifs clairs et feedback constructif.",
+        conseils:"Travaillez SQL et la manipulation de données en amont." }
+    ] },
+  { name:"VoltEdge", color:"#334155", ville:"Tanger", secteur:"Industrie", note:4.1, avis:6, filiere:"Génie Électrique", niveau:"L3", annee:2023, reco:false,
+    bars:{Encadrement:4.0,Ambiance:4.2,Missions:4.0,Apprentissage:4.2},
+    reviews:[
+      { who:"Nada E.", filiere:"Génie Électrique L3", annee:2023, note:4,
+        missions:"Tests de cartes électroniques et documentation technique.",
+        tech:["Altium","Oscilloscope","C embarqué"],
+        ambiance:"Atelier convivial, rythme soutenu.",
+        encadrement:"Encadrement technique solide.",
+        conseils:"Révisez l'électronique analogique de base." }
+    ] }
+];
+
+var state = { q:"", filiere:"", niveau:"", ville:"", secteur:"", annee:"", minRating:0, sort:"note" };
+function maskName(n){ var p=n.split(' '); return p[0]+' '+(p[1]?p[1][0]+'•••':''); }
+function starsHTML(n){ var r=Math.round(n); var s='<span class="stars">'; for(var i=1;i<=5;i++) s+='<svg class="star'+(i<=r?' on':'')+'" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg>'; return s+'</span>'; }
+function initials(n){ var p=n.replace(/[^A-Za-zÀ-ÿ ]/g,'').split(' ').filter(Boolean); return ((p[0]||'')[0]||'')+((p[1]||'')[0]||''); }
+
+function apply(){
+  var q=state.q.toLowerCase();
+  var list = COMPANIES.filter(function(c){
+    if(q && !(c.name+' '+c.ville+' '+c.secteur).toLowerCase().includes(q)) return false;
+    if(state.filiere && c.filiere!==state.filiere) return false;
+    if(state.niveau && c.niveau!==state.niveau) return false;
+    if(state.ville && c.ville!==state.ville) return false;
+    if(state.secteur && c.secteur!==state.secteur) return false;
+    if(state.annee && String(c.annee)!==state.annee) return false;
+    if(state.minRating && c.note<state.minRating) return false;
+    return true;
+  });
+  if(state.sort==='avis') list.sort(function(a,b){ return b.avis-a.avis; });
+  else if(state.sort==='recent') list.sort(function(a,b){ return b.annee-a.annee; });
+  else list.sort(function(a,b){ return b.note-a.note; });
+  return list;
+}
+
+function cardHTML(c, i){
+  return '<article class="company" onclick="openDetail('+i+')">'+
+    '<div class="co-top"><div class="co-logo" style="background:'+c.color+'">'+initials(c.name)+'</div>'+
+      '<div style="min-width:0"><div class="co-name">'+c.name+'</div>'+
+        '<div class="co-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'+c.ville+' · '+c.secteur+'</div></div></div>'+
+    '<div class="co-rating"><span class="rate-num">'+c.note.toFixed(1).replace('.',',')+'</span>'+starsHTML(c.note)+'<span class="co-reviews">'+c.avis+' avis</span></div>'+
+    '<div class="co-foot">'+(c.reco?'<span class="reco"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Recommandé GI L3</span>':'<span class="co-sector">'+c.niveau+' · '+c.annee+'</span>')+
+      '<span class="btn btn--ghost" style="pointer-events:none">Voir la fiche →</span></div>'+
+  '</article>';
+}
+
+function render(){
+  var list=apply();
+  document.getElementById('count').innerHTML='<b>'+list.length+'</b> entreprise'+(list.length>1?'s':'');
+  var grid=document.getElementById('grid');
+  if(list.length===0){ grid.innerHTML='<div class="state show"><div class="state-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M8 11h6"/></svg></div><h3>Aucune entreprise trouvée</h3><p>Aucun retour ne correspond à vos critères. Élargissez la recherche ou partagez le vôtre.</p><button class="btn btn--primary" onclick="openShare()">Partager mon retour de stage</button></div>'; return; }
+  grid.innerHTML = list.map(function(c){ return cardHTML(c, COMPANIES.indexOf(c)); }).join('');
+}
+
+function openDetail(i){
+  var c=COMPANIES[i];
+  var bars = Object.keys(c.bars).map(function(k){ var v=c.bars[k]; return '<div class="score-line"><span class="sl-label">'+k+'</span><span class="sl-bar"><span style="width:'+(v/5*100)+'%"></span></span><span class="sl-val">'+v.toFixed(1).replace('.',',')+'</span></div>'; }).join('');
+  var reviews = c.reviews.map(function(r){
+    return '<div class="review-card">'+
+      '<div class="rc-head"><div class="rc-av">'+initials(r.who)+'</div><div><div class="rc-who">'+maskName(r.who)+'</div><div class="rc-meta">'+r.filiere+' · Stage '+r.annee+'</div></div><div style="margin-left:auto">'+starsHTML(r.note)+'</div></div>'+
+      '<div class="rc-block"><div class="lbl">Missions réalisées</div><p>'+r.missions+'</p></div>'+
+      '<div class="rc-block"><div class="lbl">Technologies</div><div class="tech-tags">'+r.tech.map(function(t){ return '<span class="badge badge--primary">'+t+'</span>'; }).join('')+'</div></div>'+
+      '<div class="rc-block"><div class="lbl">Ambiance</div><p>'+r.ambiance+'</p></div>'+
+      '<div class="rc-block"><div class="lbl">Encadrement</div><p>'+r.encadrement+'</p></div>'+
+      '<div class="rc-block"><div class="lbl">Conseils</div><p>'+r.conseils+'</p></div>'+
+      '<div class="anon-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Auteur partiellement anonymisé pour protéger sa vie privée.</div>'+
+    '</div>';
+  }).join('');
+  document.getElementById('detBody').innerHTML =
+    '<div class="det-head"><div class="det-logo" style="background:'+c.color+'">'+initials(c.name)+'</div>'+
+      '<div style="min-width:0"><div class="det-name">'+c.name+'</div><div class="det-sub"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'+c.ville+' · '+c.secteur+(c.reco?' · <span class="reco" style="height:auto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Recommandé GI L3</span>':'')+'</div></div></div>'+
+    '<div class="score-box"><div class="score-big"><div class="n">'+c.note.toFixed(1).replace('.',',')+'</div>'+starsHTML(c.note)+'<div class="o">'+c.avis+' avis</div></div><div class="score-bars">'+bars+'</div></div>'+
+    '<div class="det-section"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Retours d\'étudiants ('+c.reviews.length+')</h4>'+reviews+'</div>';
+  document.getElementById('detScrim').classList.add('open');
+  document.getElementById('detDrawer').classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('detBody').scrollTop=0;
+}
+
+/* events */
+var search=document.getElementById('searchInput');
+search.addEventListener('input', function(){ state.q=search.value.trim(); render(); });
+document.getElementById('fFiliere').addEventListener('change', function(){ state.filiere=this.value; render(); });
+document.getElementById('fNiveau').addEventListener('change', function(){ state.niveau=this.value; render(); });
+document.getElementById('fVille').addEventListener('change', function(){ state.ville=this.value; render(); });
+document.getElementById('fSecteur').addEventListener('change', function(){ state.secteur=this.value; render(); });
+document.getElementById('fAnnee').addEventListener('change', function(){ state.annee=this.value; render(); });
+document.getElementById('sortSelect').addEventListener('change', function(){ state.sort=this.value; render(); });
+var rfHint=document.getElementById('rfHint');
+document.querySelectorAll('#ratingFilter .rf-star').forEach(function(s){ s.addEventListener('click', function(){ var v=parseInt(s.dataset.v,10); state.minRating=(state.minRating===v)?0:v; document.querySelectorAll('#ratingFilter .rf-star').forEach(function(x){ x.classList.toggle('on', parseInt(x.dataset.v,10)<=state.minRating); }); rfHint.textContent=state.minRating?(state.minRating+' étoiles et plus'):'Toutes les notes'; render(); }); });
+function resetFilters(){ state={ q:"", filiere:"", niveau:"", ville:"", secteur:"", annee:"", minRating:0, sort:state.sort }; search.value=''; ['fFiliere','fNiveau','fVille','fSecteur','fAnnee'].forEach(function(id){ document.getElementById(id).value=''; }); document.querySelectorAll('#ratingFilter .rf-star').forEach(function(x){ x.classList.remove('on'); }); rfHint.textContent='Toutes les notes'; render(); }
+
+/* drawers */
+function closeDrawer(scrim,drawer){ document.getElementById(scrim).classList.remove('open'); document.getElementById(drawer).classList.remove('open'); document.body.style.overflow=''; }
+function openShare(){ document.getElementById('shareScrim').classList.add('open'); document.getElementById('shareDrawer').classList.add('open'); document.body.style.overflow='hidden'; }
+function openFilters(){ document.getElementById('filters').classList.add('open'); }
+function closeFilters(){ document.getElementById('filters').classList.remove('open'); }
+document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeDrawer('detScrim','detDrawer'); closeDrawer('shareScrim','shareDrawer'); closeFilters(); } });
+
+/* 1-5 scales in share form */
+var ratings = { encadrement:0, ambiance:0, missions:0, apprentissage:0 };
+document.querySelectorAll('.scale-stars').forEach(function(box){
+  var crit=box.dataset.crit; var h='';
+  for(var i=1;i<=5;i++) h+='<button class="ss-btn" data-v="'+i+'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.4l-5.8 3.05 1.1-6.47L2.6 9.35l6.5-.95z"/></svg></button>';
+  box.innerHTML=h;
+  box.querySelectorAll('.ss-btn').forEach(function(b){
+    var v=parseInt(b.dataset.v,10);
+    b.addEventListener('mouseenter', function(){ paint(box, v); });
+    b.addEventListener('click', function(){ ratings[crit]=v; paint(box, v); });
+  });
+  box.addEventListener('mouseleave', function(){ paint(box, ratings[crit]); });
+});
+function paint(box,n){ box.querySelectorAll('svg').forEach(function(s,i){ s.classList.toggle('on', i<n); }); }
+
+/* toast */
+var toastEl=document.getElementById('toast'), toastTimer;
+function toast(msg){ document.getElementById('toastMsg').textContent=msg; toastEl.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(function(){ toastEl.classList.remove('show'); }, 2400); }
+
+function submitShare(){
+  var btn=document.getElementById('shareSubmit'); btn.disabled=true; btn.textContent='Publication…';
+  setTimeout(function(){ btn.textContent='✓ Publié'; setTimeout(function(){ closeDrawer('shareScrim','shareDrawer'); btn.disabled=false; btn.textContent='Publier mon retour'; toast('Merci ! Votre retour de stage est publié'); }, 700); }, 900);
+}
+
+render();
+</script>
+</body>
+</html>
