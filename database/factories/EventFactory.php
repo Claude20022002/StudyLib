@@ -15,6 +15,19 @@ class EventFactory extends Factory
 {
     protected $model = Event::class;
 
+    public function configure(): static
+    {
+        return $this->afterMaking(function (Event $event): void {
+            if ($event->starts_at === null) {
+                return;
+            }
+
+            if ($event->ends_at === null || $event->starts_at >= $event->ends_at) {
+                $event->ends_at = $event->starts_at->copy()->addHours(2);
+            }
+        });
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -27,7 +40,7 @@ class EventFactory extends Factory
             'title' => fake()->sentence(4),
             'description' => fake()->optional()->paragraph(),
             'starts_at' => $startsAt,
-            'ends_at' => fake()->optional()->dateTimeBetween($startsAt, '+2 hours'),
+            'ends_at' => (clone $startsAt)->modify('+'.fake()->numberBetween(1, 3).' hours'),
             'location' => fake()->optional()->words(2, true),
         ];
     }
