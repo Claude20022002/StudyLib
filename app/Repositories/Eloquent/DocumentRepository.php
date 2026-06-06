@@ -94,7 +94,7 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
             ->count();
     }
 
-    public function countVisibleByTypeSince(DocumentType $type, Carbon $since, ?string $filiereId = null): int
+    public function countVisibleByTypeSince(DocumentType $type, CarbonInterface $since, ?string $filiereId = null): int
     {
         return $this->model->newQuery()
             ->visible()
