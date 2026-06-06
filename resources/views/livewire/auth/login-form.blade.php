@@ -74,8 +74,8 @@
                 @click="showPassword = !showPassword"
                 :aria-label="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
             >
-                <x-ui.icon x-show="!showPassword" name="eye" class="h-[18px] w-[18px]" />
-                <x-ui.icon x-show="showPassword" name="eye-off" class="h-[18px] w-[18px]" x-cloak />
+                <span x-show="!showPassword"><x-ui.icon name="eye" class="h-[18px] w-[18px]" /></span>
+                <span x-show="showPassword" x-cloak><x-ui.icon name="eye-off" class="h-[18px] w-[18px]" /></span>
             </button>
         </div>
         @error('password')
@@ -100,6 +100,6 @@
 
     <p class="mt-6 text-center text-sm text-muted">
         Pas encore de compte ?
-        <span class="font-semibold text-muted">Inscription bientôt disponible</span>
+        <a href="#" class="font-semibold text-primary">Créer un compte</a>
     </p>
 </form>
