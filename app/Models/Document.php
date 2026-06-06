@@ -71,4 +71,34 @@ class Document extends Model
     {
         return $this->hasMany(DocumentDownload::class);
     }
+
+    public function fileKindLabel(): string
+    {
+        $mime = $this->mime_type ?? '';
+
+        if (str_contains($mime, 'pdf')) {
+            return 'PDF';
+        }
+
+        if (str_contains($mime, 'word') || str_contains($mime, 'document')) {
+            return 'DOCX';
+        }
+
+        if (str_contains($mime, 'presentation') || str_contains($mime, 'powerpoint')) {
+            return 'SLIDES';
+        }
+
+        $extension = strtoupper(pathinfo($this->file_path, PATHINFO_EXTENSION));
+
+        return $extension !== '' ? $extension : 'FILE';
+    }
+
+    public function thumbColors(): array
+    {
+        return match ($this->type) {
+            DocumentType::Cours => ['bg' => 'var(--color-primary-soft)', 'text' => 'var(--color-primary-active)'],
+            DocumentType::Examen => ['bg' => 'var(--color-warning-soft)', 'text' => 'var(--color-warning-ink)'],
+            DocumentType::Td, DocumentType::Tp => ['bg' => 'var(--color-success-soft)', 'text' => 'var(--color-success-ink)'],
+        };
+    }
 }

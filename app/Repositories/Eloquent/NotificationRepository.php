@@ -27,6 +27,14 @@ class NotificationRepository extends BaseRepository implements NotificationRepos
             ->get();
     }
 
+    public function unreadCountForUser(string $userId): int
+    {
+        return $this->model->newQuery()
+            ->where('user_id', $userId)
+            ->whereNull('read_at')
+            ->count();
+    }
+
     public function markAsRead(Notification $notification): void
     {
         $notification->forceFill(['read_at' => now()])->save();

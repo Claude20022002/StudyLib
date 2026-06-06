@@ -9,6 +9,8 @@ use App\Enums\DocumentType;
 use App\Models\Document;
 use App\Repositories\Contracts\DocumentRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 
 /**
  * @extends BaseRepository<Document>
@@ -53,5 +55,55 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
             'ratings_count' => (int) ($aggregates->count ?? 0),
             'avg_rating' => round((float) ($aggregates->average ?? 0), 1),
         ])->save();
+    }
+
+    public function recommendedForFiliere(string $filiereId, ?DocumentType $type = null, int $limit = 10): Collection
+    {
+        return $this->model->newQuery()
+            ->visible()
+            ->whereHas('module', fn ($query) => $query->where('filiere_id', $filiereId))
+            ->when($type, fn ($query) => $query->where('type', $type))
+            ->with(['author', 'module'])
+            ->latest()
+            ->limit($limit)
+            ->get();
+    }
+
+    public function countApprovedSince(Carbon $since, ?string $filiereId = null, ?Carbon $until = null): int
+    {
+        return $this->model->newQuery()
+            ->visible()
+            ->when($filiereId, fn ($query) => $query->whereHas(
+                'module',
+                fn ($moduleQuery) => $moduleQuery->where('filiere_id', $filiereId),
+            ))
+            ->where('created_at', '>=', $since)
+            ->when($until, fn ($query) => $query->where('created_at', '<', $until))
+            ->count();
+    }
+
+    public function countVisibleByType(DocumentType $type, ?string $filiereId = null): int
+    {
+        return $this->model->newQuery()
+            ->visible()
+            ->where('type', $type)
+            ->when($filiereId, fn ($query) => $query->whereHas(
+                'module',
+                fn ($moduleQuery) => $moduleQuery->where('filiere_id', $filiereId),
+            ))
+            ->count();
+    }
+
+    public function countVisibleByTypeSince(DocumentType $type, Carbon $since, ?string $filiereId = null): int
+    {
+        return $this->model->newQuery()
+            ->visible()
+            ->where('type', $type)
+            ->where('created_at', '>=', $since)
+            ->when($filiereId, fn ($query) => $query->whereHas(
+                'module',
+                fn ($moduleQuery) => $moduleQuery->where('filiere_id', $filiereId),
+            ))
+            ->count();
     }
 }

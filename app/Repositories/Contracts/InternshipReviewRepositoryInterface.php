@@ -17,4 +17,6 @@ interface InternshipReviewRepositoryInterface extends RepositoryInterface
      * @return LengthAwarePaginator<int, InternshipReview>
      */
     public function search(array $filters, int $perPage = 15): LengthAwarePaginator;
+
+    public function countForFiliere(string $filiereId): int;
 }

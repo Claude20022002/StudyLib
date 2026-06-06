@@ -20,4 +20,13 @@ enum DocumentType: string
             self::Tp => 'TP',
         };
     }
+
+    public function badgeVariant(): string
+    {
+        return match ($this) {
+            self::Cours => 'primary',
+            self::Examen => 'warning',
+            self::Td, self::Tp => 'success',
+        };
+    }
 }

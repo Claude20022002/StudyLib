@@ -18,11 +18,12 @@ class YoutubeRecommendationRepository extends BaseRepository implements YoutubeR
         parent::__construct($model);
     }
 
-    public function forModule(string $moduleId): Collection
+    public function forModule(string $moduleId, int $limit = 10): Collection
     {
         return $this->model->newQuery()
             ->where('module_id', $moduleId)
             ->orderBy('position')
+            ->limit($limit)
             ->get();
     }
 }

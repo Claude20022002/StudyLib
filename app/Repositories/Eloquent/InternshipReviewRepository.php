@@ -29,4 +29,9 @@ class InternshipReviewRepository extends BaseRepository implements InternshipRev
             ->latest()
             ->paginate($perPage);
     }
+
+    public function countForFiliere(string $filiereId): int
+    {
+        return $this->model->newQuery()->where('filiere_id', $filiereId)->count();
+    }
 }

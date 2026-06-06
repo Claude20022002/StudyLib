@@ -21,6 +21,11 @@ class NotificationService
         return $this->notifications->unreadForUser($userId);
     }
 
+    public function unreadCount(string $userId): int
+    {
+        return $this->notifications->unreadCountForUser($userId);
+    }
+
     public function markAsRead(Notification $notification): void
     {
         $this->notifications->markAsRead($notification);

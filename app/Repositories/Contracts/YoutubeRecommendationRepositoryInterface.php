@@ -13,5 +13,5 @@ use Illuminate\Database\Eloquent\Collection;
 interface YoutubeRecommendationRepositoryInterface extends RepositoryInterface
 {
     /** @return Collection<int, YoutubeRecommendation> */
-    public function forModule(string $moduleId): Collection;
+    public function forModule(string $moduleId, int $limit = 10): Collection;
 }
