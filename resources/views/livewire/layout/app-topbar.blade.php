@@ -1,7 +1,11 @@
 <header class="sl-topbar">
     <div class="sl-brand-mark sl-mobile-only" aria-hidden="true">S</div>
 
-    <livewire:ui.search-bar class="sl-desktop-only flex-1" />
+    @if ($title)
+        <h1 class="text-h3 font-bold tracking-tight">{{ $title }}</h1>
+    @else
+        <livewire:ui.search-bar class="sl-desktop-only flex-1" />
+    @endif
 
     <div class="flex-1"></div>
 

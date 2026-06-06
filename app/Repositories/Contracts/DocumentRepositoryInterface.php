@@ -6,9 +6,9 @@ namespace App\Repositories\Contracts;
 
 use App\Enums\DocumentType;
 use App\Models\Document;
+use Carbon\CarbonInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Carbon\CarbonInterface;
 
 /**
  * @extends RepositoryInterface<Document>
@@ -33,4 +33,36 @@ interface DocumentRepositoryInterface extends RepositoryInterface
     public function countVisibleByType(DocumentType $type, ?string $filiereId = null): int;
 
     public function countVisibleByTypeSince(DocumentType $type, CarbonInterface $since, ?string $filiereId = null): int;
+
+    /**
+     * @param  array{
+     *     q?: string,
+     *     filiere_id?: string,
+     *     semester?: int,
+     *     module_id?: string,
+     *     year_concern?: int,
+     *     types?: list<string>,
+     *     min_rating?: float,
+     *     sort?: string,
+     *     mine?: bool,
+     *     user_id?: string,
+     * }  $filters
+     * @return LengthAwarePaginator<int, Document>
+     */
+    public function browse(array $filters, int $perPage = 15): LengthAwarePaginator;
+
+    /**
+     * @param  array{
+     *     q?: string,
+     *     filiere_id?: string,
+     *     semester?: int,
+     *     module_id?: string,
+     *     year_concern?: int,
+     *     min_rating?: float,
+     *     mine?: bool,
+     *     user_id?: string,
+     * }  $filters
+     * @return array<string, int>
+     */
+    public function countByTypeForBrowse(array $filters): array;
 }

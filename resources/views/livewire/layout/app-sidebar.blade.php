@@ -60,7 +60,7 @@
         <div class="sl-sidebar-promo">
             <h4 class="mb-1 text-sm font-semibold">Partagez vos ressources</h4>
             <p class="mb-3 text-xs text-muted">Aidez votre promo en déposant vos cours et fiches.</p>
-            <x-ui.button variant="primary" size="sm" class="w-full" type="button">
+            <x-ui.button variant="primary" size="sm" class="w-full" href="{{ route('documents.index', ['upload' => 1]) }}" wire:navigate>
                 <x-ui.icon name="plus" />
                 Déposer un document
             </x-ui.button>

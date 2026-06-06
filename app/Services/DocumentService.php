@@ -27,6 +27,44 @@ class DocumentService
     }
 
     /**
+     * @param  array{
+     *     q?: string,
+     *     filiere_id?: string,
+     *     semester?: int,
+     *     module_id?: string,
+     *     year_concern?: int,
+     *     types?: list<string>,
+     *     min_rating?: float,
+     *     sort?: string,
+     *     mine?: bool,
+     *     user_id?: string,
+     * }  $filters
+     * @return LengthAwarePaginator<int, Document>
+     */
+    public function browse(array $filters, int $perPage = 15): LengthAwarePaginator
+    {
+        return $this->documents->browse($filters, $perPage);
+    }
+
+    /**
+     * @param  array{
+     *     q?: string,
+     *     filiere_id?: string,
+     *     semester?: int,
+     *     module_id?: string,
+     *     year_concern?: int,
+     *     min_rating?: float,
+     *     mine?: bool,
+     *     user_id?: string,
+     * }  $filters
+     * @return array<string, int>
+     */
+    public function typeCountsForBrowse(array $filters): array
+    {
+        return $this->documents->countByTypeForBrowse($filters);
+    }
+
+    /**
      * Stocke le fichier sur MinIO puis enregistre les métadonnées (statut : en attente).
      *
      * @param  array{module_id: string, type: string, title: string, description?: string|null, year_concern?: int|null}  $data

@@ -10,6 +10,7 @@ use App\Models\Document;
 use App\Repositories\Contracts\DocumentRepositoryInterface;
 use Carbon\CarbonInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -107,5 +108,102 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
                 fn ($moduleQuery) => $moduleQuery->where('filiere_id', $filiereId),
             ))
             ->count();
+    }
+
+    public function browse(array $filters, int $perPage = 15): LengthAwarePaginator
+    {
+        $query = $this->browseQuery($filters)
+            ->with(['author', 'module.filiere']);
+
+        $sort = $filters['sort'] ?? 'recent';
+
+        if ($sort === 'popular') {
+            $query->orderByDesc('downloads_count')->latest();
+        } else {
+            $query->latest();
+        }
+
+        return $query->paginate($perPage);
+    }
+
+    public function countByTypeForBrowse(array $filters): array
+    {
+        $counts = [];
+
+        foreach (DocumentType::cases() as $type) {
+            $counts[$type->value] = $this->browseQuery($filters)
+                ->where('type', $type)
+                ->count();
+        }
+
+        return $counts;
+    }
+
+    /**
+     * @param  array{
+     *     q?: string,
+     *     filiere_id?: string,
+     *     semester?: int,
+     *     module_id?: string,
+     *     year_concern?: int,
+     *     types?: list<string>,
+     *     min_rating?: float,
+     *     mine?: bool,
+     *     user_id?: string,
+     * }  $filters
+     */
+    private function browseQuery(array $filters): Builder
+    {
+        $mine = (bool) ($filters['mine'] ?? false);
+        $userId = $filters['user_id'] ?? null;
+
+        $query = $this->model->newQuery();
+
+        if ($mine && is_string($userId) && $userId !== '') {
+            $query->where('user_id', $userId);
+        } else {
+            $query->visible();
+        }
+
+        if (! empty($filters['q'])) {
+            $term = '%'.$filters['q'].'%';
+            $query->where(function ($builder) use ($term) {
+                $builder->where('title', 'like', $term)
+                    ->orWhereHas('module', fn ($module) => $module->where('name', 'like', $term))
+                    ->orWhereHas('author', fn ($author) => $author->where('name', 'like', $term));
+            });
+        }
+
+        if (! empty($filters['filiere_id'])) {
+            $query->whereHas(
+                'module',
+                fn ($module) => $module->where('filiere_id', $filters['filiere_id']),
+            );
+        }
+
+        if (! empty($filters['semester'])) {
+            $query->whereHas(
+                'module',
+                fn ($module) => $module->where('semester', (int) $filters['semester']),
+            );
+        }
+
+        if (! empty($filters['module_id'])) {
+            $query->where('module_id', $filters['module_id']);
+        }
+
+        if (! empty($filters['year_concern'])) {
+            $query->where('year_concern', (int) $filters['year_concern']);
+        }
+
+        if (! empty($filters['types'])) {
+            $query->whereIn('type', $filters['types']);
+        }
+
+        if (! empty($filters['min_rating'])) {
+            $query->where('avg_rating', '>=', (float) $filters['min_rating']);
+        }
+
+        return $query;
     }
 }
