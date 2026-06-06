@@ -1,6 +1,6 @@
 <form
     method="POST"
-    action="{{ route('login') }}"
+    action="{{ route('login.store') }}"
     class="w-full max-w-[400px]"
     x-data="{ showPassword: false, loading: false }"
     @submit="loading = true"
