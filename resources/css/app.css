@@ -893,6 +893,28 @@
         padding: 16px 24px;
     }
 
+    .sl-modal-close {
+        @apply grid shrink-0 place-items-center rounded-md border-0 bg-transparent text-muted transition-colors;
+        width: 32px;
+        height: 32px;
+    }
+
+    .sl-modal-close:hover {
+        @apply bg-surface-2 text-ink;
+    }
+
+    .sl-skip-link {
+        @apply fixed top-3 left-3 z-[100] rounded-md bg-primary px-4 py-2 text-sm font-semibold text-on-primary shadow-md;
+        transform: translateY(-200%);
+        transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sl-skip-link:focus {
+        transform: translateY(0);
+        outline: none;
+        box-shadow: var(--shadow-focus);
+    }
+
     /* ===== Guest layout (Login) ===== */
     .sl-guest-page {
         @apply grid min-h-screen;

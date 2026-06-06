@@ -29,7 +29,7 @@
         Seules les adresses <strong class="font-semibold">@hestim.ma</strong> sont acceptées.
     </x-ui.domain-note>
 
-    <x-ui.field label="Email institutionnel" :error="$errors->first('email')">
+    <x-ui.field label="Email institutionnel" id="email" :error="$errors->first('email')">
         <div class="relative">
             <span class="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted" aria-hidden="true">
                 <x-ui.icon name="mail" class="h-[18px] w-[18px]" />

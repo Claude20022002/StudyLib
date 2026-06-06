@@ -8,9 +8,9 @@ use App\Enums\DocumentStatus;
 use App\Enums\DocumentType;
 use App\Models\Document;
 use App\Repositories\Contracts\DocumentRepositoryInterface;
+use Carbon\CarbonInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Carbon\CarbonInterface;
 
 /**
  * @extends BaseRepository<Document>
@@ -28,6 +28,7 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
             ->visible()
             ->where('module_id', $moduleId)
             ->when($type, fn ($query) => $query->where('type', $type))
+            ->with(['author', 'module'])
             ->latest()
             ->paginate($perPage);
     }
@@ -36,6 +37,7 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
     {
         return $this->model->newQuery()
             ->where('status', DocumentStatus::Pending)
+            ->with(['author', 'module'])
             ->oldest()
             ->paginate($perPage);
     }

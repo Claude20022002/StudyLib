@@ -11,8 +11,12 @@
     @livewireStyles
 </head>
 <body class="min-h-screen">
+    <x-ui.skip-link />
+
     <div class="sl-guest-page">
-        {{ $slot }}
+        <main id="main-content" tabindex="-1">
+            {{ $slot }}
+        </main>
     </div>
 
     @livewireScripts

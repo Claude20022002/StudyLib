@@ -11,7 +11,11 @@
     @livewireStyles
 </head>
 <body class="min-h-screen bg-card">
-    {{ $slot }}
+    <x-ui.skip-link />
+
+    <main id="main-content" tabindex="-1">
+        {{ $slot }}
+    </main>
 
     <x-ui.flash-messages />
 

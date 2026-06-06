@@ -11,6 +11,8 @@
     @livewireStyles
 </head>
 <body class="min-h-screen">
+    <x-ui.skip-link />
+
     <div class="sl-app">
         <livewire:layout.app-sidebar />
 

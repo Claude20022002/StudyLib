@@ -11,6 +11,8 @@
     @livewireStyles
 </head>
 <body class="min-h-screen bg-surface text-sm">
+    <x-ui.skip-link />
+
     <div class="sl-admin-app">
         <livewire:layout.admin-sidebar />
 

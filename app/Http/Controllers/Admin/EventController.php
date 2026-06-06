@@ -22,7 +22,11 @@ class EventController extends Controller
         $this->authorize('create', Event::class);
 
         return response()->json(
-            $this->events->create($request->user(), $request->validated()),
+            $this->events->create(
+                $request->user(),
+                $request->validated(),
+                $request->file('image'),
+            ),
             201,
         );
     }
@@ -31,14 +35,16 @@ class EventController extends Controller
     {
         $this->authorize('update', $event);
 
-        return response()->json($this->events->update($event, $request->validated()));
+        return response()->json(
+            $this->events->update($event, $request->validated(), $request->file('image')),
+        );
     }
 
     public function destroy(Event $event): JsonResponse
     {
         $this->authorize('delete', $event);
 
-        $event->delete();
+        $this->events->delete($event);
 
         return response()->json(status: 204);
     }

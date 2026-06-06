@@ -59,6 +59,10 @@ class DocumentService
 
     public function delete(Document $document): void
     {
+        if (filled($document->file_path)) {
+            Storage::disk(self::DISK)->delete($document->file_path);
+        }
+
         $this->documents->delete($document);
     }
 }

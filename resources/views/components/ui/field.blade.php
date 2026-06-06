@@ -17,10 +17,10 @@
     {{ $slot }}
 
     @if ($error)
-        <p class="sl-field-error" role="alert">{{ $error }}</p>
+        <p @if($inputId) id="{{ $inputId }}-error" @endif class="sl-field-error" role="alert">{{ $error }}</p>
     @endif
 
     @if ($hint && ! $error)
-        <p class="sl-field-hint">{{ $hint }}</p>
+        <p @if($inputId) id="{{ $inputId }}-hint" @endif class="sl-field-hint">{{ $hint }}</p>
     @endif
 </div>
