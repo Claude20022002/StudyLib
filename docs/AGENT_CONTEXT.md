@@ -319,9 +319,13 @@ resources/views/
 
 ### État actuel des vues
 
-- Seul `resources/views/welcome.blade.php` existe (squelette Laravel par défaut, **à remplacer**)
-- Aucun composant Livewire créé
-- Les controllers retournent temporairement du JSON
+- **Design system Tailwind** : `resources/css/app.css` (tokens + classes `sl-*` calquées sur `docs/prototype/tokens.css` et le Design System)
+- **Layouts** : `resources/views/components/layouts/{app,guest,admin}.blade.php` (usage : `<x-layouts.app>`)
+- **Composants Blade** : `resources/views/components/ui/*`
+- **Composants Livewire** : `app/Livewire/` + `resources/views/livewire/`
+- **Page exemple** : `resources/views/pages/auth/login.blade.php` (GET `/login`)
+- **Livewire v4** installé (`composer require livewire/livewire`)
+- Les controllers renvoient encore du JSON pour les autres écrans (à brancher progressivement)
 
 ---
 
