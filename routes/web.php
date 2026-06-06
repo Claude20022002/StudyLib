@@ -30,7 +30,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
-    Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
+    Route::post('/documents', [DocumentController::class, 'store'])
+        ->middleware('throttle:uploads')
+        ->name('documents.store');
     Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
     Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
     Route::post('/documents/{document}/ratings', [DocumentRatingController::class, 'store'])->name('documents.ratings.store');
@@ -46,7 +48,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
-    Route::post('/ai/suggestions', [AiRecommendationController::class, 'store'])->name('ai.suggestions');
+    Route::post('/ai/suggestions', [AiRecommendationController::class, 'store'])
+        ->middleware('throttle:ai')
+        ->name('ai.suggestions');
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::patch('/notifications/{notification}', [NotificationController::class, 'update'])->name('notifications.update');

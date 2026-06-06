@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class RegisteredUserController extends Controller
@@ -16,12 +17,16 @@ class RegisteredUserController extends Controller
         private readonly AuthService $auth,
     ) {}
 
-    public function store(RegisterRequest $request): JsonResponse
+    public function store(RegisterRequest $request): RedirectResponse|JsonResponse
     {
         $user = $this->auth->register($request->validated());
 
         Auth::login($user);
 
-        return response()->json($user->load('filiere'), 201);
+        if ($request->expectsJson()) {
+            return response()->json($user->load('filiere'), 201);
+        }
+
+        return redirect()->route('dashboard');
     }
 }

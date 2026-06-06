@@ -17,6 +17,8 @@ class DocumentRatingController extends Controller
 
     public function store(StoreDocumentRatingRequest $request, Document $document): JsonResponse
     {
+        $this->authorize('view', $document);
+
         $rating = $this->ratings->rate(
             $request->user(),
             $document,

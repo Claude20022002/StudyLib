@@ -33,6 +33,10 @@ class Document extends Model
         'status',
     ];
 
+    protected $hidden = [
+        'file_path',
+    ];
+
     protected function casts(): array
     {
         return [

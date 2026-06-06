@@ -26,7 +26,7 @@ class StoreDocumentRequest extends FormRequest
             'title' => ['required', 'string', 'max:200'],
             'description' => ['nullable', 'string'],
             'year_concern' => ['nullable', 'integer', 'between:2000,2100'],
-            'file' => ['required', 'file', 'max:20480'],
+            'file' => ['required', 'file', 'max:20480', 'mimes:pdf,doc,docx,ppt,pptx'],
         ];
     }
 }

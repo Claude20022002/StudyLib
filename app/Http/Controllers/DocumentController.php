@@ -7,9 +7,11 @@ namespace App\Http\Controllers;
 use App\Enums\DocumentType;
 use App\Http\Requests\Document\ListDocumentsRequest;
 use App\Http\Requests\Document\StoreDocumentRequest;
+use App\Http\Resources\DocumentResource;
 use App\Models\Document;
 use App\Services\DocumentService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class DocumentController extends Controller
 {
@@ -17,11 +19,11 @@ class DocumentController extends Controller
         private readonly DocumentService $documents,
     ) {}
 
-    public function index(ListDocumentsRequest $request): JsonResponse
+    public function index(ListDocumentsRequest $request): AnonymousResourceCollection
     {
         $validated = $request->validated();
 
-        return response()->json(
+        return DocumentResource::collection(
             $this->documents->listByModule(
                 $validated['module_id'],
                 isset($validated['type']) ? DocumentType::from($validated['type']) : null,
@@ -29,11 +31,11 @@ class DocumentController extends Controller
         );
     }
 
-    public function show(Document $document): JsonResponse
+    public function show(Document $document): DocumentResource
     {
         $this->authorize('view', $document);
 
-        return response()->json($document->load(['author', 'module']));
+        return DocumentResource::make($document->load(['author', 'module']));
     }
 
     public function store(StoreDocumentRequest $request): JsonResponse
@@ -46,7 +48,7 @@ class DocumentController extends Controller
             $request->validated(),
         );
 
-        return response()->json($document, 201);
+        return DocumentResource::make($document)->response()->setStatusCode(201);
     }
 
     public function destroy(Document $document): JsonResponse
