@@ -8,6 +8,8 @@ use App\Http\Middleware\EnsureHestimEmail;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
+    Route::view('/login', 'pages.auth.login')->name('login.show');
+
     Route::post('/register', [RegisteredUserController::class, 'store'])
         ->middleware(EnsureHestimEmail::class)
         ->name('register');
