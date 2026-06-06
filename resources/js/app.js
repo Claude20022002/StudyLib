@@ -1,1 +1,1 @@
-//
+import '../css/app.css';
