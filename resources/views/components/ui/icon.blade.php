@@ -65,6 +65,27 @@
     @case('shield-check')
         <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
         @break
+    @case('file')
+        <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+        @break
+    @case('check')
+        <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        @break
+    @case('trend-up')
+        <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2.5', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><path d="M7 17 17 7M9 7h8v8"/></svg>
+        @break
+    @case('download')
+        <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        @break
+    @case('clock')
+        <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2.4', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        @break
+    @case('sparkles')
+        <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2.2', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.3 6.3 4.9 4.9M19.1 19.1l-1.4-1.4M17.7 6.3l1.4-1.4M4.9 19.1l1.4-1.4"/><circle cx="12" cy="12" r="3.5"/></svg>
+        @break
+    @case('arrow-right')
+        <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        @break
     @default
         <span {{ $attributes->merge(['class' => $classes, 'aria-hidden' => 'true']) }}></span>
 @endswitch
