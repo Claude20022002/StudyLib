@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\DocumentType;
+use App\Http\Requests\Document\ListDocumentsRequest;
+use App\Http\Requests\Document\StoreDocumentRequest;
 use App\Models\Document;
 use App\Services\DocumentService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class DocumentController extends Controller
 {
@@ -17,17 +18,15 @@ class DocumentController extends Controller
     ) {
     }
 
-    public function index(Request $request): JsonResponse
+    public function index(ListDocumentsRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'module_id' => ['required', 'uuid'],
-            'type' => ['nullable', 'string'],
-        ]);
-
-        $type = isset($validated['type']) ? DocumentType::tryFrom($validated['type']) : null;
+        $validated = $request->validated();
 
         return response()->json(
-            $this->documents->listByModule($validated['module_id'], $type),
+            $this->documents->listByModule(
+                $validated['module_id'],
+                isset($validated['type']) ? DocumentType::from($validated['type']) : null,
+            ),
         );
     }
 
@@ -38,23 +37,14 @@ class DocumentController extends Controller
         return response()->json($document->load(['author', 'module']));
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreDocumentRequest $request): JsonResponse
     {
         $this->authorize('create', Document::class);
-
-        $validated = $request->validate([
-            'module_id' => ['required', 'uuid'],
-            'type' => ['required', 'string'],
-            'title' => ['required', 'string', 'max:200'],
-            'description' => ['nullable', 'string'],
-            'year_concern' => ['nullable', 'integer'],
-            'file' => ['required', 'file', 'max:20480'],
-        ]);
 
         $document = $this->documents->upload(
             $request->user(),
             $request->file('file'),
-            $validated,
+            $request->validated(),
         );
 
         return response()->json($document, 201);

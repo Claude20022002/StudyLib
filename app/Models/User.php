@@ -78,4 +78,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Event::class);
     }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function aiRecommendations(): HasMany
+    {
+        return $this->hasMany(AiRecommendation::class);
+    }
 }

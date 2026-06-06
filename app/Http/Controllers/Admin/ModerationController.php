@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\RejectDocumentRequest;
 use App\Models\Document;
 use App\Services\ModerationService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class ModerationController extends Controller
 {
@@ -31,16 +31,12 @@ class ModerationController extends Controller
         return response()->json($this->moderation->approve($document));
     }
 
-    public function reject(Request $request, Document $document): JsonResponse
+    public function reject(RejectDocumentRequest $request, Document $document): JsonResponse
     {
         $this->authorize('moderate', Document::class);
 
-        $validated = $request->validate([
-            'reason' => ['nullable', 'string', 'max:500'],
-        ]);
-
         return response()->json(
-            $this->moderation->reject($document, $validated['reason'] ?? null),
+            $this->moderation->reject($document, $request->validated('reason')),
         );
     }
 }

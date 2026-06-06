@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\AiKind;
+use App\Http\Requests\Ai\StoreAiSuggestionRequest;
 use App\Services\ClaudeService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AiRecommendationController extends Controller
 {
@@ -16,13 +16,9 @@ class AiRecommendationController extends Controller
     ) {
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreAiSuggestionRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'kind' => ['required', 'string', 'in:project,document,study_path,other'],
-            'prompt' => ['required', 'string', 'max:2000'],
-            'module_id' => ['nullable', 'uuid'],
-        ]);
+        $validated = $request->validated();
 
         $result = $this->claude->suggest(
             $request->user(),
