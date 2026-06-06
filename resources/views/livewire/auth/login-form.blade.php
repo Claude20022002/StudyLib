@@ -100,6 +100,6 @@
 
     <p class="mt-6 text-center text-sm text-muted">
         Pas encore de compte ?
-        <a href="#" class="font-semibold text-primary">Créer un compte</a>
+        <a href="{{ route('register') }}" class="font-semibold text-primary">Activez votre accès HESTIM</a>
     </p>
 </form>

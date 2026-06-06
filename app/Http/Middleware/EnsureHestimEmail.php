@@ -20,7 +20,16 @@ class EnsureHestimEmail
         $email = $request->input('email');
 
         if (is_string($email) && ! $this->auth->emailBelongsToHestim($email)) {
-            abort(422, 'Seules les adresses @hestim.ma sont autorisées.');
+            $message = 'Seules les adresses @hestim.ma sont autorisées.';
+
+            if ($request->expectsJson()) {
+                abort(422, $message);
+            }
+
+            return redirect()
+                ->back()
+                ->withInput($request->except('password', 'password_confirmation'))
+                ->withErrors(['email' => $message]);
         }
 
         return $next($request);
