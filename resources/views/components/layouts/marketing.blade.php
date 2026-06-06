@@ -10,10 +10,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="min-h-screen">
-    <div class="sl-guest-page">
-        {{ $slot }}
-    </div>
+<body class="min-h-screen bg-card">
+    {{ $slot }}
+
+    <x-ui.flash-messages />
 
     @livewireScripts
 </body>

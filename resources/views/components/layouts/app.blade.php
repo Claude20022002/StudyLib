@@ -25,6 +25,8 @@
 
     <livewire:layout.app-bottom-nav />
 
+    <x-ui.flash-messages />
+
     @livewireScripts
 </body>
 </html>

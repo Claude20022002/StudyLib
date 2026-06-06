@@ -34,6 +34,8 @@
         </div>
     </div>
 
+    <x-ui.flash-messages />
+
     @livewireScripts
 </body>
 </html>

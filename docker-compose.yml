@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "${FORWARD_DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: "${DB_DATABASE:-studylib}"
+      POSTGRES_USER: "${DB_USERNAME:-studylib}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD:-secret}"
+    volumes:
+      - studylib-pgsql:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-studylib} -d ${DB_DATABASE:-studylib}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${FORWARD_REDIS_PORT:-6379}:6379"
+    volumes:
+      - studylib-redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":8900"
+    ports:
+      - "${FORWARD_MINIO_PORT:-9000}:9000"
+      - "${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900"
+    environment:
+      MINIO_ROOT_USER: "${MINIO_ACCESS_KEY:-minio}"
+      MINIO_ROOT_PASSWORD: "${MINIO_SECRET_KEY:-minio123}"
+    volumes:
+      - studylib-minio:/data
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.12
+    ports:
+      - "${FORWARD_MEILISEARCH_PORT:-7700}:7700"
+    environment:
+      MEILI_MASTER_KEY: "${MEILISEARCH_KEY:-masterKey}"
+    volumes:
+      - studylib-meilisearch:/meili_data
+
+volumes:
+  studylib-pgsql:
+  studylib-redis:
+  studylib-minio:
+  studylib-meilisearch:
