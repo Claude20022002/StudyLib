@@ -16,8 +16,7 @@ class RatingService
     public function __construct(
         private readonly DocumentRatingRepositoryInterface $ratings,
         private readonly DocumentRepositoryInterface $documents,
-    ) {
-    }
+    ) {}
 
     /**
      * Crée ou met à jour la note d'un utilisateur, puis synchronise les agrégats du document.

@@ -14,8 +14,7 @@ class ModerationService
     public function __construct(
         private readonly DocumentRepositoryInterface $documents,
         private readonly NotificationService $notifications,
-    ) {
-    }
+    ) {}
 
     public function queue(): LengthAwarePaginator
     {

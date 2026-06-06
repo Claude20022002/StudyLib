@@ -15,8 +15,7 @@ class DocumentController extends Controller
 {
     public function __construct(
         private readonly DocumentService $documents,
-    ) {
-    }
+    ) {}
 
     public function index(ListDocumentsRequest $request): JsonResponse
     {

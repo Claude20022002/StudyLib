@@ -12,8 +12,7 @@ class YoutubeRecommendationController extends Controller
 {
     public function __construct(
         private readonly YouTubeService $youtube,
-    ) {
-    }
+    ) {}
 
     public function index(Module $module): JsonResponse
     {

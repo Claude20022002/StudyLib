@@ -13,8 +13,7 @@ class DownloadService
     public function __construct(
         private readonly DocumentDownloadRepositoryInterface $downloads,
         private readonly DocumentRepositoryInterface $documents,
-    ) {
-    }
+    ) {}
 
     /**
      * Trace un téléchargement et incrémente le compteur dénormalisé.

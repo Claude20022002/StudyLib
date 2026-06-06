@@ -13,8 +13,7 @@ class DocumentRatingController extends Controller
 {
     public function __construct(
         private readonly RatingService $ratings,
-    ) {
-    }
+    ) {}
 
     public function store(StoreDocumentRatingRequest $request, Document $document): JsonResponse
     {

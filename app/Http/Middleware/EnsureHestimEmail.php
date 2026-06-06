@@ -13,8 +13,7 @@ class EnsureHestimEmail
 {
     public function __construct(
         private readonly AuthService $auth,
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request, Closure $next): Response
     {

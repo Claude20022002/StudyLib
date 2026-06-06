@@ -7,7 +7,6 @@ namespace App\Services;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 class ProfileService
 {
@@ -15,8 +14,7 @@ class ProfileService
 
     public function __construct(
         private readonly UserRepositoryInterface $users,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  array<string, mixed>  $data

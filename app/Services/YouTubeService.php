@@ -17,8 +17,7 @@ class YouTubeService
 
     public function __construct(
         private readonly YoutubeRecommendationRepositoryInterface $recommendations,
-    ) {
-    }
+    ) {}
 
     /** @return Collection<int, YoutubeRecommendation> */
     public function forModule(Module $module): Collection

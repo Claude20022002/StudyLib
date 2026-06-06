@@ -13,8 +13,7 @@ class NotificationService
 {
     public function __construct(
         private readonly NotificationRepositoryInterface $notifications,
-    ) {
-    }
+    ) {}
 
     /** @return Collection<int, Notification> */
     public function unreadFor(string $userId): Collection

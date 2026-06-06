@@ -14,8 +14,7 @@ class InternshipReviewController extends Controller
 {
     public function __construct(
         private readonly InternshipReviewService $reviews,
-    ) {
-    }
+    ) {}
 
     public function index(Request $request): JsonResponse
     {

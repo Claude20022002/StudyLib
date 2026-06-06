@@ -14,8 +14,7 @@ class ClaudeService
 {
     public function __construct(
         private readonly AiRecommendationRepositoryInterface $recommendations,
-    ) {
-    }
+    ) {}
 
     /**
      * Interroge l'API Claude pour générer des suggestions, puis trace la réponse.

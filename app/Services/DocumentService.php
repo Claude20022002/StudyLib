@@ -19,8 +19,7 @@ class DocumentService
 
     public function __construct(
         private readonly DocumentRepositoryInterface $documents,
-    ) {
-    }
+    ) {}
 
     public function listByModule(string $moduleId, ?DocumentType $type = null): LengthAwarePaginator
     {

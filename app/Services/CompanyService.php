@@ -11,8 +11,7 @@ class CompanyService
 {
     public function __construct(
         private readonly CompanyRepositoryInterface $companies,
-    ) {
-    }
+    ) {}
 
     public function findOrCreate(string $name, ?string $city, ?string $sector = null): Company
     {

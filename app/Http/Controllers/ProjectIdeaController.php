@@ -14,8 +14,7 @@ class ProjectIdeaController extends Controller
 {
     public function __construct(
         private readonly ProjectIdeaService $ideas,
-    ) {
-    }
+    ) {}
 
     public function index(Request $request): JsonResponse
     {

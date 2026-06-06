@@ -14,8 +14,7 @@ class ModerationController extends Controller
 {
     public function __construct(
         private readonly ModerationService $moderation,
-    ) {
-    }
+    ) {}
 
     public function index(): JsonResponse
     {

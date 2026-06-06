@@ -13,8 +13,7 @@ class AiRecommendationController extends Controller
 {
     public function __construct(
         private readonly ClaudeService $claude,
-    ) {
-    }
+    ) {}
 
     public function store(StoreAiSuggestionRequest $request): JsonResponse
     {

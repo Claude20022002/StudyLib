@@ -14,8 +14,7 @@ class InternshipReviewService
     public function __construct(
         private readonly InternshipReviewRepositoryInterface $reviews,
         private readonly CompanyService $companies,
-    ) {
-    }
+    ) {}
 
     /** @param array<string, mixed> $filters */
     public function search(array $filters): LengthAwarePaginator

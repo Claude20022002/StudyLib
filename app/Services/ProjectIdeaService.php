@@ -14,8 +14,7 @@ class ProjectIdeaService
 {
     public function __construct(
         private readonly ProjectIdeaRepositoryInterface $ideas,
-    ) {
-    }
+    ) {}
 
     /** @param array<string, mixed> $filters */
     public function search(array $filters): LengthAwarePaginator

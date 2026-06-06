@@ -12,8 +12,7 @@ class ModuleController extends Controller
 {
     public function __construct(
         private readonly ModuleService $modules,
-    ) {
-    }
+    ) {}
 
     public function index(Filiere $filiere): JsonResponse
     {

@@ -11,8 +11,7 @@ class EventController extends Controller
 {
     public function __construct(
         private readonly EventService $events,
-    ) {
-    }
+    ) {}
 
     public function index(): JsonResponse
     {

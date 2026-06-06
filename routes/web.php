@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin;
 use App\Http\Controllers\AiRecommendationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
@@ -15,7 +16,6 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectIdeaController;
 use App\Http\Controllers\YoutubeRecommendationController;
-use App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => response()->json(['app' => config('app.name')]))->name('home');

@@ -13,8 +13,7 @@ class EventService
 {
     public function __construct(
         private readonly EventRepositoryInterface $events,
-    ) {
-    }
+    ) {}
 
     public function upcoming(): LengthAwarePaginator
     {

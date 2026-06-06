@@ -13,8 +13,7 @@ class AuthService
 {
     public function __construct(
         private readonly UserRepositoryInterface $users,
-    ) {
-    }
+    ) {}
 
     /**
      * Inscrit un nouvel étudiant HESTIM.

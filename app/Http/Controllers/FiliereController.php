@@ -11,8 +11,7 @@ class FiliereController extends Controller
 {
     public function __construct(
         private readonly FiliereService $filieres,
-    ) {
-    }
+    ) {}
 
     public function index(): JsonResponse
     {

@@ -15,8 +15,7 @@ class DocumentDownloadController extends Controller
     public function __construct(
         private readonly DownloadService $downloads,
         private readonly DocumentService $documents,
-    ) {
-    }
+    ) {}
 
     public function store(Request $request, Document $document): RedirectResponse
     {

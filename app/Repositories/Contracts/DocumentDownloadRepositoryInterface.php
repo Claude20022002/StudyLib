@@ -9,6 +9,4 @@ use App\Models\DocumentDownload;
 /**
  * @extends RepositoryInterface<DocumentDownload>
  */
-interface DocumentDownloadRepositoryInterface extends RepositoryInterface
-{
-}
+interface DocumentDownloadRepositoryInterface extends RepositoryInterface {}

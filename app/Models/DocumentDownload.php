@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\DocumentDownloadFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DocumentDownload extends Model
 {
-    /** @use HasFactory<\Database\Factories\DocumentDownloadFactory> */
+    /** @use HasFactory<DocumentDownloadFactory> */
     use HasFactory, HasUuids;
 
     public $timestamps = false;

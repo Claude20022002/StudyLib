@@ -14,8 +14,7 @@ class RegisteredUserController extends Controller
 {
     public function __construct(
         private readonly AuthService $auth,
-    ) {
-    }
+    ) {}
 
     public function store(RegisterRequest $request): JsonResponse
     {
