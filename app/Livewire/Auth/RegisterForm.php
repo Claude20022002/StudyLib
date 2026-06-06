@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Livewire\Auth;
 
+use App\Models\Filiere;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
 class RegisterForm extends Component
 {
-    /** @var Collection<int, \App\Models\Filiere> */
+    /** @var Collection<int, Filiere> */
     public Collection $filieres;
 
     public function mount(Collection $filieres): void

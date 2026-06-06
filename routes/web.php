@@ -18,7 +18,7 @@ use App\Http\Controllers\ProjectIdeaController;
 use App\Http\Controllers\YoutubeRecommendationController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => response()->json(['app' => config('app.name')]))->name('home');
+Route::view('/', 'pages.landing')->name('home');
 
 Route::get('/filieres', [FiliereController::class, 'index'])->name('filieres.index');
 Route::get('/filieres/{filiere}/modules', [ModuleController::class, 'index'])->name('filieres.modules');
