@@ -2091,7 +2091,7 @@
 }
 
 .sl-prof-head__cover {
-    @apply h-24;
+    @apply relative z-0 h-24;
     background: linear-gradient(120deg, var(--color-primary), var(--color-primary-active));
 }
 
@@ -2101,16 +2101,12 @@
     background: radial-gradient(70% 140% at 90% 0%, rgba(255, 255, 255, 0.18), transparent 60%);
 }
 
-.sl-prof-head__cover {
-    @apply relative;
-}
-
 .sl-prof-head__body {
-    @apply flex flex-wrap items-end gap-5 px-6 pb-6;
+    @apply relative z-10 flex flex-wrap items-end gap-5 px-6 pb-6;
 }
 
 .sl-prof-head__avatar {
-    @apply -mt-[52px] border-4 border-card shadow-sm;
+    @apply relative z-10 -mt-[52px] shrink-0 border-4 border-card shadow-sm;
 }
 
 .sl-prof-verified {
