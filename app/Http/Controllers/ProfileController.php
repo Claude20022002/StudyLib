@@ -6,7 +6,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Profile\UpdateProfileRequest;
 use App\Services\ProfileService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -15,14 +17,20 @@ class ProfileController extends Controller
         private readonly ProfileService $profile,
     ) {}
 
-    public function show(Request $request): JsonResponse
+    public function show(Request $request): View|JsonResponse
     {
-        return response()->json(
-            $request->user()->load('filiere'),
-        );
+        if ($request->expectsJson()) {
+            return response()->json(
+                $request->user()->load('filiere'),
+            );
+        }
+
+        return view('pages.profile.show', [
+            'header' => 'Mon profil',
+        ]);
     }
 
-    public function update(UpdateProfileRequest $request): JsonResponse
+    public function update(UpdateProfileRequest $request): JsonResponse|RedirectResponse
     {
         $this->authorize('update', $request->user());
 
@@ -32,6 +40,10 @@ class ProfileController extends Controller
             $request->file('avatar'),
         );
 
-        return response()->json($user->load('filiere'));
+        if ($request->expectsJson()) {
+            return response()->json($user->load('filiere'));
+        }
+
+        return back()->with('success', 'Profil mis à jour.');
     }
 }
