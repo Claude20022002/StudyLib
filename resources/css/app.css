@@ -148,7 +148,7 @@
 
     /* ===== Buttons (Design System sl-btn) ===== */
     .sl-btn {
-        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold;
+        @apply inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap font-semibold;
         height: 42px;
         padding: 0 var(--space-5);
         border-radius: var(--radius-md);
@@ -388,7 +388,7 @@
 
     /* ===== Icon button ===== */
     .sl-icon-btn {
-        @apply relative grid place-items-center border border-transparent bg-transparent text-ink-soft;
+        @apply relative grid cursor-pointer place-items-center border border-transparent bg-transparent text-ink-soft;
         width: 40px;
         height: 40px;
         border-radius: var(--radius-sm);
@@ -446,7 +446,7 @@
 
     /* ===== Chip filter ===== */
     .sl-chip {
-        @apply font-semibold text-ink-soft transition-all;
+        @apply cursor-pointer font-semibold text-ink-soft transition-all;
         height: 32px;
         padding: 0 14px;
         border-radius: 999px;
@@ -489,7 +489,7 @@
     }
 
     .sl-sidebar-link {
-        @apply flex items-center gap-3 rounded-[10px] text-sm font-medium text-ink-soft transition-all;
+        @apply flex cursor-pointer items-center gap-3 rounded-[10px] text-sm font-medium text-ink-soft transition-all;
         padding: 10px 12px;
     }
 
@@ -546,7 +546,7 @@
     }
 
     .sl-user-chip {
-        @apply flex items-center gap-3 rounded-full border border-border transition-colors;
+        @apply flex cursor-pointer items-center gap-3 rounded-full border border-border transition-colors;
         padding: 4px 4px 4px 12px;
     }
 
@@ -569,7 +569,7 @@
     }
 
     .sl-bottom-link {
-        @apply flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold text-muted;
+        @apply flex cursor-pointer flex-col items-center justify-center gap-0.5 text-[10px] font-semibold text-muted;
     }
 
     .sl-bottom-link svg {
@@ -582,7 +582,7 @@
     }
 
     .sl-fab {
-        @apply fixed z-41 hidden place-items-center rounded-full border-0 bg-primary text-white shadow-lg;
+        @apply fixed z-41 grid cursor-pointer place-items-center rounded-full border-0 bg-primary text-white shadow-lg;
         right: 18px;
         bottom: 80px;
         width: 56px;
@@ -691,7 +691,7 @@
     }
 
     .sl-adm-kpi__link {
-        @apply mt-3 inline-flex items-center gap-1 border-0 bg-transparent p-0 text-xs font-semibold text-primary;
+        @apply mt-3 inline-flex cursor-pointer items-center gap-1 border-0 bg-transparent p-0 text-xs font-semibold text-primary;
     }
 
     .sl-adm-card {
@@ -711,7 +711,7 @@
     }
 
     .sl-adm-mini-act {
-        @apply grid h-[30px] w-[30px] place-items-center rounded-[7px] border border-border bg-card transition-all;
+        @apply grid h-[30px] w-[30px] cursor-pointer place-items-center rounded-[7px] border border-border bg-card transition-all;
     }
 
     .sl-adm-mini-act--view {
@@ -747,7 +747,7 @@
     }
 
     .sl-adm-tab {
-        @apply inline-flex h-[34px] items-center gap-1.5 rounded-sm border border-border bg-card px-3.5 text-sm font-semibold text-ink-soft transition-all;
+        @apply inline-flex h-[34px] cursor-pointer items-center gap-1.5 rounded-sm border border-border bg-card px-3.5 text-sm font-semibold text-ink-soft transition-all;
     }
 
     .sl-adm-tab:hover {
@@ -786,7 +786,7 @@
     }
 
     .sl-adm-scrim {
-        @apply fixed inset-0 z-[60] border-0 bg-ink/50 backdrop-blur-[2px];
+        @apply fixed inset-0 z-[60] cursor-pointer border-0 bg-ink/50 backdrop-blur-[2px];
     }
 
     .sl-adm-modal-wrap {
