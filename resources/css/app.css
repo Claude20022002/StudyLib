@@ -2274,6 +2274,10 @@
     @apply mb-4 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-card p-4 shadow-xs;
 }
 
+.sl-stg-hero__badge {
+    @apply grid h-11 w-11 shrink-0 place-items-center rounded-md border border-border bg-surface;
+}
+
 .sl-stg-hero__search {
     @apply relative min-w-[240px] flex-1;
 }
@@ -2488,7 +2492,7 @@
 }
 
 .sl-prj-hero__ico {
-    @apply grid h-11 w-11 shrink-0 place-items-center rounded-md bg-primary-soft text-primary;
+    @apply grid h-11 w-11 shrink-0 place-items-center rounded-md border border-border bg-surface;
 }
 
 .sl-prj-grid {

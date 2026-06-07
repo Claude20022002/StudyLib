@@ -542,6 +542,28 @@
     color: var(--color-warning);
 }
 
+.sl-landing-value__ico--flaticon {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+}
+
+.sl-landing-footer__attrib {
+    width: 100%;
+    text-align: center;
+    opacity: 0.75;
+}
+
+@media (min-width: 768px) {
+    .sl-landing-footer__inner {
+        flex-wrap: wrap;
+    }
+
+    .sl-landing-footer__attrib {
+        width: auto;
+        margin-left: auto;
+    }
+}
+
 .sl-landing-value h3 {
     margin-bottom: var(--space-2);
     font-size: var(--text-h4);
