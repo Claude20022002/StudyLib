@@ -12,7 +12,7 @@
             <livewire:auth.register-form :filieres="$filieres" />
         </div>
 
-        <p class="text-center text-xs text-muted">Réservé aux étudiants HESTIM · @hestim.ma</p>
+        <p class="sl-auth-footer-note">Réservé aux étudiants HESTIM · @hestim.ma</p>
     </div>
 
     @include('partials.auth.art-panel')

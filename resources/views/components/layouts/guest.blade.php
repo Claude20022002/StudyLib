@@ -10,11 +10,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="min-h-screen">
+<body class="sl-guest min-h-screen bg-surface antialiased">
     <x-ui.skip-link />
 
     <div class="sl-guest-page">
-        <main id="main-content" tabindex="-1">
+        <main id="main-content" class="sl-guest-page__main" tabindex="-1">
             {{ $slot }}
         </main>
     </div>

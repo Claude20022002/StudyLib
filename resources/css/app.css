@@ -1257,6 +1257,8 @@
     display: none !important;
 }
 
+@layer components {
+
 /* ===== Dashboard (maquette Dashboard) ===== */
 .sl-dashboard-hero {
     @apply mb-6 flex flex-wrap items-end justify-between gap-4;
@@ -2627,5 +2629,9 @@
     }
 }
 
+}
+
+@import './guest.css';
 @import './polish.css';
+@import './pages-polish.css';
 @import './landing.css';

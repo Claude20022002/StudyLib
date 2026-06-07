@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen bg-surface antialiased">
     <x-ui.skip-link />
 
     <div class="sl-app">

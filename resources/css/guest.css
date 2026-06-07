@@ -1,0 +1,86 @@
+/* ===== StudyLib · Auth (Connexion / Inscription) ===== */
+
+.sl-guest-page__main {
+    display: contents;
+}
+
+.sl-guest-page {
+    min-height: 100vh;
+}
+
+.sl-guest-form-side {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-8) var(--space-6) var(--space-6);
+    background: var(--color-card);
+}
+
+.sl-guest-form-side > .flex:first-child {
+    margin-bottom: var(--space-2);
+}
+
+.sl-guest-form-side .grid.flex-1 {
+    width: 100%;
+}
+
+.sl-guest-art-side {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    padding: var(--space-12);
+    color: #fff;
+    background:
+        radial-gradient(80% 60% at 80% 10%, rgba(255, 255, 255, 0.14), transparent 60%),
+        linear-gradient(155deg, var(--color-primary), var(--color-primary-active));
+}
+
+.sl-guest-art-side::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(80% 70% at 60% 40%, #000, transparent 75%);
+    pointer-events: none;
+}
+
+.sl-guest-art-side > .relative {
+    position: relative;
+    z-index: 1;
+}
+
+.sl-guest-art-side blockquote {
+    text-shadow: 0 1px 24px rgba(0, 0, 0, 0.12);
+}
+
+.sl-guest-art-side .mt-10.flex.items-center {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+}
+
+.sl-auth-footer-note {
+    margin-top: auto;
+    padding-top: var(--space-6);
+    text-align: center;
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+}
+
+@media (max-width: 920px) {
+    .sl-guest-form-side {
+        min-height: 100vh;
+        padding: var(--space-6) var(--space-5);
+    }
+}
+
+@media (max-width: 480px) {
+    .sl-guest-form-side {
+        padding: var(--space-5) var(--space-4);
+    }
+}

@@ -183,14 +183,6 @@
     letter-spacing: var(--tracking-tight);
 }
 
-.sl-guest-form-side {
-    background: var(--color-card);
-}
-
-.sl-guest-art-side blockquote {
-    text-shadow: 0 1px 24px rgba(0, 0, 0, 0.12);
-}
-
 /* Empty states */
 .sl-empty {
     background: linear-gradient(180deg, var(--color-card) 0%, var(--color-surface) 100%);

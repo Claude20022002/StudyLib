@@ -15,7 +15,7 @@
             @endforeach
         </nav>
     @elseif ($title)
-        <h1 class="text-h3 font-bold tracking-tight">{{ $title }}</h1>
+        <h1 class="sl-topbar__title">{{ $title }}</h1>
     @else
         <livewire:ui.search-bar class="sl-desktop-only flex-1" />
     @endif
