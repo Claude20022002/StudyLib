@@ -39,7 +39,7 @@ return [
     'nav_admin' => [
         ['label' => 'Tableau de bord', 'route' => 'admin.moderation.index', 'icon' => 'grid'],
         ['label' => 'Modération', 'route' => 'admin.moderation.index', 'icon' => 'shield'],
-        ['label' => 'Événements', 'route' => 'events.index', 'icon' => 'calendar'],
+        ['label' => 'Événements', 'route' => 'admin.events.index', 'icon' => 'calendar'],
     ],
 
     'document_filters' => [

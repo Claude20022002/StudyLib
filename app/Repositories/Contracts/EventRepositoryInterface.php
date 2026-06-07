@@ -25,4 +25,9 @@ interface EventRepositoryInterface extends RepositoryInterface
 
     /** @return Collection<int, Event> */
     public function forMonth(int $year, int $month, ?string $search = null): Collection;
+
+    /** @return LengthAwarePaginator<int, Event> */
+    public function adminList(?string $search = null, int $perPage = 15): LengthAwarePaginator;
+
+    public function countAll(): int;
 }

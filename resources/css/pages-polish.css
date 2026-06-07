@@ -261,6 +261,10 @@
     box-shadow: var(--shadow-lg);
 }
 
+.sl-adm-modal--wide {
+    max-width: 640px;
+}
+
 /* Panels & empty states globaux */
 .sl-panel {
     border-radius: var(--radius-lg);

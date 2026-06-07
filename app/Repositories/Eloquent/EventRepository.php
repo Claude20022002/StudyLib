@@ -70,4 +70,28 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
 
         return $query->get();
     }
+
+    public function adminList(?string $search = null, int $perPage = 15): LengthAwarePaginator
+    {
+        $query = $this->model->newQuery()
+            ->with(['author'])
+            ->orderByDesc('starts_at');
+
+        if ($search !== null && $search !== '') {
+            $term = '%'.$search.'%';
+
+            $query->where(function ($builder) use ($term): void {
+                $builder->where('title', 'like', $term)
+                    ->orWhere('description', 'like', $term)
+                    ->orWhere('location', 'like', $term);
+            });
+        }
+
+        return $query->paginate($perPage);
+    }
+
+    public function countAll(): int
+    {
+        return $this->model->newQuery()->count();
+    }
 }

@@ -61,6 +61,7 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::patch('/moderation/documents/{document}/approve', [Admin\ModerationController::class, 'approve'])->name('moderation.approve');
     Route::patch('/moderation/documents/{document}/reject', [Admin\ModerationController::class, 'reject'])->name('moderation.reject');
 
+    Route::get('/events', [Admin\EventController::class, 'index'])->name('events.index');
     Route::post('/events', [Admin\EventController::class, 'store'])->name('events.store');
     Route::put('/events/{event}', [Admin\EventController::class, 'update'])->name('events.update');
     Route::delete('/events/{event}', [Admin\EventController::class, 'destroy'])->name('events.destroy');

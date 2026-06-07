@@ -48,6 +48,21 @@ class EventService
         return $this->events->forMonth($year, $month, $search);
     }
 
+    /** @return LengthAwarePaginator<int, Event> */
+    public function adminList(?string $search = null, int $perPage = 15): LengthAwarePaginator
+    {
+        return $this->events->adminList($search, $perPage);
+    }
+
+    public function adminStats(): array
+    {
+        return [
+            'upcoming' => $this->events->countUpcoming(),
+            'total' => $this->events->countAll(),
+            'this_month' => $this->events->forMonth((int) now()->year, (int) now()->month)->count(),
+        ];
+    }
+
     public function monthTitle(int $year, int $month): string
     {
         return Carbon::create($year, $month, 1)
