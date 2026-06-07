@@ -296,11 +296,17 @@
                 </p>
             </div>
             <div class="sl-doc-modal__foot">
-                <x-ui.button variant="secondary" type="button" wire:click="closeRateModal">Annuler</x-ui.button>
-                <x-ui.button variant="primary" type="button" wire:click="submitRating" wire:loading.attr="disabled" @if ($rateScore < 1) disabled @endif>
+                <button type="button" class="sl-btn sl-btn--secondary" wire:click="closeRateModal">Annuler</button>
+                <button
+                    type="button"
+                    class="sl-btn sl-btn--primary"
+                    wire:click="submitRating"
+                    wire:loading.attr="disabled"
+                    @if ($rateScore < 1) disabled @endif
+                >
                     <span wire:loading.remove wire:target="submitRating">Envoyer ma note</span>
                     <span wire:loading wire:target="submitRating">Envoi…</span>
-                </x-ui.button>
+                </button>
             </div>
         </div>
     </div>
