@@ -251,200 +251,58 @@ Les interfaces repository sont liées aux implémentations Eloquent dans `app/Pr
 
 ### Diagramme entité-relation complet
 
-> Compatible Mermaid (GitHub, Notion, VS Code, export PDF via [mermaid.live](https://mermaid.live)).
+> **GitHub** : le bloc relations-only ci-dessous est compatible github.com. Le détail des colonnes est dans la [section 8](#8-dictionnaire-des-entités). Export visuel : [mermaid.live](https://mermaid.live).
 
 ```mermaid
 erDiagram
-    FILIERES ||--o{ USERS : "inscrit"
-    FILIERES ||--o{ MODULES : "contient"
-    FILIERES ||--o{ INTERNSHIP_REVIEWS : "filtre"
-    FILIERES ||--o{ PROJECT_IDEAS : "cible"
-
-    USERS ||--o{ DOCUMENTS : "dépose"
-    USERS ||--o{ DOCUMENT_RATINGS : "note"
-    USERS ||--o{ DOCUMENT_DOWNLOADS : "télécharge"
-    USERS ||--o{ INTERNSHIP_REVIEWS : "publie"
-    USERS ||--o{ PROJECT_IDEAS : "propose"
-    USERS ||--o{ EVENTS : "crée"
-    USERS ||--o{ NOTIFICATIONS : "reçoit"
-    USERS ||--o{ AI_RECOMMENDATIONS : "demande"
-
-    MODULES ||--o{ DOCUMENTS : "classe"
-    MODULES ||--o{ YOUTUBE_RECOMMENDATIONS : "associe"
-
-    DOCUMENTS ||--o{ DOCUMENT_RATINGS : "reçoit"
-    DOCUMENTS ||--o{ DOCUMENT_DOWNLOADS : "journalise"
-
-    COMPANIES ||--o{ INTERNSHIP_REVIEWS : "mentionne"
-
-    FILIERES {
-        uuid id PK
-        string name
-        string code UK
-        timestamps created_at
-    }
-
-    USERS {
-        uuid id PK
-        string name
-        string email UK
-        timestamp email_verified_at
-        string password
-        uuid filiere_id FK
-        tinyint year_level
-        enum role "student|admin"
-        string avatar_path
-        timestamps created_at
-        soft_delete deleted_at
-    }
-
-    MODULES {
-        uuid id PK
-        uuid filiere_id FK
-        string name
-        string code
-        smallint semester
-        timestamps created_at
-    }
-
-    DOCUMENTS {
-        uuid id PK
-        uuid user_id FK
-        uuid module_id FK
-        enum type "cours|examen|td|tp"
-        string title
-        text description
-        string file_path
-        bigint file_size
-        string mime_type
-        smallint year_concern
-        enum status "pending|approved|rejected"
-        int downloads_count
-        int ratings_count
-        decimal avg_rating
-        timestamps created_at
-        soft_delete deleted_at
-    }
-
-    DOCUMENT_RATINGS {
-        uuid id PK
-        uuid user_id FK
-        uuid document_id FK
-        tinyint score "1-5"
-        timestamps created_at
-        unique user_id_document_id
-    }
-
-    DOCUMENT_DOWNLOADS {
-        uuid id PK
-        uuid user_id FK
-        uuid document_id FK
-        timestamp downloaded_at
-    }
-
-    COMPANIES {
-        uuid id PK
-        string name
-        string city
-        string sector
-        timestamps created_at
-    }
-
-    INTERNSHIP_REVIEWS {
-        uuid id PK
-        uuid user_id FK
-        uuid company_id FK
-        uuid filiere_id FK
-        tinyint year_level
-        text description
-        tinyint rating
-        smallint year_done
-        timestamps created_at
-        soft_delete deleted_at
-    }
-
-    PROJECT_IDEAS {
-        uuid id PK
-        uuid user_id FK
-        uuid filiere_id FK
-        string title
-        text description
-        enum level "l1|l2|l3|m1|m2"
-        enum source "student|ai"
-        string repo_url
-        timestamps created_at
-        soft_delete deleted_at
-    }
-
-    EVENTS {
-        uuid id PK
-        uuid user_id FK
-        string title
-        text description
-        timestamp starts_at
-        timestamp ends_at
-        string location
-        string image_path
-        timestamps created_at
-        soft_delete deleted_at
-    }
-
-    NOTIFICATIONS {
-        uuid id PK
-        string type
-        uuid user_id FK
-        json data
-        timestamp read_at
-        timestamps created_at
-    }
-
-    YOUTUBE_RECOMMENDATIONS {
-        uuid id PK
-        uuid module_id FK
-        string video_id
-        string title
-        string channel
-        string thumbnail_url
-        int duration
-        smallint position
-        timestamp fetched_at
-    }
-
-    AI_RECOMMENDATIONS {
-        uuid id PK
-        uuid user_id FK
-        enum kind "project|document|study_path|other"
-        uuid module_id FK
-        text prompt
-        json response
-        string model
-        int tokens_used
-        timestamp created_at
-    }
+    FILIERES ||--o{ USERS : inscrit
+    FILIERES ||--o{ MODULES : contient
+    FILIERES ||--o{ INTERNSHIP_REVIEWS : filtre
+    FILIERES ||--o{ PROJECT_IDEAS : cible
+    USERS ||--o{ DOCUMENTS : depose
+    USERS ||--o{ DOCUMENT_RATINGS : note
+    USERS ||--o{ DOCUMENT_DOWNLOADS : telecharge
+    USERS ||--o{ INTERNSHIP_REVIEWS : publie
+    USERS ||--o{ PROJECT_IDEAS : propose
+    USERS ||--o{ EVENTS : cree
+    USERS ||--o{ NOTIFICATIONS : recoit
+    USERS ||--o{ AI_RECOMMENDATIONS : demande
+    MODULES ||--o{ DOCUMENTS : classe
+    MODULES ||--o{ YOUTUBE_RECOMMENDATIONS : associe
+    DOCUMENTS ||--o{ DOCUMENT_RATINGS : recoit
+    DOCUMENTS ||--o{ DOCUMENT_DOWNLOADS : journalise
+    COMPANIES ||--o{ INTERNSHIP_REVIEWS : mentionne
 ```
 
 ### Diagramme simplifié (vue métier)
 
-> *Version aplatie sans sous-graphes croisés — compatible github.com (évite l'erreur `Cannot read properties of undefined`).*
+> **Note GitHub** : ce schéma est en **texte ASCII** (pas Mermaid) pour garantir l'affichage sur github.com. Le rendu Mermaid de cette vue provoque l'erreur `Cannot read properties of undefined (reading 'render')` avec les sous-graphes et nœuds croisés.
 
-```mermaid
-flowchart TB
-    FIL[FILIERES] --> MOD[MODULES]
-    MOD --> DOC[DOCUMENTS]
-    FIL --> USR[USERS]
+```
+                    ┌─────────────┐
+                    │  FILIERES   │
+                    └──────┬──────┘
+                           │
+           ┌───────────────┼───────────────┐
+           ▼               ▼               │
+    ┌─────────────┐ ┌─────────────┐        │
+    │   MODULES   │ │    USERS    │        │
+    └──────┬──────┘ └──────┬──────┘        │
+           │               │               │
+           ▼               ├─────────────────┘
+    ┌─────────────┐        │
+    │  DOCUMENTS  │◄───────┘
+    └──────┬──────┘
+           │
+     ┌─────┴─────┐
+     ▼           ▼
+┌─────────┐ ┌───────────┐
+│ RATINGS │ │ DOWNLOADS │
+└─────────┘ └───────────┘
 
-    USR --> DOC
-    USR --> IR[INTERNSHIP_REVIEWS]
-    USR --> PI[PROJECT_IDEAS]
-    USR --> EVT[EVENTS]
-    USR --> AI_REC[AI_RECOMMENDATIONS]
-    USR --> NOTIF[NOTIFICATIONS]
-
-    DOC --> RAT[DOCUMENT_RATINGS]
-    DOC --> DL[DOCUMENT_DOWNLOADS]
-
-    CO[COMPANIES] --> IR
-    MOD --> YT[YOUTUBE_RECOMMENDATIONS]
+USERS crée aussi ──► PROJECT_IDEAS, EVENTS, NOTIFICATIONS, AI_RECOMMENDATIONS
+USERS publie ─────► INTERNSHIP_REVIEWS ◄── COMPANIES
+MODULES associe ───► YOUTUBE_RECOMMENDATIONS
 ```
 
 **Lecture du schéma** :
