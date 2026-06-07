@@ -3,8 +3,10 @@
     <div class="sl-dashboard-hero">
         <div>
             <h1 class="sl-dashboard-greet">
-                Bonjour {{ $overview['greeting_name'] ?? Auth::user()?->name }}
-                <span class="inline-block" aria-hidden="true">👋</span>
+                <span class="sl-greet-line">
+                    Bonjour {{ $overview['greeting_name'] ?? Auth::user()?->name }}
+                    <x-ui.icon name="wave" class="sl-greet-icon" aria-hidden="true" />
+                </span>
             </h1>
             <div class="mt-3 flex flex-wrap items-center gap-3">
                 @if (! empty($overview['filiere_name']))

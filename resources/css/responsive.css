@@ -1,0 +1,203 @@
+/* ===== StudyLib · Responsive & composants UI transversaux ===== */
+
+/* Salutation avec icône */
+.sl-greet-line {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.sl-greet-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    color: var(--color-primary);
+}
+
+/* Liens cartes · chevron */
+.sl-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-primary);
+    white-space: nowrap;
+}
+
+.sl-stg-score__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Raccourci clavier recherche */
+.sl-search-kbd {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding-inline: 6px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-surface);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--color-muted);
+}
+
+/* Empêcher débordement horizontal global */
+.sl-app,
+.sl-admin-app,
+.sl-marketing,
+.sl-guest-page {
+    overflow-x: clip;
+}
+
+/* Topbar · titre tronqué */
+.sl-topbar {
+    min-width: 0;
+    gap: var(--space-3);
+}
+
+.sl-topbar__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.sl-breadcrumb {
+    overflow: hidden;
+}
+
+.sl-breadcrumb__current,
+.sl-breadcrumb__link {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Dashboard */
+@media (max-width: 980px) {
+    .sl-dashboard-rail {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .sl-dashboard-hero .sl-btn.sl-desktop-only {
+        display: none;
+    }
+
+    .sl-greet-icon {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Modules · héros & grilles */
+@media (max-width: 1080px) {
+    .sl-stg-grid,
+    .sl-prj-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sl-lib-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .sl-stg-hero,
+    .sl-prj-hero {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sl-stg-hero__search,
+    .sl-stg-hero__cta,
+    .sl-prj-hero > div:last-child {
+        width: 100%;
+    }
+
+    .sl-stg-hero__cta .sl-btn,
+    .sl-prj-hero .sl-btn {
+        flex: 1;
+    }
+
+    .sl-lib-results-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sl-lib-results-bar .sl-lib-sort,
+    .sl-lib-results-bar .sl-lib-mobile-filter {
+        width: 100%;
+    }
+
+    .sl-lib-view-toggle {
+        align-self: flex-start;
+    }
+
+    .sl-stg-company__foot,
+    .sl-prj-card__foot {
+        flex-wrap: wrap;
+        gap: var(--space-2);
+    }
+
+    .sl-card-cta {
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .sl-content {
+        padding-inline: var(--space-4);
+    }
+
+    .sl-lib-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sl-kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-2);
+    }
+
+    .sl-kpi {
+        padding: var(--space-3);
+    }
+
+    .sl-kpi-val {
+        font-size: var(--text-h3);
+    }
+
+    .sl-stg-company,
+    .sl-prj-card {
+        padding: var(--space-4);
+    }
+
+    .sl-user-chip .sl-desktop-only {
+        display: none;
+    }
+
+    .sl-topbar {
+        padding-inline: var(--space-4);
+    }
+
+    .sl-landing-wrap {
+        padding-inline: var(--space-4);
+    }
+}
+
+@media (max-width: 360px) {
+    .sl-card-cta {
+        font-size: var(--text-xs);
+    }
+
+    .sl-greet-line {
+        gap: var(--space-1);
+    }
+}

@@ -102,7 +102,11 @@
                     @endfor
                 </div>
                 <p class="mt-2 text-xs text-muted">
-                    {{ $minRating > 0 ? $minRating.'★ et plus' : 'Toutes les notes' }}
+                    @if ($minRating > 0)
+                        {{ $minRating }} étoile{{ $minRating > 1 ? 's' : '' }} et plus
+                    @else
+                        Toutes les notes
+                    @endif
                 </p>
             </div>
 

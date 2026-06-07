@@ -15,6 +15,6 @@
         {{ $attributes->except('class') }}
     />
     @if ($showShortcut)
-        <kbd aria-hidden="true">⌘K</kbd>
+        <kbd class="sl-search-kbd sl-desktop-only" aria-hidden="true">Ctrl+K</kbd>
     @endif
 </div>

@@ -44,6 +44,9 @@
         @else
             <span class="text-xs text-muted">{{ $company->sector ?: 'Stage' }}</span>
         @endif
-        <span class="text-sm font-semibold text-primary">Voir la fiche →</span>
+        <span class="sl-card-cta">
+            Voir la fiche
+            <x-ui.icon name="chevron-right" class="h-4 w-4" />
+        </span>
     </div>
 </article>

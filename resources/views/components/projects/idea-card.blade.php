@@ -65,6 +65,9 @@
             <span class="sl-prj-doers__av" aria-hidden="true">{{ $ideaService->authorInitials($idea) }}</span>
             <span class="sl-prj-doers__name">{{ $ideaService->maskedAuthorName($idea) }}</span>
         </div>
-        <span class="text-sm font-semibold text-primary">Voir la fiche →</span>
+        <span class="sl-card-cta">
+            Voir la fiche
+            <x-ui.icon name="chevron-right" class="h-4 w-4" />
+        </span>
     </div>
 </article>

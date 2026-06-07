@@ -47,7 +47,10 @@
                             $percent = (int) round(($count / $totalReviews) * 100);
                         @endphp
                         <div class="sl-stg-score__line">
-                            <span class="sl-stg-score__label">{{ $stars }}★</span>
+                            <span class="sl-stg-score__label">
+                                {{ $stars }}
+                                <x-ui.icon name="star" class="h-3 w-3 text-star" />
+                            </span>
                             <div class="sl-stg-score__bar"><span style="width: {{ $percent }}%"></span></div>
                             <span class="sl-stg-score__val">{{ $count }}</span>
                         </div>

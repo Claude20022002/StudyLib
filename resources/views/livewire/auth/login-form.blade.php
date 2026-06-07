@@ -9,7 +9,12 @@
     @csrf
 
     <div class="mb-8">
-        <h1 class="sl-auth-title font-bold">Bon retour 👋</h1>
+        <h1 class="sl-auth-title font-bold">
+            <span class="sl-greet-line">
+                Bon retour
+                <x-ui.icon name="wave" class="sl-greet-icon" aria-hidden="true" />
+            </span>
+        </h1>
         <p class="mt-2 text-ink-soft">Connectez-vous pour accéder à la bibliothèque de votre promo.</p>
     </div>
 
