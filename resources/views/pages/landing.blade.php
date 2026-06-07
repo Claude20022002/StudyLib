@@ -195,22 +195,22 @@
 
             <div class="sl-landing-values">
                 <article class="sl-landing-value sl-landing-value--library">
-                    <div class="sl-landing-value__ico">
-                        <x-ui.icon name="library" class="h-5 w-5" />
+                    <div class="sl-landing-value__ico sl-landing-value__ico--flaticon">
+                        <x-ui.flaticon name="library" class="sl-flaticon--landing" />
                     </div>
                     <h3>Ressources centralisées</h3>
                     <p>Cours, annales, TD corrigés, rapports de stage et projets : tout est rangé par filière et par semestre, accessible en quelques secondes.</p>
                 </article>
                 <article class="sl-landing-value sl-landing-value--community">
-                    <div class="sl-landing-value__ico">
-                        <x-ui.icon name="user" class="h-5 w-5" />
+                    <div class="sl-landing-value__ico sl-landing-value__ico--flaticon">
+                        <x-ui.flaticon name="student" class="sl-flaticon--landing" />
                     </div>
                     <h3>Intelligence collective</h3>
                     <p>Notez, commentez et améliorez les documents de la promo. Les meilleures fiches remontent grâce aux votes de la communauté.</p>
                 </article>
                 <article class="sl-landing-value sl-landing-value--ai">
-                    <div class="sl-landing-value__ico">
-                        <x-ui.icon name="sparkles" class="h-5 w-5" />
+                    <div class="sl-landing-value__ico sl-landing-value__ico--flaticon">
+                        <x-ui.flaticon name="idea" class="sl-flaticon--landing" />
                     </div>
                     <h3>IA intégrée</h3>
                     <p>Résumés automatiques, recherche intelligente et recommandations personnalisées selon votre filière et vos révisions du moment.</p>
@@ -291,6 +291,7 @@
                 <a href="#" class="sl-landing-footer-link">Contact</a>
             </nav>
             <span class="sl-landing-footer__copy">© {{ date('Y') }} StudyLib · Communauté HESTIM</span>
+            <x-ui.flaticon-attribution class="sl-landing-footer__attrib" />
         </div>
     </footer>
 </x-layouts.marketing>

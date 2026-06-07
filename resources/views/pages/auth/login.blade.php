@@ -13,6 +13,7 @@
         </div>
 
         <p class="sl-auth-footer-note">Réservé aux étudiants HESTIM · @hestim.ma</p>
+        <x-ui.flaticon-attribution />
     </div>
 
     @include('partials.auth.art-panel')

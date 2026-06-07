@@ -165,13 +165,11 @@
                     </span>
                 </div>
                 <x-ui.empty-state
+                    flaticon="empty"
                     title="Aucun commentaire"
                     description="Soyez le premier à partager un retour utile sur ce document."
                     class="!py-8"
                 >
-                    <x-slot:icon>
-                        <x-ui.icon name="message" class="h-[30px] w-[30px]" />
-                    </x-slot:icon>
                 </x-ui.empty-state>
             </section>
 

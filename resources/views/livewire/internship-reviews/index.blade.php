@@ -5,6 +5,9 @@
 
     {{-- Search hero --}}
     <section class="sl-stg-hero" aria-label="Recherche stages">
+        <div class="sl-stg-hero__badge" aria-hidden="true">
+            <x-ui.flaticon name="briefcase" class="sl-flaticon--hero" />
+        </div>
         <div class="sl-stg-hero__search">
             <x-ui.icon name="search" class="sl-stg-hero__icon" />
             <input

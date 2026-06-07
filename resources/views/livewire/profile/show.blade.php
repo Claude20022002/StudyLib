@@ -162,8 +162,7 @@
                         @forelse ($documents as $document)
                             <x-profile.document-item :document="$document" wire:key="prof-doc-{{ $document->id }}" />
                         @empty
-                            <x-ui.empty-state title="Aucun document" description="Déposez votre première ressource pour la partager avec la promo.">
-                                <x-slot:icon><x-ui.icon name="file" class="h-[30px] w-[30px]" /></x-slot:icon>
+                            <x-ui.empty-state flaticon="library" title="Aucun document" description="Déposez votre première ressource pour la partager avec la promo.">
                                 <x-ui.button variant="primary" href="{{ route('documents.index', ['upload' => 1]) }}" wire:navigate>
                                     Déposer un document
                                 </x-ui.button>
@@ -175,8 +174,7 @@
                         @forelse ($internshipReviews as $review)
                             <x-profile.internship-item :review="$review" wire:key="prof-stage-{{ $review->id }}" />
                         @empty
-                            <x-ui.empty-state title="Aucun avis de stage" description="Partagez votre retour d'expérience pour aider la promo.">
-                                <x-slot:icon><x-ui.icon name="briefcase" class="h-[30px] w-[30px]" /></x-slot:icon>
+                            <x-ui.empty-state flaticon="briefcase" title="Aucun avis de stage" description="Partagez votre retour d'expérience pour aider la promo.">
                                 <x-ui.button variant="primary" href="{{ route('internship-reviews.index') }}" wire:navigate>
                                     Voir les stages
                                 </x-ui.button>
@@ -188,8 +186,7 @@
                         @forelse ($projectIdeas as $idea)
                             <x-profile.project-item :idea="$idea" wire:key="prof-proj-{{ $idea->id }}" />
                         @empty
-                            <x-ui.empty-state title="Aucun projet" description="Partagez une idée de projet CV avec la communauté.">
-                                <x-slot:icon><x-ui.icon name="layers" class="h-[30px] w-[30px]" /></x-slot:icon>
+                            <x-ui.empty-state flaticon="idea" title="Aucun projet" description="Partagez une idée de projet CV avec la communauté.">
                                 <x-ui.button variant="primary" href="{{ route('project-ideas.index') }}" wire:navigate>
                                     Explorer les projets
                                 </x-ui.button>
@@ -197,8 +194,7 @@
                         @endforelse
                     </div>
                 @elseif ($tab === 'favoris')
-                    <x-ui.empty-state title="Aucun favori" description="Les favoris seront disponibles prochainement. Enregistrez vos meilleures ressources pour les retrouver rapidement.">
-                        <x-slot:icon><x-ui.icon name="bookmark" class="h-[30px] w-[30px]" /></x-slot:icon>
+                    <x-ui.empty-state flaticon="empty" title="Aucun favori" description="Les favoris seront disponibles prochainement. Enregistrez vos meilleures ressources pour les retrouver rapidement.">
                     </x-ui.empty-state>
                 @else
                     <form wire:submit="saveProfile" class="sl-prof-settings">

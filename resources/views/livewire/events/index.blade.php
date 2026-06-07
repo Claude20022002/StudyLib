@@ -1,7 +1,7 @@
 <div>
     <section class="sl-ev-hero" aria-label="Introduction événements">
         <div class="sl-ev-hero__ico" aria-hidden="true">
-            <x-ui.icon name="calendar" class="h-5 w-5" />
+            <x-ui.flaticon name="calendar" class="sl-flaticon--hero" />
         </div>
         <div class="min-w-0 flex-1">
             <h2 class="text-h4 leading-tight font-bold tracking-tight">Agenda du campus</h2>
@@ -73,9 +73,6 @@
                 title="Aucun événement ce mois-ci"
                 :description="$search !== '' ? 'Aucun résultat pour votre recherche. Essayez un autre mot-clé ou changez de mois.' : 'Aucun événement planifié pour cette période. Revenez plus tard ou consultez un autre mois.'"
             >
-                <x-slot:icon>
-                    <x-ui.icon name="calendar" class="h-[30px] w-[30px]" />
-                </x-slot:icon>
                 <div class="flex flex-wrap justify-center gap-3">
                     @if ($search !== '')
                         <button type="button" wire:click="clearSearch" class="sl-btn sl-btn--secondary">Effacer la recherche</button>

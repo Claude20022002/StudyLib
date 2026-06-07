@@ -5,7 +5,7 @@
 
     <section class="sl-prj-hero" aria-label="Introduction projets CV">
         <div class="sl-prj-hero__ico" aria-hidden="true">
-            <x-ui.icon name="layers" class="h-5 w-5" />
+            <x-ui.flaticon name="idea" class="sl-flaticon--hero" />
         </div>
         <div class="min-w-0 flex-1">
             <h2 class="text-h4 leading-tight font-bold tracking-tight">Trouvez un projet pertinent pour votre filière</h2>
