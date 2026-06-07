@@ -90,32 +90,42 @@ Une application web monolithique Laravel avec :
 
 ### Modules fonctionnels
 
-```mermaid
-mindmap
-  root((StudyLib))
-    Auth
-      Inscription hestim.ma
-      Connexion Deconnexion
-      Profil
-    Pedagogie
-      Bibliotheque documents
-      Upload fichiers
-      Notation 1-5
-      Telechargement
-    Social Carriere
-      Avis de stages
-      Projets CV
-    Vie etudiante
-      Evenements
-      Dashboard personnalise
-    Administration
-      Moderation documents
-      CRUD evenements
-    Intelligence
-      Suggestions Claude
-      Videos YouTube
-      Notifications
+> **Note GitHub** : le type Mermaid `mindmap` provoque `Cannot read properties of undefined (reading 'render')` sur github.com. Schéma texte ci-dessous (même contenu).
+
 ```
+StudyLib
+├── Auth
+│   ├── Inscription hestim.ma
+│   ├── Connexion / Deconnexion
+│   └── Profil
+├── Pedagogie
+│   ├── Bibliotheque documents
+│   ├── Upload fichiers
+│   ├── Notation 1-5
+│   └── Telechargement
+├── Social / Carriere
+│   ├── Avis de stages
+│   └── Projets CV
+├── Vie etudiante
+│   ├── Evenements
+│   └── Dashboard personnalise
+├── Administration
+│   ├── Moderation documents
+│   └── CRUD evenements
+└── Intelligence
+    ├── Suggestions Claude
+    ├── Videos YouTube
+    └── Notifications
+```
+
+| Module | Sous-modules | Description |
+|---|---|---|
+| **Auth** | Inscription, Connexion, Profil | Acces restreint au domaine `@hestim.ma` |
+| **Pedagogie** | Bibliotheque, Upload, Notation, Telechargement | Ressources cours / examens / TD / TP |
+| **Social / Carriere** | Stages, Projets CV | Avis entreprises et idees portfolio |
+| **Vie etudiante** | Evenements, Dashboard | Agenda campus et accueil personnalise |
+| **Administration** | Moderation, CRUD evenements | Pilotage contenu et calendrier |
+| **Intelligence** | Claude, YouTube, Notifications | IA generative, videos, alertes in-app |
 
 ---
 
