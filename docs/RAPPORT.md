@@ -2,7 +2,8 @@
 
 > **Usage** : ce fichier centralise vision, architecture, schémas, maquettes, backlog et état d'avancement du projet StudyLib. Il sert de base à la rédaction d'un rapport académique ou technique (mémoire, PFE, dossier projet).
 >
-> **Dernière mise à jour** : 6 juin 2026 — sections KPI (11) et recommandations / IA (12) enrichies
+> **Dernière mise à jour** : 6 juin 2026 — sections KPI (11) et recommandations / IA (12) enrichies  
+> **Rendu GitHub** : les diagrammes Mermaid utilisent des libellés ASCII (sans accents ni `@`) pour compatibilité avec github.com. Pour l'export PDF avec accents, utiliser [mermaid.live](https://mermaid.live).
 > **Sources** : `docs/AGENT_CONTEXT.md`, `docs/diagramme/`, `docs/prototype/`, `docs/design-system/`, code source Laravel
 
 ---
@@ -93,26 +94,26 @@ Une application web monolithique Laravel avec :
 mindmap
   root((StudyLib))
     Auth
-      Inscription @hestim.ma
-      Connexion / Déconnexion
+      Inscription hestim.ma
+      Connexion Deconnexion
       Profil
-    Pédagogie
-      Bibliothèque documents
+    Pedagogie
+      Bibliotheque documents
       Upload fichiers
       Notation 1-5
-      Téléchargement
-    Social / Carrière
+      Telechargement
+    Social Carriere
       Avis de stages
       Projets CV
-    Vie étudiante
-      Événements
-      Dashboard personnalisé
+    Vie etudiante
+      Evenements
+      Dashboard personnalise
     Administration
-      Modération documents
-      CRUD événements
+      Moderation documents
+      CRUD evenements
     Intelligence
       Suggestions Claude
-      Vidéos YouTube
+      Videos YouTube
       Notifications
 ```
 
@@ -145,7 +146,7 @@ flowchart TB
 
     subgraph Application
         L[Laravel 11]
-        LW[Livewire / Blade]
+        LW[Livewire Blade]
     end
 
     subgraph Data
@@ -180,16 +181,16 @@ La logique métier est **exclusivement** dans `app/Services/`. Les controllers e
 
 ```mermaid
 flowchart LR
-    REQ[Requête HTTP] --> CTRL[Controller]
+    REQ[Requete HTTP] --> CTRL[Controller]
     CTRL --> FR[Form Request]
-    FR --> SVC[Service métier]
+    FR --> SVC[Service metier]
     SVC --> REPO[Repository]
     REPO --> MODEL[Model Eloquent]
     MODEL --> DB[(PostgreSQL)]
 
     CTRL --> POL[Policy Laravel]
     LW[Livewire] --> SVC
-    VIEW[Blade] -.->|affichage uniquement| LW
+    VIEW[Blade] -.->|affichage| LW
 ```
 
 ### Couches applicatives
@@ -426,7 +427,7 @@ erDiagram
 
 ```mermaid
 flowchart TB
-    subgraph Académique
+    subgraph academique [Academique]
         F[FILIERES] --> M[MODULES]
         M --> D[DOCUMENTS]
     end
@@ -493,22 +494,22 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-    subgraph Acteurs
+    subgraph acteurs [Acteurs]
         V[Visiteur]
-        E[Étudiant]
+        E[Etudiant]
         A[Admin]
     end
 
-    subgraph Cas d_utilisation
-        UC1[S_inscrire]
+    subgraph cas [Cas utilisation]
+        UC1[S inscrire]
         UC2[Se connecter]
-        UC3[Consulter bibliothèque]
-        UC4[Déposer document]
-        UC5[Noter / Télécharger]
+        UC3[Consulter bibliotheque]
+        UC4[Deposer document]
+        UC5[Noter Telecharger]
         UC6[Publier avis stage]
         UC7[Consulter dashboard]
-        UC8[Modérer documents]
-        UC9[Gérer événements]
+        UC8[Moderer documents]
+        UC9[Gerer evenements]
     end
 
     V --> UC2
@@ -527,7 +528,7 @@ flowchart LR
 
 ```mermaid
 sequenceDiagram
-    actor E as Étudiant
+    actor E as Etudiant
     participant UI as Interface Livewire
     participant C as DocumentController
     participant S as DocumentService
@@ -535,18 +536,18 @@ sequenceDiagram
     participant DB as PostgreSQL
     actor A as Admin
 
-    E->>UI: Upload fichier + métadonnées
-    UI->>C: POST /documents
-    C->>S: store(document)
-    S->>M: put(file)
-    S->>DB: INSERT status=pending
+    E->>UI: Upload fichier metadonnees
+    UI->>C: POST documents
+    C->>S: store document
+    S->>M: put file
+    S->>DB: INSERT status pending
     DB-->>E: Document en attente
 
-    A->>UI: File modération
-    UI->>C: PATCH approve/reject
+    A->>UI: File moderation
+    UI->>C: PATCH approve reject
     C->>S: ModerationService
     S->>DB: UPDATE status
-    DB-->>E: Notification (future)
+    DB-->>E: Notification
 ```
 
 ### Flux : authentification HESTIM
@@ -559,14 +560,14 @@ sequenceDiagram
     participant AS as AuthService
     participant DB as PostgreSQL
 
-    U->>F: email + password
-    F->>MW: POST /register ou validation email
-    MW->>AS: email @hestim.ma ?
+    U->>F: email password
+    F->>MW: POST register validation email
+    MW->>AS: email hestim.ma
     alt domaine invalide
         AS-->>U: Erreur 422
     else domaine valide
-        AS->>DB: create / authenticate
-        DB-->>U: Session + redirect dashboard
+        AS->>DB: create authenticate
+        DB-->>U: Session redirect dashboard
     end
 ```
 
@@ -614,21 +615,37 @@ sequenceDiagram
 
 ### Parcours étudiant type
 
+> *Diagramme simplifié compatible GitHub (le type `journey` Mermaid n'est pas fiable sur github.com).*
+
 ```mermaid
-journey
-    title Parcours étudiant StudyLib
-    section Découverte
-      Visite landing: 5: Visiteur
-      Création compte: 4: Étudiant
-    section Usage quotidien
-      Dashboard KPIs: 5: Étudiant
-      Recherche document: 5: Étudiant
-      Téléchargement: 5: Étudiant
-    section Contribution
-      Upload ressource: 4: Étudiant
-      Attente modération: 3: Étudiant
-      Ressource approuvée: 5: Étudiant
+flowchart LR
+    subgraph decouverte [Decouverte]
+        P1[Visite landing]
+        P2[Creation compte]
+    end
+    subgraph usage [Usage quotidien]
+        P3[Dashboard KPIs]
+        P4[Recherche document]
+        P5[Telechargement]
+    end
+    subgraph contribution [Contribution]
+        P6[Upload ressource]
+        P7[Attente moderation]
+        P8[Ressource approuvee]
+    end
+    P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8
 ```
+
+| Etape | Acteur | Satisfaction (1-5) |
+|---|---|---|
+| Visite landing | Visiteur | 5 |
+| Creation compte | Etudiant | 4 |
+| Dashboard KPIs | Etudiant | 5 |
+| Recherche document | Etudiant | 5 |
+| Telechargement | Etudiant | 5 |
+| Upload ressource | Etudiant | 4 |
+| Attente moderation | Etudiant | 3 |
+| Ressource approuvee | Etudiant | 5 |
 
 ### Navigation application (sidebar / mobile)
 
@@ -658,21 +675,21 @@ Les KPI ne remplacent pas une analytics avancée (Google Analytics, BI) : ils so
 
 ```mermaid
 flowchart LR
-    subgraph UI
-        D[Dashboard étudiant]
-        AM[Admin modération]
-        AE[Admin événements]
+    subgraph ui [Interface]
+        D[Dashboard etudiant]
+        AM[Admin moderation]
+        AE[Admin evenements]
         N[Notifications]
     end
 
-    subgraph Services
+    subgraph services [Services]
         DS[DashboardService]
         MS[ModerationService]
         ES[EventService]
         NS[NotificationService]
     end
 
-    subgraph Données
+    subgraph data [Donnees]
         PG[(PostgreSQL)]
     end
 
@@ -954,26 +971,26 @@ StudyLib répond à ce problème par une **stratégie hybride** : des recommanda
 
 ```mermaid
 flowchart TB
-    subgraph Entrées
-        U[Profil utilisateur<br/>filière, niveau]
+    subgraph inputs [Entrees]
+        U[Profil utilisateur]
         D[Catalogue documents]
         S[Avis stages]
-        M[Modules académiques]
+        M[Modules academiques]
     end
 
-    subgraph Moteurs MVP
-        R1[Filtrage SQL filière/module]
-        R2[Tri popularité + rating]
-        R3[Règles seuils stages]
+    subgraph engines [Moteurs MVP]
+        R1[Filtrage SQL filiere module]
+        R2[Tri popularite et rating]
+        R3[Regles seuils stages]
         R4[Claude API prompts]
         R5[Cache YouTube]
     end
 
-    subgraph Sorties UI
-        DB[Dashboard]
-        DS[Détail document]
-        ST[Stages]
-        PR[Projets CV]
+    subgraph outputs [Sorties UI]
+        OUT_DASH[Dashboard]
+        OUT_DOC[Detail document]
+        OUT_STG[Stages]
+        OUT_PRJ[Projets CV]
     end
 
     U --> R1
@@ -983,12 +1000,12 @@ flowchart TB
     U --> R4
     M --> R5
 
-    R1 --> DB
-    R1 --> DS
-    R2 --> DS
-    R3 --> ST
-    R4 --> PR
-    R5 --> DB
+    R1 --> OUT_DASH
+    R1 --> OUT_DOC
+    R2 --> OUT_DOC
+    R3 --> OUT_STG
+    R4 --> OUT_PRJ
+    R5 --> OUT_DASH
 ```
 
 #### Conclusion (vue d'ensemble)
@@ -1355,23 +1372,23 @@ Les idées de **projets CV** manquent souvent d'originalité ou de adéquation a
 
 ```mermaid
 sequenceDiagram
-    actor E as Étudiant
+    actor E as Etudiant
     participant UI as Livewire Projets CV
     participant PIS as ProjectIdeaService
     participant CS as ClaudeService
     participant API as API Anthropic
     participant DB as PostgreSQL
 
-    E->>UI: Filière + niveau + intérêts
-    UI->>PIS: generateAiIdeas()
+    E->>UI: Filiere niveau interets
+    UI->>PIS: generateAiIdeas
     PIS->>PIS: Construire prompt JSON strict
-    PIS->>CS: suggest(user, AiKind::Project, prompt)
-    CS->>API: POST /v1/messages
-    API-->>CS: Réponse JSON Claude
+    PIS->>CS: suggest user kind prompt
+    CS->>API: POST v1 messages
+    API-->>CS: Reponse JSON Claude
     CS->>DB: INSERT ai_recommendations
-    PIS->>PIS: Parser JSON → 3 idées
-    PIS->>DB: INSERT project_ideas (source=ai)
-    DB-->>E: 3 cartes « StudyLib IA »
+    PIS->>PIS: Parser JSON 3 idees
+    PIS->>DB: INSERT project_ideas source ai
+    DB-->>E: 3 cartes StudyLib IA
 ```
 
 **Étapes détaillées** :
@@ -1641,21 +1658,21 @@ Les signaux **explicites** (notes) et **implicites** (téléchargements) constit
 
 ```mermaid
 flowchart TB
-    subgraph Contrôles
-        E1[Email @hestim.ma]
+    subgraph controles [Controles]
+        E1[Email hestim.ma]
         E2[Policies Laravel]
         E3[Form Requests]
         E4[Middleware admin]
-        E5[Modération contenu]
+        E5[Moderation contenu]
         E6[MinIO URLs temporaires]
     end
 
-    REQ[Requête] --> E3
+    REQ[Requete] --> E3
     E3 --> E2
     E2 --> E4
     E1 --> REG[Inscription]
     E5 --> DOC[Documents approved only]
-    E6 --> DL[Téléchargement sécurisé]
+    E6 --> DL[Telechargement securise]
 ```
 
 | Mesure | Implémentation |
@@ -1718,41 +1735,41 @@ YOUTUBE_API_KEY=
 
 ```mermaid
 gantt
-    title Plan d'implémentation StudyLib
+    title Plan implementation StudyLib
     dateFormat YYYY-MM-DD
     section Fondations
-    Design system + layouts     :done, f1, 2026-06-01, 7d
+    Design system layouts     :done, f1, 2026-06-01, 7d
     Docker Compose              :done, f2, 2026-06-05, 2d
     section P0 MVP
     Auth complet                :a1, 2026-06-07, 5d
     Landing                     :a2, after a1, 3d
     Dashboard                   :done, a3, 2026-06-06, 4d
-    Bibliothèque + détail       :a4, after a2, 10d
-    Modération admin            :a5, after a4, 5d
+    Bibliotheque detail         :a4, after a2, 10d
+    Moderation admin            :a5, after a4, 5d
     section P1
     Stages                      :b1, after a5, 5d
     Projets CV                  :b2, after b1, 5d
-    Événements + Profil         :b3, after b2, 7d
+    Evenements Profil           :b3, after b2, 7d
     section P2
-    IA + YouTube + Meilisearch  :c1, after b3, 14d
+    IA YouTube Meilisearch      :c1, after b3, 14d
 ```
 
 ### Dépendances entre modules
 
 ```mermaid
 flowchart TD
-    F[Fondations UI + Infra] --> AUTH[Auth]
+    F[Fondations UI Infra] --> AUTH[Auth]
     F --> LAND[Landing]
     AUTH --> DASH[Dashboard]
-    AUTH --> DOC[Bibliothèque]
-    DOC --> DET[Détail document]
-    DOC --> MOD[Modération Admin]
+    AUTH --> DOC[Bibliotheque]
+    DOC --> DET[Detail document]
+    DOC --> MOD[Moderation Admin]
     AUTH --> STG[Stages]
     AUTH --> PRJ[Projets CV]
-    AUTH --> EVT[Événements]
+    AUTH --> EVT[Evenements]
     AUTH --> PRF[Profil]
     DOC --> MEILI[Meilisearch P2]
-    DASH --> IA[Claude / YouTube P2]
+    DASH --> IA[Claude YouTube P2]
 ```
 
 ### Ordre d'exécution (1 module à la fois)
