@@ -74,12 +74,10 @@
                 </div>
             @elseif ($documents->isEmpty())
                 <x-ui.empty-state
+                    flaticon="library"
                     title="Aucun document dans ce filtre"
                     description="Aucune ressource ne correspond pour l'instant. Soyez le premier à en partager une avec votre promo."
                 >
-                    <x-slot:icon>
-                        <x-ui.icon name="library" class="h-[30px] w-[30px]" />
-                    </x-slot:icon>
                     <x-ui.button variant="primary" href="{{ route('documents.index') }}">
                         <x-ui.icon name="plus" />
                         Déposer un document

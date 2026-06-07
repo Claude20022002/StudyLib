@@ -108,12 +108,10 @@
             <div wire:loading.class="opacity-60">
                 @if ($ideas->isEmpty())
                     <x-ui.empty-state
+                        flaticon="idea"
                         title="Aucun projet trouvé"
                         description="Aucune idée ne correspond à vos critères. Élargissez la recherche, proposez la vôtre ou générez des idées IA."
                     >
-                        <x-slot:icon>
-                            <x-ui.icon name="layers" class="h-[30px] w-[30px]" />
-                        </x-slot:icon>
                         <div class="flex flex-wrap justify-center gap-3">
                             <button type="button" wire:click="resetFilters" class="sl-btn sl-btn--secondary">Réinitialiser</button>
                             <button type="button" wire:click="openPropose" class="sl-btn sl-btn--primary">Proposer un projet</button>

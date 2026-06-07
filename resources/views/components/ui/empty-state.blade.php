@@ -1,10 +1,15 @@
 @props([
     'title' => '',
     'description' => '',
+    'flaticon' => null,
 ])
 
 <div {{ $attributes->merge(['class' => 'sl-empty']) }}>
-    @if (isset($icon))
+    @if ($flaticon)
+        <div class="sl-empty-ico sl-empty-ico--flaticon">
+            <x-ui.flaticon :name="$flaticon" class="sl-flaticon--empty" />
+        </div>
+    @elseif (isset($icon))
         <div class="sl-empty-ico">{{ $icon }}</div>
     @endif
     @if ($title)

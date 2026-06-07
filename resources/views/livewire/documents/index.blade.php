@@ -187,12 +187,10 @@
             <div wire:loading.class="opacity-60">
                 @if ($documents->isEmpty())
                     <x-ui.empty-state
+                        flaticon="search"
                         title="Aucun résultat"
                         description="Aucun document ne correspond à votre recherche ou à vos filtres. Essayez d'élargir les critères, ou partagez le vôtre."
                     >
-                        <x-slot:icon>
-                            <x-ui.icon name="search" class="h-[30px] w-[30px]" />
-                        </x-slot:icon>
                         <div class="flex flex-wrap justify-center gap-3">
                             <x-ui.button variant="secondary" wire:click="resetFilters">Réinitialiser les filtres</x-ui.button>
                             <x-ui.button variant="primary" wire:click="openUpload">

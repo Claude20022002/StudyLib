@@ -138,12 +138,10 @@
             <div wire:loading.class="opacity-60">
                 @if ($companies->isEmpty())
                     <x-ui.empty-state
+                        flaticon="search"
                         title="Aucune entreprise trouvée"
                         description="Aucun retour ne correspond à vos critères. Élargissez la recherche ou partagez le vôtre."
                     >
-                        <x-slot:icon>
-                            <x-ui.icon name="search" class="h-[30px] w-[30px]" />
-                        </x-slot:icon>
                         <div class="flex flex-wrap justify-center gap-3">
                             <button type="button" wire:click="resetFilters" class="sl-btn sl-btn--secondary">Réinitialiser les filtres</button>
                             <button type="button" wire:click="openShare()" class="sl-btn sl-btn--primary">

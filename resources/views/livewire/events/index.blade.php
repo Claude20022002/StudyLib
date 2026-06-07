@@ -69,6 +69,7 @@
     <div wire:loading.class="opacity-60">
         @if ($monthEvents->isEmpty())
             <x-ui.empty-state
+                flaticon="calendar"
                 title="Aucun événement ce mois-ci"
                 :description="$search !== '' ? 'Aucun résultat pour votre recherche. Essayez un autre mot-clé ou changez de mois.' : 'Aucun événement planifié pour cette période. Revenez plus tard ou consultez un autre mois.'"
             >

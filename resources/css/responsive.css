@@ -21,6 +21,57 @@
     height: 36px;
 }
 
+/* Flaticon · illustrations PNG */
+.sl-flaticon {
+    object-fit: contain;
+    display: block;
+}
+
+.sl-flaticon--empty {
+    width: 72px;
+    height: 72px;
+}
+
+.sl-flaticon--hero {
+    width: 28px;
+    height: 28px;
+}
+
+.sl-flaticon--landing {
+    width: 32px;
+    height: 32px;
+}
+
+.sl-flaticon--art {
+    width: 120px;
+    height: 120px;
+    margin-bottom: var(--space-4);
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.18));
+}
+
+.sl-empty-ico--flaticon {
+    width: auto;
+    height: auto;
+    background: transparent;
+    color: inherit;
+}
+
+.sl-flaticon-attrib {
+    font-size: 10px;
+    color: var(--color-muted);
+    line-height: 1.4;
+}
+
+.sl-flaticon-attrib a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.sl-flaticon-attrib a:hover {
+    color: var(--color-primary);
+}
+
 /* Liens cartes · chevron */
 .sl-card-cta {
     display: inline-flex;
