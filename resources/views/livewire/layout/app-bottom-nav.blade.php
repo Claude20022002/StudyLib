@@ -21,7 +21,7 @@
         </div>
     </nav>
 
-    <button type="button" class="sl-fab" aria-label="Déposer">
+    <a href="{{ route('documents.index') }}" wire:navigate class="sl-fab" aria-label="Déposer un document">
         <x-ui.icon name="plus" class="h-6 w-6 text-white" />
-    </button>
+    </a>
 </div>
