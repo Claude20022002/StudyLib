@@ -17,4 +17,6 @@ interface ProjectIdeaRepositoryInterface extends RepositoryInterface
      * @return LengthAwarePaginator<int, ProjectIdea>
      */
     public function search(array $filters, int $perPage = 15): LengthAwarePaginator;
+
+    public function findWithRelations(string $id): ?ProjectIdea;
 }

@@ -7,6 +7,7 @@ namespace App\Repositories\Eloquent;
 use App\Models\ProjectIdea;
 use App\Repositories\Contracts\ProjectIdeaRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @extends BaseRepository<ProjectIdea>
@@ -18,13 +19,54 @@ class ProjectIdeaRepository extends BaseRepository implements ProjectIdeaReposit
         parent::__construct($model);
     }
 
-    public function search(array $filters, int $perPage = 15): LengthAwarePaginator
+    public function search(array $filters, int $perPage = 12): LengthAwarePaginator
+    {
+        $query = $this->searchQuery($filters)
+            ->with(['user', 'filiere']);
+
+        $sort = $filters['sort'] ?? 'recent';
+
+        if ($sort === 'level') {
+            $query->orderBy('level');
+        } else {
+            $query->latest();
+        }
+
+        return $query->paginate($perPage);
+    }
+
+    public function findWithRelations(string $id): ?ProjectIdea
     {
         return $this->model->newQuery()
-            ->when($filters['filiere_id'] ?? null, fn ($q, $v) => $q->where('filiere_id', $v))
-            ->when($filters['level'] ?? null, fn ($q, $v) => $q->where('level', $v))
-            ->when($filters['source'] ?? null, fn ($q, $v) => $q->where('source', $v))
-            ->latest()
-            ->paginate($perPage);
+            ->with(['user', 'filiere'])
+            ->find($id);
+    }
+
+    /** @return Builder<ProjectIdea> */
+    private function searchQuery(array $filters): Builder
+    {
+        $query = $this->model->newQuery();
+
+        if (! empty($filters['q'])) {
+            $term = '%'.$filters['q'].'%';
+            $query->where(function ($builder) use ($term): void {
+                $builder->where('title', 'like', $term)
+                    ->orWhere('description', 'like', $term);
+            });
+        }
+
+        if (! empty($filters['filiere_id'])) {
+            $query->where('filiere_id', $filters['filiere_id']);
+        }
+
+        if (! empty($filters['level'])) {
+            $query->where('level', $filters['level']);
+        }
+
+        if (! empty($filters['source'])) {
+            $query->where('source', $filters['source']);
+        }
+
+        return $query;
     }
 }
