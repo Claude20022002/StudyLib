@@ -104,6 +104,12 @@
     @case('arrow-right')
         <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         @break
+    @case('map-pin')
+        <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        @break
+    @case('filter')
+        <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+        @break
     @default
         <span {{ $attributes->merge(['class' => $classes, 'aria-hidden' => 'true']) }}></span>
 @endswitch

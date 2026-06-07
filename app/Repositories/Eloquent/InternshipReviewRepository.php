@@ -34,4 +34,11 @@ class InternshipReviewRepository extends BaseRepository implements InternshipRev
     {
         return $this->model->newQuery()->where('filiere_id', $filiereId)->count();
     }
+
+    public function totalDistinctCompanies(): int
+    {
+        return (int) $this->model->newQuery()
+            ->distinct('company_id')
+            ->count('company_id');
+    }
 }

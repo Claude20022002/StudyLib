@@ -2529,3 +2529,215 @@
         @apply static;
     }
 }
+
+/* ===== Stages (internship reviews) ===== */
+.sl-stg-hero {
+    @apply mb-5 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-card p-5 shadow-xs;
+}
+
+.sl-stg-hero__search {
+    @apply relative min-w-[240px] flex-1;
+}
+
+.sl-stg-hero__icon {
+    @apply pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-muted;
+}
+
+.sl-stg-hero__input {
+    @apply w-full rounded-md border-[1.5px] border-border-strong bg-surface text-h4 text-ink transition-all;
+    height: 52px;
+    padding: 0 48px 0 48px;
+}
+
+.sl-stg-hero__input:focus {
+    @apply border-primary bg-card outline-none;
+    box-shadow: var(--shadow-focus);
+}
+
+.sl-stg-hero__clear {
+    @apply absolute top-1/2 right-3 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-md text-muted transition-colors hover:bg-surface-2 hover:text-ink;
+}
+
+.sl-stg-hero__cta {
+    height: 52px;
+    padding-inline: var(--space-5);
+}
+
+.sl-stg-grid {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.sl-stg-company {
+    @apply flex cursor-pointer flex-col gap-3 rounded-lg border border-border bg-card p-5 transition-all;
+}
+
+.sl-stg-company:hover {
+    @apply -translate-y-0.5 border-border-strong shadow-md;
+}
+
+.sl-stg-company__top {
+    @apply flex items-start gap-3;
+}
+
+.sl-stg-company__logo {
+    @apply grid h-[52px] w-[52px] shrink-0 place-items-center rounded-md text-h4 font-bold text-white;
+}
+
+.sl-stg-company__name {
+    @apply text-h4 leading-snug font-semibold;
+}
+
+.sl-stg-company__loc {
+    @apply mt-1 flex flex-wrap items-center gap-1.5 text-sm text-muted;
+}
+
+.sl-stg-company__rating {
+    @apply flex items-center gap-2 border-y border-border py-3;
+}
+
+.sl-stg-company__rate-num {
+    @apply text-h3 font-bold tracking-tight;
+}
+
+.sl-stg-company__reviews {
+    @apply text-sm text-muted;
+}
+
+.sl-stg-company__foot {
+    @apply flex items-center justify-between;
+}
+
+.sl-stg-reco {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-2.5 py-1 text-xs font-semibold text-primary-active;
+}
+
+.sl-stg-det-head {
+    @apply flex items-start gap-4;
+}
+
+.sl-stg-det-logo {
+    @apply grid h-[60px] w-[60px] shrink-0 place-items-center rounded-md text-h3 font-bold text-white;
+}
+
+.sl-stg-det-name {
+    @apply text-h2 leading-tight font-bold tracking-tight;
+}
+
+.sl-stg-det-sub {
+    @apply mt-1 flex flex-wrap items-center gap-2 text-sm text-muted;
+}
+
+.sl-stg-score {
+    @apply my-5 flex items-center gap-5 rounded-md border border-border bg-surface p-4;
+}
+
+.sl-stg-score__big {
+    @apply text-center;
+}
+
+.sl-stg-score__num {
+    @apply text-[38px] leading-none font-bold tracking-tight;
+}
+
+.sl-stg-score__of {
+    @apply text-xs text-muted;
+}
+
+.sl-stg-score__bars {
+    @apply flex flex-1 flex-col gap-1.5;
+}
+
+.sl-stg-score__line {
+    @apply flex items-center gap-3 text-xs;
+}
+
+.sl-stg-score__label {
+    @apply w-[92px] shrink-0 font-semibold text-ink-soft;
+}
+
+.sl-stg-score__bar {
+    @apply h-[7px] flex-1 overflow-hidden rounded bg-border;
+}
+
+.sl-stg-score__bar > span {
+    @apply block h-full rounded bg-primary;
+}
+
+.sl-stg-score__val {
+    @apply w-[26px] text-right font-semibold text-muted;
+}
+
+.sl-stg-det-section {
+    @apply mt-6;
+}
+
+.sl-stg-det-section__title {
+    @apply mb-3 flex items-center gap-2 text-h4 font-semibold;
+}
+
+.sl-stg-review {
+    @apply mt-3 rounded-md border border-border bg-surface p-4;
+}
+
+.sl-stg-review__head {
+    @apply mb-3 flex items-center gap-3;
+}
+
+.sl-stg-review__av {
+    @apply grid h-9 w-9 place-items-center rounded-full bg-primary-soft text-xs font-bold text-primary-active;
+}
+
+.sl-stg-review__who {
+    @apply text-sm font-semibold;
+}
+
+.sl-stg-review__meta {
+    @apply text-xs text-muted;
+}
+
+.sl-stg-review__block {
+    @apply mt-3;
+}
+
+.sl-stg-review__lbl {
+    @apply mb-0.5 text-xs font-bold tracking-wide text-muted uppercase;
+}
+
+.sl-stg-review__block p {
+    @apply text-sm text-ink-soft;
+}
+
+.sl-stg-review__anon {
+    @apply mt-2 flex items-center gap-1.5 text-xs text-muted;
+}
+
+.sl-stg-star-btn {
+    @apply grid h-8 w-8 place-items-center border-0 bg-transparent;
+}
+
+.sl-stg-star-btn svg {
+    @apply text-border-strong transition-all;
+}
+
+.sl-stg-star-btn:hover svg {
+    transform: scale(1.12);
+}
+
+.sl-stg-star-btn.is-on svg {
+    color: #f59e0b;
+}
+
+.sl-stg-paid {
+    @apply mt-2 flex items-start gap-3 rounded-md border border-border bg-surface p-4;
+}
+
+@media (max-width: 860px) {
+    .sl-stg-hero {
+        @apply flex-col items-stretch;
+    }
+
+    .sl-stg-hero__cta {
+        @apply w-full;
+    }
+}

@@ -19,4 +19,6 @@ interface InternshipReviewRepositoryInterface extends RepositoryInterface
     public function search(array $filters, int $perPage = 15): LengthAwarePaginator;
 
     public function countForFiliere(string $filiereId): int;
+
+    public function totalDistinctCompanies(): int;
 }
