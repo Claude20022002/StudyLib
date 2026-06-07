@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\EventService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
@@ -13,8 +15,12 @@ class EventController extends Controller
         private readonly EventService $events,
     ) {}
 
-    public function index(): JsonResponse
+    public function index(Request $request): View|JsonResponse
     {
-        return response()->json($this->events->upcoming());
+        if ($request->expectsJson()) {
+            return response()->json($this->events->upcoming());
+        }
+
+        return view('pages.events.index');
     }
 }

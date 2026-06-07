@@ -110,6 +110,9 @@
     @case('filter')
         <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><path d="M4 6h16M7 12h10M10 18h4"/></svg>
         @break
+    @case('list')
+        <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2', 'stroke-linecap' => 'round', 'aria-hidden' => 'true']) }}><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        @break
     @case('wave')
         <svg {{ $attributes->merge(['class' => $classes, 'viewBox' => '0 0 24 24', 'fill' => 'none', 'stroke' => 'currentColor', 'stroke-width' => '2', 'stroke-linecap' => 'round', 'stroke-linejoin' => 'round', 'aria-hidden' => 'true']) }}><path d="M7 11V7a2 2 0 0 1 4 0v4"/><path d="M11 11V5a2 2 0 0 1 4 0v6"/><path d="M15 11V6a2 2 0 0 1 4 0v5c0 5-4 8-8 8-3.5 0-7-2-7-6 0-2 0-4 2-4a2 2 0 0 1 2 2v1"/></svg>
         @break

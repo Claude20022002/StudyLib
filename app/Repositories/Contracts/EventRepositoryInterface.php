@@ -22,4 +22,7 @@ interface EventRepositoryInterface extends RepositoryInterface
     public function countUpcoming(): int;
 
     public function daysUntilNext(): ?int;
+
+    /** @return Collection<int, Event> */
+    public function forMonth(int $year, int $month, ?string $search = null): Collection;
 }

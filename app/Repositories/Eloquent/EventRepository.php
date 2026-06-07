@@ -8,6 +8,7 @@ use App\Models\Event;
 use App\Repositories\Contracts\EventRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 
 /**
  * @extends BaseRepository<Event>
@@ -45,5 +46,28 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
         $startsAt = $next instanceof \Carbon\CarbonInterface ? $next : \Illuminate\Support\Carbon::parse($next);
 
         return (int) now()->startOfDay()->diffInDays($startsAt->copy()->startOfDay(), false);
+    }
+
+    public function forMonth(int $year, int $month, ?string $search = null): Collection
+    {
+        $start = Carbon::create($year, $month, 1)->startOfDay();
+        $end = $start->copy()->endOfMonth()->endOfDay();
+
+        $query = $this->model->newQuery()
+            ->with(['author'])
+            ->whereBetween('starts_at', [$start, $end])
+            ->orderBy('starts_at');
+
+        if ($search !== null && $search !== '') {
+            $term = '%'.$search.'%';
+
+            $query->where(function ($builder) use ($term): void {
+                $builder->where('title', 'like', $term)
+                    ->orWhere('description', 'like', $term)
+                    ->orWhere('location', 'like', $term);
+            });
+        }
+
+        return $query->get();
     }
 }

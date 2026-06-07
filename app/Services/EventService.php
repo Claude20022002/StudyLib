@@ -8,12 +8,23 @@ use App\Models\Event;
 use App\Models\User;
 use App\Repositories\Contracts\EventRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class EventService
 {
     private const IMAGE_DISK = 'public';
+
+    /** @var array<string, string> */
+    private const TYPE_LABELS = [
+        'hackathon' => 'Hackathon',
+        'conference' => 'Conférence',
+        'soutenance' => 'Soutenance',
+        'portes' => 'Portes ouvertes',
+        'default' => 'Événement',
+    ];
 
     public function __construct(
         private readonly EventRepositoryInterface $events,
@@ -22,6 +33,177 @@ class EventService
     public function upcoming(): LengthAwarePaginator
     {
         return $this->events->upcoming();
+    }
+
+    public function find(string $id): ?Event
+    {
+        $event = $this->events->find($id);
+
+        return $event instanceof Event ? $event->loadMissing(['author']) : null;
+    }
+
+    /** @return Collection<int, Event> */
+    public function forMonth(int $year, int $month, ?string $search = null): Collection
+    {
+        return $this->events->forMonth($year, $month, $search);
+    }
+
+    public function monthTitle(int $year, int $month): string
+    {
+        return Carbon::create($year, $month, 1)
+            ->locale('fr')
+            ->translatedFormat('F Y');
+    }
+
+    public function typeKey(Event $event): string
+    {
+        $title = mb_strtolower($event->title);
+
+        if (str_contains($title, 'hackathon')) {
+            return 'hackathon';
+        }
+
+        if (str_contains($title, 'conférence') || str_contains($title, 'conference') || str_contains($title, 'séminaire') || str_contains($title, 'seminaire')) {
+            return 'conference';
+        }
+
+        if (str_contains($title, 'soutenance') || str_contains($title, 'examen')) {
+            return 'soutenance';
+        }
+
+        if (str_contains($title, 'portes ouvertes') || str_contains($title, 'forum')) {
+            return 'portes';
+        }
+
+        return 'default';
+    }
+
+    public function typeLabel(Event $event): string
+    {
+        return self::TYPE_LABELS[$this->typeKey($event)] ?? self::TYPE_LABELS['default'];
+    }
+
+    public function formatTime(Event $event): string
+    {
+        return $event->starts_at->format('H:i');
+    }
+
+    public function formatDuration(Event $event): ?string
+    {
+        if ($event->ends_at === null) {
+            return null;
+        }
+
+        $minutes = (int) $event->starts_at->diffInMinutes($event->ends_at);
+
+        if ($minutes < 60) {
+            return $minutes.' min';
+        }
+
+        $hours = intdiv($minutes, 60);
+        $rest = $minutes % 60;
+
+        if ($rest === 0) {
+            return $hours.' h';
+        }
+
+        return $hours.' h '.$rest.' min';
+    }
+
+    public function maskedOrganizerName(Event $event): string
+    {
+        $author = $event->author;
+
+        if (! $author instanceof User) {
+            return 'Organisation HESTIM';
+        }
+
+        $first = trim((string) $author->first_name);
+        $lastInitial = mb_substr(trim((string) $author->last_name), 0, 1);
+
+        if ($first === '' && $lastInitial === '') {
+            return 'Organisateur';
+        }
+
+        if ($lastInitial === '') {
+            return $first;
+        }
+
+        return $first.' '.mb_strtoupper($lastInitial).'.';
+    }
+
+    /**
+     * @param  Collection<int, Event>  $events
+     * @return list<array{day: int, out: bool, is_today: bool, events: list<Event>}>
+     */
+    public function buildCalendarGrid(int $year, int $month, Collection $events): array
+    {
+        $first = Carbon::create($year, $month, 1)->startOfDay();
+        $daysInMonth = $first->daysInMonth;
+        $startOffset = $first->dayOfWeekIso - 1;
+
+        /** @var Collection<int, Collection<int, Event>> $eventsByDay */
+        $eventsByDay = $events->groupBy(fn (Event $event): int => (int) $event->starts_at->day);
+
+        $cells = [];
+        $prevMonth = $first->copy()->subMonth();
+        $prevDays = $prevMonth->daysInMonth;
+
+        for ($i = $startOffset - 1; $i >= 0; $i--) {
+            $cells[] = [
+                'day' => $prevDays - $i,
+                'out' => true,
+                'is_today' => false,
+                'events' => [],
+            ];
+        }
+
+        for ($day = 1; $day <= $daysInMonth; $day++) {
+            $date = $first->copy()->day($day);
+
+            $cells[] = [
+                'day' => $day,
+                'out' => false,
+                'is_today' => now()->isSameDay($date),
+                'events' => $eventsByDay->get($day, collect())->values()->all(),
+            ];
+        }
+
+        $nextDay = 1;
+
+        while (count($cells) % 7 !== 0) {
+            $cells[] = [
+                'day' => $nextDay,
+                'out' => true,
+                'is_today' => false,
+                'events' => [],
+            ];
+            $nextDay++;
+        }
+
+        return $cells;
+    }
+
+    /**
+     * @param  Collection<int, Event>  $events
+     * @return list<array{date: Carbon, label: string, weekday: string, events: list<Event>}>
+     */
+    public function groupEventsByDay(Collection $events): array
+    {
+        $groups = [];
+
+        foreach ($events->groupBy(fn (Event $event): string => $event->starts_at->toDateString()) as $dateString => $dayEvents) {
+            $date = Carbon::parse((string) $dateString)->locale('fr');
+
+            $groups[] = [
+                'date' => $date,
+                'label' => $date->translatedFormat('d F Y'),
+                'weekday' => $date->translatedFormat('l'),
+                'events' => $dayEvents->values()->all(),
+            ];
+        }
+
+        return $groups;
     }
 
     /**
