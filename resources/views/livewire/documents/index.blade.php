@@ -94,7 +94,7 @@
                         <input
                             type="checkbox"
                             wire:click="toggleType('{{ $type->value }}')"
-                            @checked(in_array($type->value, $types, true))
+                            @if (in_array($type->value, $types, true)) checked @endif
                         />
                         <span class="sl-lib-fbox">
                             <x-ui.icon name="check" class="h-3 w-3 text-white" />
@@ -135,7 +135,7 @@
                 <button type="button" class="sl-lib-mobile-filter sl-mobile-only" wire:click="$set('filtersOpen', true)">
                     <x-ui.icon name="grid" class="h-4 w-4" />
                     Filtres
-                </x-ui.button>
+                </button>
 
                 <p class="text-sm text-ink-soft">
                     <strong class="text-ink">{{ $documents->total() }}</strong>

@@ -44,8 +44,8 @@ class DocumentLibraryPageTest extends TestCase
         $this->actingAs($user)
             ->get(route('documents.index'))
             ->assertOk()
-            ->assertSee('Trouvez n\'importe quel document')
-            ->assertSeeLivewire(Index::class);
+            ->assertSee('Trouvez n\'importe quel document', false)
+            ->assertSeeLivewire('documents.index');
     }
 
     public function test_library_lists_approved_documents(): void
