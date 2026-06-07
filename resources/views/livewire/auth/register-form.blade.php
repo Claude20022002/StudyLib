@@ -9,7 +9,12 @@
     @csrf
 
     <div class="mb-8">
-        <h1 class="sl-auth-title font-bold">Activez votre accès HESTIM</h1>
+        <h1 class="sl-auth-title font-bold">
+            <span class="sl-greet-line">
+                Activez votre accès HESTIM
+                <x-ui.greet-hand />
+            </span>
+        </h1>
         <p class="mt-2 text-ink-soft">Créez votre compte pour rejoindre la bibliothèque de votre promo.</p>
     </div>
 

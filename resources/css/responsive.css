@@ -9,10 +9,16 @@
 }
 
 .sl-greet-icon {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     flex-shrink: 0;
-    color: var(--color-primary);
+    object-fit: contain;
+    display: block;
+}
+
+.sl-auth-title .sl-greet-icon {
+    width: 36px;
+    height: 36px;
 }
 
 /* Liens cartes · chevron */

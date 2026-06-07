@@ -5,7 +5,7 @@
             <h1 class="sl-dashboard-greet">
                 <span class="sl-greet-line">
                     Bonjour {{ $overview['greeting_name'] ?? Auth::user()?->name }}
-                    <x-ui.icon name="wave" class="sl-greet-icon" aria-hidden="true" />
+                    <x-ui.greet-hand />
                 </span>
             </h1>
             <div class="mt-3 flex flex-wrap items-center gap-3">
