@@ -425,28 +425,39 @@ erDiagram
 
 ### Diagramme simplifié (vue métier)
 
+> *Version aplatie sans sous-graphes croisés — compatible github.com (évite l'erreur `Cannot read properties of undefined`).*
+
 ```mermaid
 flowchart TB
-    subgraph academique [Academique]
-        F[FILIERES] --> M[MODULES]
-        M --> D[DOCUMENTS]
-    end
+    FIL[FILIERES] --> MOD[MODULES]
+    MOD --> DOC[DOCUMENTS]
+    FIL --> USR[USERS]
 
-    subgraph Utilisateurs
-        U[USERS] --> D
-        U --> IR[INTERNSHIP_REVIEWS]
-        U --> PI[PROJECT_IDEAS]
-        U --> E[EVENTS]
-    end
+    USR --> DOC
+    USR --> IR[INTERNSHIP_REVIEWS]
+    USR --> PI[PROJECT_IDEAS]
+    USR --> EVT[EVENTS]
+    USR --> AI_REC[AI_RECOMMENDATIONS]
+    USR --> NOTIF[NOTIFICATIONS]
 
-    F --> U
-    D --> DR[DOCUMENT_RATINGS]
-    D --> DD[DOCUMENT_DOWNLOADS]
-    C[COMPANIES] --> IR
-    M --> YT[YOUTUBE_RECOMMENDATIONS]
-    U --> AI[AI_RECOMMENDATIONS]
-    U --> N[NOTIFICATIONS]
+    DOC --> RAT[DOCUMENT_RATINGS]
+    DOC --> DL[DOCUMENT_DOWNLOADS]
+
+    CO[COMPANIES] --> IR
+    MOD --> YT[YOUTUBE_RECOMMENDATIONS]
 ```
+
+**Lecture du schéma** :
+
+| Zone | Entités | Relation métier |
+|---|---|---|
+| Académique | FILIERES → MODULES → DOCUMENTS | Une filière contient des modules ; chaque document est rattaché à un module |
+| Utilisateurs | USERS | Compte étudiant ou admin, lié à une filière |
+| Contenu | DOCUMENTS, PROJECT_IDEAS, EVENTS | Dépôts, idées CV et événements créés par les users |
+| Social | INTERNSHIP_REVIEWS, COMPANIES | Avis de stage liés à une entreprise |
+| Engagement | DOCUMENT_RATINGS, DOCUMENT_DOWNLOADS | Notes et téléchargements sur les documents |
+| Recommandations | YOUTUBE_RECOMMENDATIONS, AI_RECOMMENDATIONS | Vidéos par module, historique IA par user |
+| Système | NOTIFICATIONS | Alertes in-app |
 
 ### Clés et conventions
 
