@@ -39,4 +39,21 @@ class NotificationRepository extends BaseRepository implements NotificationRepos
     {
         $notification->forceFill(['read_at' => now()])->save();
     }
+
+    public function listForUser(string $userId, int $limit = 50): Collection
+    {
+        return $this->model->newQuery()
+            ->where('user_id', $userId)
+            ->latest()
+            ->limit($limit)
+            ->get();
+    }
+
+    public function markAllAsReadForUser(string $userId): void
+    {
+        $this->model->newQuery()
+            ->where('user_id', $userId)
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+    }
 }

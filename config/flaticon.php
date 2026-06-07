@@ -24,6 +24,9 @@ return [
         'empty' => 'images/flaticon/empty.png',
         'search' => 'images/flaticon/search.png',
         'student' => 'images/flaticon/student.png',
+        'bell' => 'images/flaticon/bell.png',
+        'shield' => 'images/flaticon/shield.png',
+        'upload' => 'images/flaticon/upload.png',
     ],
 
 ];

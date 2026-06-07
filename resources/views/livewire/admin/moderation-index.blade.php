@@ -10,8 +10,8 @@
     <div class="sl-adm-kpi-grid">
         <div @class(['sl-adm-kpi', 'sl-adm-kpi--alert' => $counts['pending'] > 0])>
             <div class="sl-adm-kpi__top">
-                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--warning">
-                    <x-ui.icon name="upload" class="h-5 w-5" />
+                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--flaticon">
+                    <x-ui.flaticon name="upload" class="sl-flaticon--kpi" />
                 </div>
                 <x-ui.badge variant="warning">À traiter</x-ui.badge>
             </div>
@@ -27,8 +27,8 @@
 
         <div class="sl-adm-kpi">
             <div class="sl-adm-kpi__top">
-                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--success">
-                    <x-ui.icon name="check" class="h-5 w-5" />
+                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--flaticon">
+                    <x-ui.flaticon name="library" class="sl-flaticon--kpi" />
                 </div>
                 <x-ui.badge variant="neutral">Total</x-ui.badge>
             </div>

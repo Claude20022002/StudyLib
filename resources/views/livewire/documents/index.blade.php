@@ -1,10 +1,12 @@
 <div>
     {{-- Search hero --}}
     <section class="sl-lib-search" aria-label="Recherche">
-        <p class="sl-lib-search__lead">
-            <x-ui.icon name="sparkles" class="h-[15px] w-[15px] text-primary" />
-            Trouvez n'importe quel document en moins de 10 secondes
-        </p>
+        <div class="sl-lib-search__head">
+            <x-ui.flaticon name="library" class="sl-flaticon--hero" />
+            <p class="sl-lib-search__lead">
+                Trouvez n'importe quel document en moins de 10 secondes
+            </p>
+        </div>
         <div class="sl-lib-search__box">
             <x-ui.icon name="search" class="sl-lib-search__icon" />
             <input

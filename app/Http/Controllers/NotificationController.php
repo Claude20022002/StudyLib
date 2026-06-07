@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use App\Services\NotificationService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -15,11 +16,15 @@ class NotificationController extends Controller
         private readonly NotificationService $notifications,
     ) {}
 
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): View|JsonResponse
     {
-        return response()->json(
-            $this->notifications->unreadFor($request->user()->getKey()),
-        );
+        if ($request->expectsJson()) {
+            return response()->json(
+                $this->notifications->unreadFor($request->user()->getKey()),
+            );
+        }
+
+        return view('pages.notifications.index');
     }
 
     public function update(Request $request, Notification $notification): JsonResponse

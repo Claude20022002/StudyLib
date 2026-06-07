@@ -18,4 +18,9 @@ interface NotificationRepositoryInterface extends RepositoryInterface
     public function markAsRead(Notification $notification): void;
 
     public function unreadCountForUser(string $userId): int;
+
+    /** @return Collection<int, Notification> */
+    public function listForUser(string $userId, int $limit = 50): Collection;
+
+    public function markAllAsReadForUser(string $userId): void;
 }
