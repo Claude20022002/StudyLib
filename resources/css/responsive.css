@@ -268,3 +268,151 @@
         gap: var(--space-1);
     }
 }
+
+/* ===== Interactions · curseur & zones cliquables ===== */
+.sl-app a[href],
+.sl-admin-app a[href],
+.sl-marketing a[href],
+.sl-guest-page a[href] {
+    cursor: pointer;
+}
+
+.sl-app [role='button'],
+.sl-admin-app [role='button'],
+.sl-marketing [role='button'] {
+    cursor: pointer;
+}
+
+.sl-app button:not(:disabled),
+.sl-admin-app button:not(:disabled) {
+    cursor: pointer;
+}
+
+.sl-app label:has(input[type='checkbox']),
+.sl-app label:has(input[type='radio']),
+.sl-admin-app label:has(input[type='checkbox']),
+.sl-admin-app label:has(input[type='radio']) {
+    cursor: pointer;
+}
+
+.sl-lib-card a,
+.sl-doc a,
+.sl-prof-item a {
+    cursor: pointer;
+}
+
+/* ===== Layout · anti-chevauchement ===== */
+.sl-main {
+    min-width: 0;
+    isolation: isolate;
+}
+
+.sl-topbar,
+.sl-admin-topbar {
+    z-index: 20;
+}
+
+.sl-doc-actionbar {
+    z-index: 15;
+}
+
+.sl-fab {
+    z-index: 41;
+}
+
+.sl-bottom-nav {
+    z-index: 40;
+}
+
+.sl-lib-drawer,
+.sl-lib-filters.is-open {
+    z-index: 45;
+}
+
+.sl-dashboard-split {
+    gap: var(--space-6);
+    align-items: start;
+}
+
+.sl-dashboard-hero {
+    gap: var(--space-4);
+}
+
+.sl-kpi,
+.sl-kpi-top,
+.sl-adm-kpi__top {
+    min-width: 0;
+}
+
+.sl-kpi-label,
+.sl-adm-kpi__label,
+.sl-doc-title,
+.sl-lib-row__title {
+    overflow-wrap: anywhere;
+}
+
+.sl-prof-head__body {
+    gap: var(--space-4);
+    padding-top: var(--space-2);
+}
+
+.sl-prof-head__body > .min-w-0 {
+    min-width: 0;
+}
+
+@media (max-width: 1100px) {
+    .sl-dashboard-rail {
+        gap: var(--space-4);
+    }
+}
+
+@media (max-width: 640px) {
+    .sl-dashboard-rail {
+        grid-template-columns: 1fr;
+    }
+
+    .sl-adm-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sl-prof-head__body {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sl-prof-head__body > div:last-child {
+        width: 100%;
+    }
+
+    .sl-prof-head__body > div:last-child .sl-btn {
+        flex: 1;
+    }
+}
+
+@media (max-width: 860px) {
+    .sl-icon-btn,
+    .sl-lib-vt-btn,
+    .sl-ev-nav-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .sl-bottom-link {
+        min-height: 44px;
+    }
+}
+
+@media (max-width: 560px) {
+    .sl-lib-search__input {
+        min-height: 46px;
+    }
+
+    .sl-stg-hero__input,
+    .sl-ev-hero__input {
+        min-height: 46px;
+    }
+
+    .sl-adm-search__input {
+        min-height: 40px;
+    }
+}

@@ -1550,7 +1550,7 @@
     }
 
     .sl-lib-scrim {
-        @apply fixed inset-0 z-40 border-0 bg-ink/45 backdrop-blur-[1px];
+        @apply fixed inset-0 z-40 cursor-pointer border-0 bg-ink/45 backdrop-blur-[1px];
     }
 
     .sl-lib-filters {
@@ -1970,7 +1970,7 @@
     }
 
     .sl-doc-scrim {
-        @apply fixed inset-0 z-50 border-0 bg-ink/45 backdrop-blur-[1px];
+        @apply fixed inset-0 z-50 cursor-pointer border-0 bg-ink/45 backdrop-blur-[1px];
     }
 
     .sl-doc-modal-wrap {
@@ -2597,7 +2597,7 @@
 }
 
 .sl-prj-fchip {
-    @apply h-[30px] rounded-full border border-border bg-surface px-3 text-xs font-semibold text-ink-soft transition-all;
+    @apply h-[30px] cursor-pointer rounded-full border border-border bg-surface px-3 text-xs font-semibold text-ink-soft transition-all;
 }
 
 .sl-prj-fchip.is-on {
