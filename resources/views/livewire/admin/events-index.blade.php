@@ -17,8 +17,8 @@
     <div class="sl-adm-kpi-grid">
         <div class="sl-adm-kpi">
             <div class="sl-adm-kpi__top">
-                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--primary">
-                    <x-ui.icon name="calendar" class="h-5 w-5" />
+                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--flaticon">
+                    <x-ui.flaticon name="calendar" class="sl-flaticon--kpi" />
                 </div>
             </div>
             <div class="sl-adm-kpi__val">{{ $stats['upcoming'] }}</div>
@@ -26,8 +26,8 @@
         </div>
         <div class="sl-adm-kpi">
             <div class="sl-adm-kpi__top">
-                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--success">
-                    <x-ui.icon name="clock" class="h-5 w-5" />
+                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--flaticon">
+                    <x-ui.flaticon name="calendar" class="sl-flaticon--kpi" />
                 </div>
             </div>
             <div class="sl-adm-kpi__val">{{ $stats['this_month'] }}</div>
@@ -35,8 +35,8 @@
         </div>
         <div class="sl-adm-kpi">
             <div class="sl-adm-kpi__top">
-                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--warning">
-                    <x-ui.icon name="grid" class="h-5 w-5" />
+                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--flaticon">
+                    <x-ui.flaticon name="library" class="sl-flaticon--kpi" />
                 </div>
             </div>
             <div class="sl-adm-kpi__val">{{ $stats['total'] }}</div>
@@ -129,8 +129,8 @@
     <div @class(['sl-adm-modal-wrap', 'is-open' => $formOpen]) role="dialog" aria-modal="true" aria-label="{{ $editingEventId ? 'Modifier l\'événement' : 'Nouvel événement' }}">
         <div class="sl-adm-modal sl-adm-modal--wide">
             <div class="sl-adm-modal__head">
-                <div class="sl-adm-modal__icon sl-adm-kpi__ico--primary">
-                    <x-ui.icon name="calendar" class="h-[22px] w-[22px]" />
+                <div class="sl-adm-modal__icon sl-adm-kpi__ico--flaticon">
+                    <x-ui.flaticon name="calendar" class="sl-flaticon--kpi" />
                 </div>
                 <div>
                     <h3 class="text-h3 font-semibold">{{ $editingEventId ? 'Modifier l\'événement' : 'Nouvel événement' }}</h3>

@@ -39,6 +39,7 @@
 
             <main id="main-content" class="sl-admin-content" tabindex="-1">
                 {{ $slot }}
+                <x-ui.flaticon-attribution class="mt-8" />
             </main>
         </div>
     </div>

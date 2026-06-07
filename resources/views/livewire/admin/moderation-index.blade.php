@@ -38,8 +38,8 @@
 
         <div class="sl-adm-kpi">
             <div class="sl-adm-kpi__top">
-                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--danger">
-                    <x-ui.icon name="x" class="h-5 w-5" />
+                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--flaticon">
+                    <x-ui.flaticon name="empty" class="sl-flaticon--kpi" />
                 </div>
             </div>
             <div class="sl-adm-kpi__val">{{ $counts['rejected'] }}</div>
@@ -48,8 +48,8 @@
 
         <div class="sl-adm-kpi">
             <div class="sl-adm-kpi__top">
-                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--primary">
-                    <x-ui.icon name="library" class="h-5 w-5" />
+                <div class="sl-adm-kpi__ico sl-adm-kpi__ico--flaticon">
+                    <x-ui.flaticon name="shield" class="sl-flaticon--kpi" />
                 </div>
             </div>
             <div class="sl-adm-kpi__val">{{ $counts['all'] }}</div>
