@@ -112,24 +112,17 @@ class EventService
 
     public function maskedOrganizerName(Event $event): string
     {
-        $author = $event->author;
+        $name = $event->author?->name;
 
-        if (! $author instanceof User) {
+        if ($name === null || trim($name) === '') {
             return 'Organisation HESTIM';
         }
 
-        $first = trim((string) $author->first_name);
-        $lastInitial = mb_substr(trim((string) $author->last_name), 0, 1);
+        $parts = preg_split('/\s+/', trim($name)) ?: [];
+        $first = $parts[0] ?? '';
+        $lastInitial = isset($parts[1]) ? mb_substr($parts[1], 0, 1).'.' : '';
 
-        if ($first === '' && $lastInitial === '') {
-            return 'Organisateur';
-        }
-
-        if ($lastInitial === '') {
-            return $first;
-        }
-
-        return $first.' '.mb_strtoupper($lastInitial).'.';
+        return trim($first.' '.$lastInitial) !== '' ? trim($first.' '.$lastInitial) : 'Organisateur';
     }
 
     /**

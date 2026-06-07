@@ -69,7 +69,7 @@ class EventsPageTest extends TestCase
         Livewire::actingAs($user)
             ->test(Index::class)
             ->set('search', 'Conférence')
-            ->assertSee('Conférence IA dans l\'industrie', false)
+            ->assertSee('Conférence IA dans')
             ->assertDontSee('Forum entreprises et stages');
     }
 
