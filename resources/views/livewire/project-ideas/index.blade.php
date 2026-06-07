@@ -7,11 +7,11 @@
 
     <section class="sl-prj-hero" aria-label="Introduction projets CV">
         <div class="sl-prj-hero__ico" aria-hidden="true">
-            <x-ui.icon name="layers" class="h-[26px] w-[26px]" />
+            <x-ui.icon name="layers" class="h-5 w-5" />
         </div>
         <div class="min-w-0 flex-1">
-            <h2 class="text-h3 leading-tight font-bold tracking-tight">Trouvez un projet pertinent pour votre filière</h2>
-            <p class="mt-1 text-sm text-muted">Des idées concrètes pour étoiler votre CV — proposées par la promo ou générées pour votre profil.</p>
+            <h2 class="text-h4 leading-tight font-bold tracking-tight">Trouvez un projet pertinent pour votre filière</h2>
+            <p class="mt-1 text-sm text-muted">Des idées concrètes pour étoiler votre CV, proposées par la promo ou générées pour votre profil.</p>
         </div>
         <div class="hidden flex-1 lg:block"></div>
         <div class="flex w-full flex-wrap gap-2 sm:w-auto">
@@ -189,7 +189,7 @@
                         @if ($aiIdeas->isEmpty() && ! $aiLoading)
                             <div class="sl-prj-ai__empty">
                                 <x-ui.icon name="info" class="mx-auto mb-3 h-8 w-8 text-primary" />
-                                Renseignez votre profil puis cliquez sur « Générer » — 3 idées de projets apparaîtront ici.
+                                Renseignez votre profil puis cliquez sur « Générer ». Trois idées de projets apparaîtront ici.
                             </div>
                         @else
                             @foreach ($aiIdeas as $aiIdea)

@@ -67,6 +67,32 @@
     --text-body: 0.9375rem;
     --text-sm: 0.8125rem;
     --text-xs: 0.75rem;
+
+    --leading-tight: 1.2;
+    --leading-snug: 1.35;
+    --leading-normal: 1.55;
+
+    --tracking-tight: -0.02em;
+    --tracking-wide: 0.04em;
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --space-20: 80px;
+
+    --radius-full: 999px;
+
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --dur-fast: 120ms;
+    --dur: 180ms;
+    --dur-slow: 280ms;
 }
 
 @layer base {
@@ -76,7 +102,7 @@
 
     body {
         @apply font-sans text-body text-ink bg-surface antialiased;
-        line-height: 1.55;
+        line-height: var(--leading-normal);
     }
 
     ::selection {
@@ -119,14 +145,13 @@
 
     /* ===== Buttons (Design System sl-btn) ===== */
     .sl-btn {
-        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold transition-all;
+        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold;
         height: 42px;
-        padding: 0 20px;
+        padding: 0 var(--space-5);
         border-radius: var(--radius-md);
         font-size: var(--text-body);
         border: 1px solid transparent;
-        transition-duration: 180ms;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all var(--dur) var(--ease);
     }
 
     .sl-btn:focus-visible {
@@ -179,8 +204,8 @@
     }
 
     .sl-btn--sm {
-        height: 36px;
-        padding: 0 16px;
+        height: 34px;
+        padding: 0 var(--space-4);
         font-size: var(--text-sm);
         border-radius: var(--radius-sm);
     }
@@ -195,7 +220,7 @@
 
     .sl-btn--lg {
         height: 50px;
-        padding: 0 24px;
+        padding: 0 var(--space-6);
         font-size: var(--text-h4);
     }
 
@@ -205,8 +230,8 @@
     }
 
     .sl-btn .sl-ico {
-        width: 17px;
-        height: 17px;
+        width: 16px;
+        height: 16px;
     }
 
     .sl-btn--xs .sl-ico {
@@ -216,10 +241,11 @@
 
     /* ===== Badges ===== */
     .sl-badge {
-        @apply inline-flex items-center gap-1.5 font-semibold whitespace-nowrap;
-        height: 22px;
-        padding: 0 9px;
-        border-radius: 999px;
+        @apply inline-flex items-center font-semibold whitespace-nowrap;
+        height: 24px;
+        padding: 0 10px;
+        gap: 6px;
+        border-radius: var(--radius-full);
         font-size: var(--text-xs);
         line-height: 1;
     }
@@ -320,16 +346,17 @@
     }
 
     .sl-search input {
-        @apply w-full bg-surface text-ink transition-all;
-        height: 42px;
-        padding: 0 16px 0 42px;
+        @apply w-full bg-card text-ink;
+        height: 46px;
+        padding: 0 var(--space-4) 0 44px;
         font-size: var(--text-body);
-        border: 1px solid var(--color-border);
+        border: 1px solid var(--color-border-strong);
         border-radius: var(--radius-md);
+        transition: border var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
     }
 
     .sl-search input:hover {
-        @apply border-border-strong;
+        @apply border-muted;
     }
 
     .sl-search input:focus {
@@ -340,11 +367,11 @@
 
     .sl-search .sl-search-ico {
         @apply pointer-events-none absolute text-muted;
-        left: 14px;
+        left: 15px;
         top: 50%;
         transform: translateY(-50%);
-        width: 17px;
-        height: 17px;
+        width: 18px;
+        height: 18px;
     }
 
     .sl-search kbd {
@@ -358,10 +385,11 @@
 
     /* ===== Icon button ===== */
     .sl-icon-btn {
-        @apply relative grid place-items-center border border-transparent bg-transparent text-ink-soft transition-colors;
-        width: 42px;
-        height: 42px;
-        border-radius: var(--radius-md);
+        @apply relative grid place-items-center border border-transparent bg-transparent text-ink-soft;
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-sm);
+        transition: background var(--dur) var(--ease);
     }
 
     .sl-icon-btn:hover {
@@ -493,8 +521,8 @@
 
     .sl-content {
         @apply w-full flex-1;
-        padding: 32px 24px 64px;
-        max-width: 1320px;
+        padding: var(--space-6) var(--space-5) var(--space-16);
+        max-width: var(--container);
     }
 
     .sl-user-chip {
@@ -809,14 +837,15 @@
     /* ===== Empty state ===== */
     .sl-empty {
         @apply rounded-lg border border-dashed border-border-strong bg-card text-center;
-        padding: 48px 24px;
+        padding: var(--space-12) var(--space-6);
         border-radius: var(--radius-lg);
     }
 
     .sl-empty-ico {
-        @apply mx-auto mb-4 grid place-items-center rounded-xl bg-primary-soft text-primary;
-        width: 64px;
-        height: 64px;
+        @apply mx-auto grid place-items-center rounded-xl bg-primary-soft text-primary;
+        width: 72px;
+        height: 72px;
+        margin-bottom: var(--space-5);
         border-radius: var(--radius-xl);
     }
 
@@ -825,7 +854,9 @@
     }
 
     .sl-empty p {
-        @apply mx-auto mt-2 mb-5 max-w-[36ch] text-muted;
+        @apply mx-auto max-w-[38ch] text-muted;
+        margin-top: var(--space-2);
+        margin-bottom: var(--space-5);
     }
 
     /* ===== Table (Design System) ===== */
@@ -1225,23 +1256,23 @@
 
 /* ===== Dashboard (maquette Dashboard) ===== */
 .sl-dashboard-hero {
-    @apply mb-8 flex flex-wrap items-end justify-between gap-5;
+    @apply mb-6 flex flex-wrap items-end justify-between gap-4;
 }
 
 .sl-dashboard-greet {
-    font-size: clamp(24px, 3vw, 32px);
-    @apply font-bold tracking-tight;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
+    font-size: clamp(22px, 2.8vw, var(--text-h2));
+    @apply font-bold;
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
 }
 
 .sl-kpi-grid {
-    @apply mb-8 grid gap-4;
+    @apply mb-6 grid gap-3;
     grid-template-columns: repeat(4, 1fr);
 }
 
 .sl-kpi {
-    @apply rounded-lg border border-border bg-card p-5 transition-all;
+    @apply rounded-lg border border-border bg-card p-4 transition-all;
     border-radius: var(--radius-lg);
 }
 
@@ -1250,18 +1281,18 @@
 }
 
 .sl-kpi-top {
-    @apply mb-4 flex items-center justify-between;
+    @apply mb-3 flex items-center justify-between;
 }
 
 .sl-kpi-ico {
     @apply grid place-items-center rounded-md;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: var(--radius-md);
 }
 
 .sl-kpi-val {
-    @apply text-h1 font-bold tracking-tight;
+    @apply text-h2 font-bold tracking-tight;
     line-height: 1;
     letter-spacing: -0.02em;
 }
@@ -1446,8 +1477,9 @@
 
     /* ===== Landing page ===== */
     .sl-landing-wrap {
-        @apply mx-auto w-full px-6;
+        @apply mx-auto w-full;
         max-width: var(--container);
+        padding-inline: var(--space-6);
     }
 
     .sl-landing-header {
@@ -1455,12 +1487,12 @@
     }
 
     .sl-landing-header__inner {
-        @apply flex items-center gap-5;
-        height: 68px;
+        @apply flex items-center gap-4;
+        height: var(--header-h);
     }
 
     .sl-landing-menu-btn {
-        @apply grid h-11 w-11 place-items-center rounded-md border border-border bg-card text-ink;
+        @apply grid h-10 w-10 place-items-center rounded-md border border-border bg-card text-ink;
     }
 
     .sl-landing-mobile-nav {
@@ -1480,14 +1512,18 @@
     }
 
     .sl-landing-hero__grid {
-        @apply grid items-center gap-12 py-16;
+        align-items: center;
+        display: grid;
+        gap: var(--space-8);
         grid-template-columns: 1.05fr 0.95fr;
+        padding-block: var(--space-12);
     }
 
     .sl-landing-pill {
-        @apply inline-flex items-center gap-2 rounded-full border border-border bg-card text-xs font-semibold text-primary-active shadow-xs;
+        @apply inline-flex items-center rounded-full border border-border bg-card text-xs font-semibold text-primary-active shadow-xs;
+        gap: var(--space-2);
         height: 30px;
-        padding: 0 14px;
+        padding-inline: 14px;
     }
 
     .sl-landing-pill__dot {
@@ -1497,15 +1533,17 @@
     }
 
     .sl-landing-hero__title {
-        @apply mt-5 mb-4 font-bold tracking-tight text-balance;
-        font-size: clamp(34px, 5vw, 56px);
-        line-height: 1.05;
-        letter-spacing: -0.02em;
+        @apply font-bold text-balance;
+        font-size: clamp(28px, 4.5vw, var(--text-display));
+        letter-spacing: var(--tracking-tight);
+        line-height: var(--leading-tight);
+        margin-block: var(--space-4) var(--space-3);
     }
 
     .sl-landing-hero__sub {
         @apply text-h4 text-ink-soft;
         max-width: 46ch;
+        line-height: var(--leading-snug);
     }
 
     .sl-landing-hero__visual {
@@ -1542,7 +1580,7 @@
 
     .sl-landing-mock__thumb {
         @apply relative;
-        height: 60px;
+        height: 48px;
     }
 
     .sl-landing-mock__tag {
@@ -1571,75 +1609,86 @@
     }
 
     .sl-landing-float {
-        @apply absolute flex items-center gap-3 rounded-md border border-border bg-card p-3 shadow-md;
+        @apply absolute flex items-center gap-2.5 rounded-md border border-border bg-card p-2.5 shadow-md;
     }
 
     .sl-landing-float--tl {
-        top: -18px;
-        left: -24px;
+        top: -14px;
+        left: -18px;
     }
 
     .sl-landing-float--br {
-        bottom: -20px;
-        right: -18px;
+        bottom: -14px;
+        right: -14px;
     }
 
     .sl-landing-float__ico {
-        @apply grid shrink-0 place-items-center rounded-[9px];
-        width: 32px;
-        height: 32px;
+        @apply grid shrink-0 place-items-center rounded-[8px];
+        width: 28px;
+        height: 28px;
     }
 
     .sl-landing-sec {
-        @apply py-16;
+        padding-block: var(--space-12);
     }
 
     .sl-landing-sec-head {
-        @apply mx-auto mb-12 max-w-[640px] text-center;
+        @apply mx-auto text-center;
+        margin-bottom: var(--space-8);
+        max-width: 640px;
     }
 
     .sl-landing-eyebrow {
-        @apply text-xs font-bold uppercase tracking-wide text-primary;
-        letter-spacing: 0.06em;
+        @apply text-xs font-bold uppercase text-primary;
+        letter-spacing: var(--tracking-wide);
+        margin-bottom: var(--space-2);
     }
 
     .sl-landing-sec-head h2 {
-        @apply my-3 font-bold tracking-tight text-balance;
-        font-size: clamp(26px, 3.5vw, 36px);
-        line-height: 1.1;
-        letter-spacing: -0.02em;
+        @apply font-bold text-balance;
+        font-size: clamp(24px, 3vw, var(--text-h1));
+        letter-spacing: var(--tracking-tight);
+        line-height: var(--leading-tight);
+        margin-block: var(--space-2) var(--space-3);
     }
 
     .sl-landing-sec-head p {
         @apply text-h4 text-ink-soft;
+        line-height: var(--leading-snug);
     }
 
     .sl-landing-values {
-        @apply grid gap-5;
+        display: grid;
+        gap: var(--space-4);
         grid-template-columns: repeat(3, 1fr);
     }
 
     .sl-landing-value {
-        @apply rounded-lg border border-border bg-card p-8 transition-all;
+        @apply rounded-lg border border-border bg-card;
+        padding: var(--space-6);
+        transition: all var(--dur) var(--ease);
     }
 
     .sl-landing-value:hover {
         @apply border-border-strong shadow-md;
-        transform: translateY(-3px);
+        transform: translateY(-2px);
     }
 
     .sl-landing-value__ico {
-        @apply mb-5 grid place-items-center rounded-md bg-primary-soft text-primary;
-        width: 52px;
-        height: 52px;
+        @apply grid place-items-center rounded-md bg-primary-soft text-primary;
+        width: 44px;
+        height: 44px;
+        margin-bottom: var(--space-4);
     }
 
     .sl-landing-value h3 {
-        @apply mb-2 text-h3 font-semibold;
+        @apply text-h4 font-semibold;
+        margin-bottom: var(--space-2);
     }
 
     .sl-landing-value p {
         @apply text-body text-ink-soft;
+        line-height: var(--leading-normal);
     }
 
     .sl-landing-trust {
@@ -1647,31 +1696,36 @@
     }
 
     .sl-landing-trust-grid {
-        @apply grid gap-8;
+        display: grid;
+        gap: var(--space-6);
         grid-template-columns: repeat(3, 1fr);
     }
 
     .sl-landing-trust-item {
-        @apply flex gap-4;
+        @apply flex;
+        gap: var(--space-3);
     }
 
     .sl-landing-trust-ico {
         @apply grid shrink-0 place-items-center rounded-md;
-        width: 44px;
-        height: 44px;
+        width: 40px;
+        height: 40px;
     }
 
     .sl-landing-trust-item h4 {
-        @apply mb-1 text-h4 font-semibold;
+        @apply text-body font-semibold;
+        margin-bottom: var(--space-1);
     }
 
     .sl-landing-trust-item p {
         @apply text-sm text-muted;
+        line-height: var(--leading-normal);
     }
 
     .sl-landing-cta {
-        @apply relative overflow-hidden rounded-xl px-8 py-12 text-center text-white;
+        @apply relative overflow-hidden rounded-xl text-center text-white;
         background: linear-gradient(145deg, var(--color-primary), var(--color-primary-active));
+        padding: var(--space-10) var(--space-6);
     }
 
     .sl-landing-cta::after {
@@ -1681,13 +1735,16 @@
     }
 
     .sl-landing-cta h2 {
-        @apply relative mb-3 font-bold tracking-tight;
-        font-size: clamp(24px, 3vw, 34px);
-        letter-spacing: -0.02em;
+        @apply relative font-bold;
+        font-size: clamp(22px, 2.8vw, var(--text-h2));
+        letter-spacing: var(--tracking-tight);
+        margin-bottom: var(--space-2);
     }
 
     .sl-landing-cta p {
-        @apply relative mb-8 text-h4 opacity-90;
+        @apply relative text-h4 opacity-90;
+        margin-bottom: var(--space-6);
+        line-height: var(--leading-snug);
     }
 
     .sl-landing-cta__btn {
@@ -1699,7 +1756,9 @@
     }
 
     .sl-landing-footer__inner {
-        @apply flex flex-wrap items-center gap-5 py-8;
+        @apply flex flex-wrap items-center;
+        gap: var(--space-4);
+        padding-block: var(--space-6);
     }
 
 @media (max-width: 920px) {
@@ -1720,15 +1779,15 @@
 
 @media (max-width: 760px) {
     .sl-landing-sec {
-        @apply py-12;
+        padding-block: var(--space-10);
     }
 
     .sl-landing-hero__grid {
-        @apply py-12;
+        padding-block: var(--space-10);
     }
 
     .sl-landing-cta {
-        @apply px-5 py-8;
+        padding: var(--space-8) var(--space-4);
     }
 
     .sl-landing-float {
@@ -1744,7 +1803,8 @@
 
     /* ===== Library (Bibliothèque) ===== */
     .sl-lib-search {
-        @apply mb-5 rounded-lg border border-border bg-card p-5 shadow-xs;
+        @apply mb-4 rounded-lg border border-border bg-card shadow-xs;
+        padding: var(--space-4);
     }
 
     .sl-lib-search__lead {
@@ -1756,13 +1816,14 @@
     }
 
     .sl-lib-search__icon {
-        @apply pointer-events-none absolute top-1/2 left-[18px] h-[22px] w-[22px] -translate-y-1/2 text-muted;
+        @apply pointer-events-none absolute top-1/2 left-3.5 h-[18px] w-[18px] -translate-y-1/2 text-muted;
     }
 
     .sl-lib-search__input {
-        @apply w-full rounded-md border-[1.5px] border-border-strong bg-surface text-h4 text-ink transition-all;
-        height: 58px;
-        padding: 0 130px 0 52px;
+        @apply w-full rounded-md border border-border-strong bg-surface text-body text-ink;
+        height: 46px;
+        padding: 0 112px 0 44px;
+        transition: border var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
     }
 
     .sl-lib-search__input:focus {
@@ -2308,7 +2369,7 @@
     }
 
     .sl-lib-search__clear {
-        right: 58px;
+        right: 48px;
     }
 
     .sl-prof-stats {
@@ -2532,7 +2593,7 @@
 
 /* ===== Stages (internship reviews) ===== */
 .sl-stg-hero {
-    @apply mb-5 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-card p-5 shadow-xs;
+    @apply mb-4 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-card p-4 shadow-xs;
 }
 
 .sl-stg-hero__search {
@@ -2544,9 +2605,10 @@
 }
 
 .sl-stg-hero__input {
-    @apply w-full rounded-md border-[1.5px] border-border-strong bg-surface text-h4 text-ink transition-all;
-    height: 52px;
-    padding: 0 48px 0 48px;
+    @apply w-full rounded-md border border-border-strong bg-surface text-body text-ink;
+    height: 46px;
+    padding: 0 40px 0 40px;
+    transition: border var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 
 .sl-stg-hero__input:focus {
@@ -2559,8 +2621,8 @@
 }
 
 .sl-stg-hero__cta {
-    height: 52px;
-    padding-inline: var(--space-5);
+    height: 44px;
+    padding-inline: var(--space-4);
 }
 
 .sl-stg-grid {
@@ -2581,7 +2643,7 @@
 }
 
 .sl-stg-company__logo {
-    @apply grid h-[52px] w-[52px] shrink-0 place-items-center rounded-md text-h4 font-bold text-white;
+    @apply grid h-11 w-11 shrink-0 place-items-center rounded-md text-body font-bold text-white;
 }
 
 .sl-stg-company__name {
@@ -2744,11 +2806,11 @@
 
 /* ===== Projects CV ===== */
 .sl-prj-hero {
-    @apply mb-5 flex flex-wrap items-center gap-4 rounded-lg border border-border bg-card p-6;
+    @apply mb-4 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-card p-4;
 }
 
 .sl-prj-hero__ico {
-    @apply grid h-14 w-14 shrink-0 place-items-center rounded-md bg-primary-soft text-primary;
+    @apply grid h-11 w-11 shrink-0 place-items-center rounded-md bg-primary-soft text-primary;
 }
 
 .sl-prj-grid {
@@ -2838,7 +2900,7 @@
 }
 
 .sl-prj-ai {
-    @apply mt-8 rounded-lg border border-border bg-card p-6;
+    @apply mt-6 rounded-lg border border-border bg-card p-4;
 }
 
 .sl-prj-ai__head {

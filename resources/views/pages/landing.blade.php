@@ -1,4 +1,4 @@
-<x-layouts.marketing :title="'StudyLib — Tous vos cours au même endroit'">
+<x-layouts.marketing :title="'StudyLib · Tous vos cours au même endroit'">
     <header
         class="sl-landing-header"
         x-data="{ menuOpen: false }"
@@ -75,18 +75,18 @@
                 </h1>
 
                 <p class="sl-landing-hero__sub">
-                    La plateforme collaborative de ressources pédagogiques réservée aux étudiants HESTIM. Partagez, trouvez et révisez — ensemble.
+                    La plateforme collaborative de ressources pédagogiques réservée aux étudiants HESTIM. Partagez, trouvez et révisez, ensemble.
                 </p>
 
-                <div class="mt-8 flex flex-wrap gap-3">
+                <div class="mt-6 flex flex-wrap gap-3">
                     @auth
                         <x-ui.button href="{{ route('dashboard') }}" variant="primary" size="lg" class="shadow-sm hover:-translate-y-px hover:shadow-md">
-                            <x-ui.icon name="library" class="h-[18px] w-[18px]" />
+                            <x-ui.icon name="library" class="h-4 w-4" />
                             Accéder au tableau de bord
                         </x-ui.button>
                     @else
                         <x-ui.button href="{{ route('login') }}" variant="primary" size="lg" class="shadow-sm hover:-translate-y-px hover:shadow-md">
-                            <x-ui.icon name="mail" class="h-[18px] w-[18px]" />
+                            <x-ui.icon name="mail" class="h-4 w-4" />
                             Se connecter avec mon email @hestim.ma
                         </x-ui.button>
                     @endauth
@@ -95,7 +95,7 @@
                     </x-ui.button>
                 </div>
 
-                <p class="mt-5 flex items-center gap-2 text-sm text-muted">
+                <p class="mt-4 flex items-center gap-2 text-sm text-muted">
                     <x-ui.icon name="check" class="h-4 w-4 text-success" />
                     Accès gratuit · Vérification par email institutionnel
                 </p>
@@ -104,7 +104,7 @@
             <div class="sl-landing-hero__visual">
                 <div class="sl-landing-float sl-landing-float--tl">
                     <div class="sl-landing-float__ico bg-success-soft text-success">
-                        <x-ui.icon name="shield-check" class="h-[18px] w-[18px]" />
+                        <x-ui.icon name="shield-check" class="h-4 w-4" />
                     </div>
                     <div>
                         <div class="text-sm font-semibold">Compte vérifié</div>
@@ -152,7 +152,7 @@
 
                 <div class="sl-landing-float sl-landing-float--br">
                     <div class="sl-landing-float__ico bg-primary-soft text-primary">
-                        <x-ui.icon name="sparkles" class="h-[18px] w-[18px]" />
+                        <x-ui.icon name="sparkles" class="h-4 w-4" />
                     </div>
                     <div>
                         <div class="text-sm font-semibold">+1 240 ressources</div>
@@ -174,21 +174,21 @@
             <div class="sl-landing-values">
                 <article class="sl-landing-value">
                     <div class="sl-landing-value__ico">
-                        <x-ui.icon name="library" class="h-[26px] w-[26px]" />
+                        <x-ui.icon name="library" class="h-5 w-5" />
                     </div>
                     <h3>Ressources centralisées</h3>
-                    <p>Cours, annales, TD corrigés, rapports de stage et projets — tout est rangé par filière et par semestre, accessible en quelques secondes.</p>
+                    <p>Cours, annales, TD corrigés, rapports de stage et projets : tout est rangé par filière et par semestre, accessible en quelques secondes.</p>
                 </article>
                 <article class="sl-landing-value">
                     <div class="sl-landing-value__ico">
-                        <x-ui.icon name="user" class="h-[26px] w-[26px]" />
+                        <x-ui.icon name="user" class="h-5 w-5" />
                     </div>
                     <h3>Intelligence collective</h3>
                     <p>Notez, commentez et améliorez les documents de la promo. Les meilleures fiches remontent grâce aux votes de la communauté.</p>
                 </article>
                 <article class="sl-landing-value">
                     <div class="sl-landing-value__ico">
-                        <x-ui.icon name="sparkles" class="h-[26px] w-[26px]" />
+                        <x-ui.icon name="sparkles" class="h-5 w-5" />
                     </div>
                     <h3>IA intégrée</h3>
                     <p>Résumés automatiques, recherche intelligente et recommandations personnalisées selon votre filière et vos révisions du moment.</p>
@@ -198,8 +198,8 @@
     </section>
 
     <section class="sl-landing-trust" id="trust">
-        <div class="sl-landing-wrap py-12">
-            <div class="sl-landing-sec-head mb-10">
+        <div class="sl-landing-wrap py-8">
+            <div class="sl-landing-sec-head mb-6">
                 <span class="sl-landing-eyebrow">Confiance &amp; sécurité</span>
                 <h2>Un espace fermé, fiable et personnel</h2>
             </div>
@@ -207,7 +207,7 @@
             <div class="sl-landing-trust-grid">
                 <div class="sl-landing-trust-item">
                     <div class="sl-landing-trust-ico bg-primary-soft text-primary">
-                        <x-ui.icon name="shield" class="h-[22px] w-[22px]" />
+                        <x-ui.icon name="shield" class="h-[18px] w-[18px]" />
                     </div>
                     <div>
                         <h4>Accès vérifié uniquement</h4>
@@ -216,7 +216,7 @@
                 </div>
                 <div class="sl-landing-trust-item">
                     <div class="sl-landing-trust-ico bg-success-soft text-success">
-                        <x-ui.icon name="lock" class="h-[22px] w-[22px]" />
+                        <x-ui.icon name="lock" class="h-[18px] w-[18px]" />
                     </div>
                     <div>
                         <h4>Documents sécurisés</h4>
@@ -225,7 +225,7 @@
                 </div>
                 <div class="sl-landing-trust-item">
                     <div class="sl-landing-trust-ico bg-warning-soft text-warning">
-                        <x-ui.icon name="sparkles" class="h-[22px] w-[22px]" />
+                        <x-ui.icon name="sparkles" class="h-[18px] w-[18px]" />
                     </div>
                     <div>
                         <h4>Recommandations personnalisées</h4>
@@ -243,12 +243,12 @@
                 <p>Connectez-vous en quelques secondes avec votre email institutionnel.</p>
                 @auth
                     <x-ui.button href="{{ route('dashboard') }}" variant="primary" size="lg" class="sl-landing-cta__btn">
-                        <x-ui.icon name="library" class="h-[18px] w-[18px]" />
+                        <x-ui.icon name="library" class="h-4 w-4" />
                         Accéder au tableau de bord
                     </x-ui.button>
                 @else
                     <x-ui.button href="{{ route('login') }}" variant="primary" size="lg" class="sl-landing-cta__btn">
-                        <x-ui.icon name="mail" class="h-[18px] w-[18px]" />
+                        <x-ui.icon name="mail" class="h-4 w-4" />
                         Se connecter avec mon email @hestim.ma
                     </x-ui.button>
                 @endauth
