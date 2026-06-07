@@ -21,7 +21,9 @@
         </div>
     </nav>
 
-    <a href="{{ route('documents.index') }}" wire:navigate class="sl-fab" aria-label="Déposer un document">
-        <x-ui.icon name="plus" class="h-6 w-6 text-white" />
-    </a>
+    @if ($this->showDepositFab())
+        <a href="{{ route('documents.index', ['upload' => 1]) }}" wire:navigate class="sl-fab" aria-label="Déposer un document">
+            <x-ui.icon name="plus" class="h-6 w-6 text-white" />
+        </a>
+    @endif
 </div>

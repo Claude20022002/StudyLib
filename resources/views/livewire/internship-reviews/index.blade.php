@@ -145,13 +145,7 @@
                         title="Aucune entreprise trouvée"
                         description="Aucun retour ne correspond à vos critères. Élargissez la recherche ou partagez le vôtre."
                     >
-                        <div class="flex flex-wrap justify-center gap-3">
-                            <button type="button" wire:click="resetFilters" class="sl-btn sl-btn--secondary">Réinitialiser les filtres</button>
-                            <button type="button" wire:click="openShare()" class="sl-btn sl-btn--primary">
-                                <x-ui.icon name="plus" class="h-4 w-4" />
-                                Partager mon retour
-                            </button>
-                        </div>
+                        <button type="button" wire:click="resetFilters" class="sl-btn sl-btn--secondary sl-mobile-only">Réinitialiser les filtres</button>
                     </x-ui.empty-state>
                 @else
                     <div class="sl-stg-grid">

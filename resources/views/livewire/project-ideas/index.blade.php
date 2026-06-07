@@ -112,10 +112,7 @@
                         title="Aucun projet trouvé"
                         description="Aucune idée ne correspond à vos critères. Élargissez la recherche, proposez la vôtre ou générez des idées IA."
                     >
-                        <div class="flex flex-wrap justify-center gap-3">
-                            <button type="button" wire:click="resetFilters" class="sl-btn sl-btn--secondary">Réinitialiser</button>
-                            <button type="button" wire:click="openPropose" class="sl-btn sl-btn--primary">Proposer un projet</button>
-                        </div>
+                        <button type="button" wire:click="resetFilters" class="sl-btn sl-btn--secondary sl-mobile-only">Réinitialiser</button>
                     </x-ui.empty-state>
                 @else
                     <div class="sl-prj-grid">

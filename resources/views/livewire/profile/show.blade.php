@@ -162,11 +162,7 @@
                         @forelse ($documents as $document)
                             <x-profile.document-item :document="$document" wire:key="prof-doc-{{ $document->id }}" />
                         @empty
-                            <x-ui.empty-state flaticon="library" title="Aucun document" description="Déposez votre première ressource pour la partager avec la promo.">
-                                <x-ui.button variant="primary" href="{{ route('documents.index', ['upload' => 1]) }}" wire:navigate>
-                                    Déposer un document
-                                </x-ui.button>
-                            </x-ui.empty-state>
+                            <x-ui.empty-state flaticon="library" title="Aucun document" description="Utilisez le bouton « Déposer » en haut de votre profil pour partager votre première ressource." />
                         @endforelse
                     </div>
                 @elseif ($tab === 'stages')

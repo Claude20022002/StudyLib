@@ -73,12 +73,9 @@
                 title="Aucun événement ce mois-ci"
                 :description="$search !== '' ? 'Aucun résultat pour votre recherche. Essayez un autre mot-clé ou changez de mois.' : 'Aucun événement planifié pour cette période. Revenez plus tard ou consultez un autre mois.'"
             >
-                <div class="flex flex-wrap justify-center gap-3">
-                    @if ($search !== '')
-                        <button type="button" wire:click="clearSearch" class="sl-btn sl-btn--secondary">Effacer la recherche</button>
-                    @endif
-                    <button type="button" wire:click="goToToday" class="sl-btn sl-btn--primary">Revenir à aujourd'hui</button>
-                </div>
+                @if ($search !== '')
+                    <button type="button" wire:click="clearSearch" class="sl-btn sl-btn--secondary">Effacer la recherche</button>
+                @endif
             </x-ui.empty-state>
         @else
             <div @class(['sl-ev-calendar', 'is-hidden' => $viewMode === 'list'])>

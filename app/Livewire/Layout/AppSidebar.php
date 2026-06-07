@@ -50,4 +50,9 @@ class AppSidebar extends Component
 
         return route($item['route'], $parameters);
     }
+
+    public function showDepositPromo(): bool
+    {
+        return ! request()->routeIs('dashboard', 'documents.*', 'profile.show');
+    }
 }

@@ -76,13 +76,8 @@
                 <x-ui.empty-state
                     flaticon="library"
                     title="Aucun document dans ce filtre"
-                    description="Aucune ressource ne correspond pour l'instant. Soyez le premier à en partager une avec votre promo."
-                >
-                    <x-ui.button variant="primary" href="{{ route('documents.index') }}">
-                        <x-ui.icon name="plus" />
-                        Déposer un document
-                    </x-ui.button>
-                </x-ui.empty-state>
+                    description="Aucune ressource ne correspond pour l'instant. Changez de filtre ou déposez le vôtre."
+                />
             @else
                 <div class="sl-doc-list" wire:loading.class="opacity-60">
                     @foreach ($documents as $document)

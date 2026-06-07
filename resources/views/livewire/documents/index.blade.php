@@ -21,10 +21,6 @@
                     <x-ui.icon name="x" class="h-4 w-4" />
                 </button>
             @endif
-            <x-ui.button variant="primary" size="sm" class="sl-lib-search__go" wire:click="$refresh">
-                <x-ui.icon name="search" />
-                <span class="hidden sm:inline">Rechercher</span>
-            </x-ui.button>
         </div>
         <div class="sl-lib-quick-tags">
             <span class="text-xs font-semibold text-muted">Suggestions :</span>
@@ -161,10 +157,12 @@
                     </button>
                 </div>
 
-                <x-ui.button variant="primary" size="sm" class="sl-desktop-only" wire:click="openUpload">
-                    <x-ui.icon name="plus" />
-                    Déposer
-                </x-ui.button>
+                @if (! $documents->isEmpty())
+                    <x-ui.button variant="primary" size="sm" wire:click="openUpload">
+                        <x-ui.icon name="plus" />
+                        Déposer
+                    </x-ui.button>
+                @endif
             </div>
 
             @if ($activeChips !== [])
@@ -194,7 +192,7 @@
                         description="Aucun document ne correspond à votre recherche ou à vos filtres. Essayez d'élargir les critères, ou partagez le vôtre."
                     >
                         <div class="flex flex-wrap justify-center gap-3">
-                            <x-ui.button variant="secondary" wire:click="resetFilters">Réinitialiser les filtres</x-ui.button>
+                            <x-ui.button variant="secondary" wire:click="resetFilters" class="sl-mobile-only">Réinitialiser les filtres</x-ui.button>
                             <x-ui.button variant="primary" wire:click="openUpload">
                                 <x-ui.icon name="plus" />
                                 Déposer un document

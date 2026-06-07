@@ -30,4 +30,9 @@ class AppBottomNav extends Component
 
         return route($item['route']);
     }
+
+    public function showDepositFab(): bool
+    {
+        return ! request()->routeIs('documents.*');
+    }
 }
