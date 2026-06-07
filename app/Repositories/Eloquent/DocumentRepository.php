@@ -139,6 +139,40 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
         return $counts;
     }
 
+    public function similarInModule(Document $document, int $limit = 3): Collection
+    {
+        return $this->model->newQuery()
+            ->visible()
+            ->where('module_id', $document->module_id)
+            ->whereKeyNot($document->getKey())
+            ->with(['author', 'module'])
+            ->orderByDesc('avg_rating')
+            ->orderByDesc('downloads_count')
+            ->limit($limit)
+            ->get();
+    }
+
+    public function examsInModule(Document $document, int $limit = 2): Collection
+    {
+        return $this->model->newQuery()
+            ->visible()
+            ->where('module_id', $document->module_id)
+            ->where('type', DocumentType::Examen)
+            ->whereKeyNot($document->getKey())
+            ->with(['author', 'module'])
+            ->orderByDesc('downloads_count')
+            ->limit($limit)
+            ->get();
+    }
+
+    public function countApprovedByAuthor(string $userId): int
+    {
+        return $this->model->newQuery()
+            ->visible()
+            ->where('user_id', $userId)
+            ->count();
+    }
+
     /**
      * @param  array{
      *     q?: string,

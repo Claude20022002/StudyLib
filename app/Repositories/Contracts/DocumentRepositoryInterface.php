@@ -65,4 +65,12 @@ interface DocumentRepositoryInterface extends RepositoryInterface
      * @return array<string, int>
      */
     public function countByTypeForBrowse(array $filters): array;
+
+    /** @return Collection<int, Document> */
+    public function similarInModule(Document $document, int $limit = 3): Collection;
+
+    /** @return Collection<int, Document> */
+    public function examsInModule(Document $document, int $limit = 2): Collection;
+
+    public function countApprovedByAuthor(string $userId): int;
 }

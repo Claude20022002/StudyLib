@@ -43,11 +43,42 @@ class DocumentController extends Controller
         ]);
     }
 
-    public function show(Document $document): DocumentResource
+    public function show(Request $request, Document $document): View|DocumentResource
     {
         $this->authorize('view', $document);
 
-        return DocumentResource::make($document->load(['author', 'module']));
+        if ($request->expectsJson()) {
+            return DocumentResource::make($document->load(['author', 'module']));
+        }
+
+        $pageData = $this->documents->showPageData($document, $request->user());
+        $document = $pageData['document'];
+
+        return view('pages.documents.show', [
+            'document' => $document,
+            'breadcrumb' => $this->breadcrumbFor($document),
+        ]);
+    }
+
+    /**
+     * @return list<array{label: string, url?: string}>
+     */
+    private function breadcrumbFor(Document $document): array
+    {
+        $items = [
+            ['label' => 'Bibliothèque', 'url' => route('documents.index')],
+        ];
+
+        if ($document->module) {
+            $items[] = [
+                'label' => $document->module->name,
+                'url' => route('documents.index', ['module' => $document->module_id]),
+            ];
+        }
+
+        $items[] = ['label' => $document->title];
+
+        return $items;
     }
 
     public function store(StoreDocumentRequest $request): RedirectResponse|JsonResponse

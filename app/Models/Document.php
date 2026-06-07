@@ -76,6 +76,15 @@ class Document extends Model
         return $this->hasMany(DocumentDownload::class);
     }
 
+    public function fileBasename(): string
+    {
+        if (blank($this->file_path)) {
+            return 'document';
+        }
+
+        return basename($this->file_path);
+    }
+
     public function fileKindLabel(): string
     {
         $mime = $this->mime_type ?? '';

@@ -12,6 +12,9 @@ class AppTopbar extends Component
 {
     public ?string $title = null;
 
+    /** @var list<array{label: string, url?: string}>|null */
+    public ?array $breadcrumb = null;
+
     public function render(): View
     {
         $user = Auth::user();

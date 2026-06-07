@@ -1,7 +1,20 @@
 <header class="sl-topbar">
     <div class="sl-brand-mark sl-mobile-only" aria-hidden="true">S</div>
 
-    @if ($title)
+    @if ($breadcrumb)
+        <nav class="sl-breadcrumb min-w-0" aria-label="Fil d'Ariane">
+            @foreach ($breadcrumb as $index => $item)
+                @if ($index > 0)
+                    <span class="sl-breadcrumb__sep" aria-hidden="true">/</span>
+                @endif
+                @if (! empty($item['url']))
+                    <a href="{{ $item['url'] }}" wire:navigate class="sl-breadcrumb__link">{{ $item['label'] }}</a>
+                @else
+                    <span class="sl-breadcrumb__current">{{ $item['label'] }}</span>
+                @endif
+            @endforeach
+        </nav>
+    @elseif ($title)
         <h1 class="text-h3 font-bold tracking-tight">{{ $title }}</h1>
     @else
         <livewire:ui.search-bar class="sl-desktop-only flex-1" />

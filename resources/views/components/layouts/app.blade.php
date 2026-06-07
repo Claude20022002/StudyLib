@@ -1,3 +1,9 @@
+@props([
+    'title' => null,
+    'header' => null,
+    'breadcrumb' => null,
+])
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -17,7 +23,7 @@
         <livewire:layout.app-sidebar />
 
         <div class="sl-main">
-            <livewire:layout.app-topbar :title="$header ?? null" />
+            <livewire:layout.app-topbar :title="$header ?? null" :breadcrumb="$breadcrumb ?? null" />
 
             <main id="main-content" class="sl-content" tabindex="-1">
                 {{ $slot }}

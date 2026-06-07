@@ -7,8 +7,11 @@ namespace App\Services;
 use App\Enums\DocumentStatus;
 use App\Enums\DocumentType;
 use App\Models\Document;
+use App\Models\DocumentRating;
 use App\Models\User;
+use App\Repositories\Contracts\DocumentRatingRepositoryInterface;
 use App\Repositories\Contracts\DocumentRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -19,6 +22,7 @@ class DocumentService
 
     public function __construct(
         private readonly DocumentRepositoryInterface $documents,
+        private readonly DocumentRatingRepositoryInterface $ratings,
     ) {}
 
     public function listByModule(string $moduleId, ?DocumentType $type = null): LengthAwarePaginator
@@ -85,6 +89,37 @@ class DocumentService
             'year_concern' => $data['year_concern'] ?? null,
             'status' => DocumentStatus::Pending->value,
         ]);
+    }
+
+    /**
+     * @return array{
+     *     document: Document,
+     *     similarDocuments: Collection<int, Document>,
+     *     examDocuments: Collection<int, Document>,
+     *     authorDocumentCount: int,
+     *     userRating: DocumentRating|null,
+     * }
+     */
+    public function showPageData(Document $document, ?User $viewer): array
+    {
+        $document->load(['author', 'module.filiere']);
+
+        $userRating = null;
+
+        if ($viewer !== null) {
+            $userRating = $this->ratings->findForUserAndDocument(
+                $viewer->getKey(),
+                $document->getKey(),
+            );
+        }
+
+        return [
+            'document' => $document,
+            'similarDocuments' => $this->documents->similarInModule($document),
+            'examDocuments' => $this->documents->examsInModule($document),
+            'authorDocumentCount' => $this->documents->countApprovedByAuthor($document->user_id),
+            'userRating' => $userRating,
+        ];
     }
 
     public function temporaryDownloadUrl(Document $document, int $minutes = 5): string
