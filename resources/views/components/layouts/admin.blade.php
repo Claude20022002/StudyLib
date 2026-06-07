@@ -27,7 +27,7 @@
             <header class="sl-admin-topbar">
                 @isset($header)
                     <div>
-                        <h1 class="text-h3 font-bold tracking-tight">{{ $header }}</h1>
+                        <h1 class="sl-topbar__title">{{ $header }}</h1>
                         @isset($breadcrumb)
                             <p class="text-xs text-muted">{{ $breadcrumb }}</p>
                         @endisset
