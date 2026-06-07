@@ -33,6 +33,11 @@
   --color-info-soft: #e0f2fe;
   --color-info-ink: #075985;
 
+  --color-violet: #6d28d9;
+  --color-violet-soft: #f0eefb;
+
+  --color-star: #f59e0b;
+
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 

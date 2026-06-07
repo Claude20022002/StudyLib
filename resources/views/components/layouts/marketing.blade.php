@@ -10,7 +10,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="min-h-screen bg-card">
+<body class="sl-marketing min-h-screen bg-card">
     <x-ui.skip-link />
 
     <main id="main-content" tabindex="-1">

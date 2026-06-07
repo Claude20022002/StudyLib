@@ -1,5 +1,5 @@
 @php
-    $pageTitle = $document->title.' — '.config('app.name');
+    $pageTitle = $document->title.' · '.config('app.name');
 @endphp
 
 <x-layouts.app :title="$pageTitle" :breadcrumb="$breadcrumb">

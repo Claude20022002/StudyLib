@@ -1,0 +1,304 @@
+/* ===== StudyLib · polish transversal (UI/UX) ===== */
+
+/* Shell & fond */
+.sl-main {
+    background:
+        radial-gradient(120% 70% at 100% 0%, rgba(219, 234, 254, 0.4), transparent 52%),
+        radial-gradient(80% 50% at 0% 100%, rgba(241, 245, 249, 0.9), transparent 55%),
+        var(--color-surface);
+}
+
+.sl-content {
+    margin-inline: auto;
+}
+
+.sl-sidebar {
+    box-shadow: 1px 0 0 rgba(15, 23, 42, 0.04);
+}
+
+.sl-topbar {
+    box-shadow: 0 1px 0 rgba(15, 23, 42, 0.05);
+}
+
+/* Navigation active · indicateur latéral */
+.sl-sidebar-link.is-active {
+    position: relative;
+}
+
+.sl-sidebar-link.is-active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    border-radius: 0 3px 3px 0;
+    background: var(--color-primary);
+}
+
+.sl-bottom-link.is-active {
+    position: relative;
+}
+
+.sl-bottom-link.is-active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--color-primary);
+}
+
+/* Surfaces élevées · cohérence modules */
+.sl-kpi,
+.sl-panel,
+.sl-lib-filters,
+.sl-lib-search,
+.sl-stg-hero,
+.sl-prj-hero,
+.sl-prj-ai,
+.sl-stg-company,
+.sl-prj-card,
+.sl-lib-card,
+.sl-lib-row,
+.sl-doc-head,
+.sl-prof-head,
+.sl-empty,
+.sl-adm-kpi {
+    box-shadow: var(--shadow-xs);
+}
+
+/* Cartes interactives */
+.sl-stg-company,
+.sl-prj-card,
+.sl-lib-card,
+.sl-lib-row,
+.sl-doc,
+.sl-kpi {
+    transition:
+        transform var(--dur) var(--ease),
+        box-shadow var(--dur) var(--ease),
+        border-color var(--dur) var(--ease);
+}
+
+.sl-stg-company:hover,
+.sl-prj-card:hover,
+.sl-lib-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.sl-lib-row:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Barre de résultats */
+.sl-lib-results-bar {
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+/* Drawers */
+.sl-lib-drawer {
+    transition: transform var(--dur-slow) cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -12px 0 48px rgba(15, 23, 42, 0.1);
+}
+
+.sl-lib-scrim {
+    animation: sl-scrim-in var(--dur-slow) var(--ease);
+}
+
+@keyframes sl-scrim-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Alertes inline (pages Livewire) */
+.sl-page-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+}
+
+.sl-page-alert__ico {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    background: var(--color-card);
+}
+
+.sl-page-alert__title {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.sl-page-alert__text {
+    color: inherit;
+}
+
+.sl-page-alert--success {
+    background: var(--color-success-soft);
+    border-color: color-mix(in srgb, var(--color-success) 28%, transparent);
+    color: var(--color-success-ink);
+}
+
+.sl-page-alert--success .sl-page-alert__ico {
+    color: var(--color-success);
+}
+
+.sl-page-alert--danger {
+    background: var(--color-danger-soft);
+    border-color: color-mix(in srgb, var(--color-danger) 22%, transparent);
+    color: var(--color-danger-ink);
+}
+
+.sl-page-alert--danger .sl-page-alert__ico {
+    color: var(--color-danger);
+}
+
+/* Auth */
+.sl-auth-title {
+    font-size: clamp(22px, 2.6vw, var(--text-h1));
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+}
+
+.sl-guest-form-side {
+    background: var(--color-card);
+}
+
+.sl-guest-art-side blockquote {
+    text-shadow: 0 1px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Empty states */
+.sl-empty {
+    background: linear-gradient(180deg, var(--color-card) 0%, var(--color-surface) 100%);
+}
+
+/* Filtres · focus */
+.sl-lib-fselect:focus,
+.sl-lib-sort:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-focus);
+}
+
+/* Pagination active */
+.sl-page-btn.is-active {
+    box-shadow: var(--shadow-sm);
+}
+
+/* Toasts · mobile safe area */
+.sl-toast-stack {
+    bottom: var(--space-6);
+    right: var(--space-6);
+    z-index: 70;
+}
+
+/* Scrollbar sidebar */
+.sl-sidebar-nav {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-strong) transparent;
+}
+
+.sl-sidebar-nav::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sl-sidebar-nav::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: 999px;
+}
+
+/* Focus visible global */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.sl-btn:focus-visible,
+.sl-sidebar-link:focus-visible,
+.sl-bottom-link:focus-visible {
+    outline-offset: 1px;
+}
+
+/* Marketing header */
+.sl-site-header {
+    box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+}
+
+.sl-landing-header {
+    box-shadow: 0 1px 0 rgba(15, 23, 42, 0.05);
+}
+
+/* Profil · carte tête */
+.sl-prof-head {
+    overflow: hidden;
+}
+
+/* Document preview */
+.sl-doc-preview {
+    box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+/* Admin shell */
+.sl-admin-sidebar {
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 860px) {
+    .sl-toast-stack {
+        left: var(--space-4);
+        right: var(--space-4);
+        bottom: calc(64px + env(safe-area-inset-bottom, 0px) + var(--space-4));
+        max-width: none;
+    }
+
+    .sl-content {
+        padding-bottom: calc(var(--space-16) + env(safe-area-inset-bottom, 0px));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sl-stg-company,
+    .sl-prj-card,
+    .sl-lib-card,
+    .sl-lib-row,
+    .sl-doc,
+    .sl-kpi,
+    .sl-lib-drawer,
+    .sl-lib-scrim {
+        animation: none;
+        transition: none;
+    }
+
+    .sl-stg-company:hover,
+    .sl-prj-card:hover,
+    .sl-lib-card:hover,
+    .sl-lib-row:hover {
+        transform: none;
+    }
+}

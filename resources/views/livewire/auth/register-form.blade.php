@@ -9,20 +9,14 @@
     @csrf
 
     <div class="mb-8">
-        <h1 class="text-h1 leading-tight font-bold tracking-tight">Activez votre accès HESTIM</h1>
+        <h1 class="sl-auth-title font-bold">Activez votre accès HESTIM</h1>
         <p class="mt-2 text-ink-soft">Créez votre compte pour rejoindre la bibliothèque de votre promo.</p>
     </div>
 
     @if ($errors->any())
-        <div class="mb-6 flex items-start gap-3 rounded-md bg-danger-soft p-4 text-sm text-danger-ink" role="alert">
-            <div class="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[10px] bg-white text-danger">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
-            </div>
-            <div>
-                <div class="text-body font-semibold">Inscription impossible</div>
-                <div>{{ $errors->first() }}</div>
-            </div>
-        </div>
+        <x-ui.page-alert variant="danger" title="Inscription impossible">
+            {{ $errors->first() }}
+        </x-ui.page-alert>
     @endif
 
     <x-ui.domain-note class="mb-6">
@@ -127,7 +121,7 @@
         </div>
     </div>
 
-    <x-ui.field label="Filière" id="filiere_id" class="mb-5" hint="Optionnel — vous pourrez la modifier plus tard." :error="$errors->first('filiere_id')">
+    <x-ui.field label="Filière" id="filiere_id" class="mb-5" hint="Optionnel · vous pourrez la modifier plus tard." :error="$errors->first('filiere_id')">
         <select
             id="filiere_id"
             name="filiere_id"

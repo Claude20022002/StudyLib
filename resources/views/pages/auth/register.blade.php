@@ -1,4 +1,4 @@
-<x-layouts.guest :title="'Inscription — '.config('app.name')">
+<x-layouts.guest :title="'Inscription · '.config('app.name')">
     <div class="sl-guest-form-side">
         <div class="flex items-center gap-3">
             <x-ui.brand />

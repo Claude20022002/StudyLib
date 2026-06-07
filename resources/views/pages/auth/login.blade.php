@@ -1,4 +1,4 @@
-<x-layouts.guest :title="'Connexion — '.config('app.name')">
+<x-layouts.guest :title="'Connexion · '.config('app.name')">
     <div class="sl-guest-form-side">
         <div class="flex items-center gap-3">
             <x-ui.brand />

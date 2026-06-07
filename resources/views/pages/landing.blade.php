@@ -9,22 +9,23 @@
                 <x-ui.brand />
             </a>
 
-            <nav class="sl-landing-nav hidden items-center gap-6 md:flex" aria-label="Navigation principale">
-                <a href="#features" class="text-sm font-medium text-ink-soft transition-colors hover:text-primary">Fonctionnalités</a>
-                <a href="#trust" class="text-sm font-medium text-ink-soft transition-colors hover:text-primary">Sécurité</a>
-                <a href="#" class="text-sm font-medium text-ink-soft transition-colors hover:text-primary">Ressources</a>
+            <nav class="sl-landing-nav hidden md:flex" aria-label="Navigation principale">
+                <a href="#features" class="sl-landing-nav-link">Fonctionnalités</a>
+                <a href="#trust" class="sl-landing-nav-link">Sécurité</a>
+                <a href="#stats" class="sl-landing-nav-link">Communauté</a>
             </nav>
 
-            <div class="flex-1"></div>
-
-            <div class="flex items-center gap-3">
+            <div class="sl-landing-header__actions">
                 @auth
-                    <x-ui.button href="{{ route('dashboard') }}" variant="secondary" size="sm">
+                    <x-ui.button href="{{ route('dashboard') }}" variant="primary" size="sm">
                         Tableau de bord
                     </x-ui.button>
                 @else
                     <x-ui.button href="{{ route('login') }}" variant="secondary" size="sm" class="hidden sm:inline-flex">
                         Se connecter
+                    </x-ui.button>
+                    <x-ui.button href="{{ route('register') }}" variant="primary" size="sm" class="hidden sm:inline-flex">
+                        Créer un compte
                     </x-ui.button>
                 @endauth
 
@@ -52,7 +53,7 @@
             <div class="sl-landing-wrap flex flex-col gap-1 py-3">
                 <a href="#features" class="sl-landing-mobile-link" @click="menuOpen = false">Fonctionnalités</a>
                 <a href="#trust" class="sl-landing-mobile-link" @click="menuOpen = false">Sécurité</a>
-                <a href="#" class="sl-landing-mobile-link" @click="menuOpen = false">Ressources</a>
+                <a href="#stats" class="sl-landing-mobile-link" @click="menuOpen = false">Communauté</a>
                 @guest
                     <a href="{{ route('login') }}" class="sl-landing-mobile-link" @click="menuOpen = false">Se connecter</a>
                     <a href="{{ route('register') }}" class="sl-landing-mobile-link" @click="menuOpen = false">Créer un compte</a>
@@ -63,7 +64,7 @@
 
     <section class="sl-landing-hero">
         <div class="sl-landing-wrap sl-landing-hero__grid">
-            <div>
+            <div class="sl-landing-hero__copy">
                 <span class="sl-landing-pill">
                     <span class="sl-landing-pill__dot" aria-hidden="true"></span>
                     Réservé à la communauté HESTIM
@@ -71,14 +72,14 @@
 
                 <h1 class="sl-landing-hero__title">
                     Tous vos cours, examens, stages et projets
-                    <span class="text-primary">au même endroit</span>
+                    <span class="sl-landing-hero__accent">au même endroit</span>
                 </h1>
 
                 <p class="sl-landing-hero__sub">
                     La plateforme collaborative de ressources pédagogiques réservée aux étudiants HESTIM. Partagez, trouvez et révisez, ensemble.
                 </p>
 
-                <div class="mt-6 flex flex-wrap gap-3">
+                <div class="sl-landing-hero__cta">
                     @auth
                         <x-ui.button href="{{ route('dashboard') }}" variant="primary" size="lg" class="shadow-sm hover:-translate-y-px hover:shadow-md">
                             <x-ui.icon name="library" class="h-4 w-4" />
@@ -95,7 +96,7 @@
                     </x-ui.button>
                 </div>
 
-                <p class="mt-4 flex items-center gap-2 text-sm text-muted">
+                <p class="sl-landing-hero__fine">
                     <x-ui.icon name="check" class="h-4 w-4 text-success" />
                     Accès gratuit · Vérification par email institutionnel
                 </p>
@@ -163,6 +164,27 @@
         </div>
     </section>
 
+    <section class="sl-landing-stats" id="stats" aria-label="Chiffres clés de la communauté">
+        <div class="sl-landing-wrap sl-landing-stats__grid">
+            <div class="sl-landing-stat">
+                <span class="sl-landing-stat__val">1 240+</span>
+                <span class="sl-landing-stat__lbl">Ressources partagées</span>
+            </div>
+            <div class="sl-landing-stat">
+                <span class="sl-landing-stat__val">850+</span>
+                <span class="sl-landing-stat__lbl">Étudiants actifs</span>
+            </div>
+            <div class="sl-landing-stat">
+                <span class="sl-landing-stat__val">4</span>
+                <span class="sl-landing-stat__lbl">Filières couvertes</span>
+            </div>
+            <div class="sl-landing-stat">
+                <span class="sl-landing-stat__val">100%</span>
+                <span class="sl-landing-stat__lbl">Accès @hestim.ma</span>
+            </div>
+        </div>
+    </section>
+
     <section class="sl-landing-sec" id="features">
         <div class="sl-landing-wrap">
             <div class="sl-landing-sec-head">
@@ -172,21 +194,21 @@
             </div>
 
             <div class="sl-landing-values">
-                <article class="sl-landing-value">
+                <article class="sl-landing-value sl-landing-value--library">
                     <div class="sl-landing-value__ico">
                         <x-ui.icon name="library" class="h-5 w-5" />
                     </div>
                     <h3>Ressources centralisées</h3>
                     <p>Cours, annales, TD corrigés, rapports de stage et projets : tout est rangé par filière et par semestre, accessible en quelques secondes.</p>
                 </article>
-                <article class="sl-landing-value">
+                <article class="sl-landing-value sl-landing-value--community">
                     <div class="sl-landing-value__ico">
                         <x-ui.icon name="user" class="h-5 w-5" />
                     </div>
                     <h3>Intelligence collective</h3>
                     <p>Notez, commentez et améliorez les documents de la promo. Les meilleures fiches remontent grâce aux votes de la communauté.</p>
                 </article>
-                <article class="sl-landing-value">
+                <article class="sl-landing-value sl-landing-value--ai">
                     <div class="sl-landing-value__ico">
                         <x-ui.icon name="sparkles" class="h-5 w-5" />
                     </div>
@@ -263,12 +285,12 @@
                 <span class="text-body font-bold tracking-tight">StudyLib</span>
             </a>
             <nav class="flex flex-wrap gap-6" aria-label="Pied de page">
-                <a href="#features" class="text-sm text-muted transition-colors hover:text-ink">Fonctionnalités</a>
-                <a href="#trust" class="text-sm text-muted transition-colors hover:text-ink">Sécurité</a>
-                <a href="#" class="text-sm text-muted transition-colors hover:text-ink">Confidentialité</a>
-                <a href="#" class="text-sm text-muted transition-colors hover:text-ink">Contact</a>
+                <a href="#features" class="sl-landing-footer-link">Fonctionnalités</a>
+                <a href="#trust" class="sl-landing-footer-link">Sécurité</a>
+                <a href="#stats" class="sl-landing-footer-link">Communauté</a>
+                <a href="#" class="sl-landing-footer-link">Contact</a>
             </nav>
-            <span class="text-sm text-muted sm:ml-auto">© {{ date('Y') }} StudyLib · Communauté HESTIM</span>
+            <span class="sl-landing-footer__copy">© {{ date('Y') }} StudyLib · Communauté HESTIM</span>
         </div>
     </footer>
 </x-layouts.marketing>

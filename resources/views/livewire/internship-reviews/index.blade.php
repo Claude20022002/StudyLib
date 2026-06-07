@@ -1,8 +1,6 @@
 <div>
     @if (session('success'))
-        <div class="mb-4 rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success-ink" role="status">
-            {{ session('success') }}
-        </div>
+        <x-ui.page-alert>{{ session('success') }}</x-ui.page-alert>
     @endif
 
     {{-- Search hero --}}
