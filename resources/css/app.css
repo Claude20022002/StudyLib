@@ -128,7 +128,7 @@
 @layer components {
     /* ===== Brand ===== */
     .sl-brand-mark {
-        @apply grid shrink-0 place-items-center rounded-[11px] font-bold text-white shadow-sm;
+        @apply grid shrink-0 place-items-center justify-center rounded-[11px] font-bold text-white shadow-sm;
         width: 36px;
         height: 36px;
         font-size: 17px;
@@ -415,16 +415,33 @@
 
     /* ===== Avatar ===== */
     .sl-avatar {
-        @apply grid shrink-0 place-items-center rounded-full bg-primary-soft font-bold text-primary-active;
+        @apply grid shrink-0 place-items-center justify-center rounded-full font-bold uppercase select-none;
         width: 38px;
         height: 38px;
         font-size: var(--text-sm);
+        line-height: 1;
+        letter-spacing: 0.05em;
+        color: var(--color-on-primary);
+        background: linear-gradient(145deg, var(--color-primary) 0%, var(--color-primary-active) 100%);
+        box-shadow:
+            0 1px 2px rgba(15, 23, 42, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.22);
+        transition:
+            box-shadow var(--dur-fast) var(--ease),
+            transform var(--dur-fast) var(--ease);
+    }
+
+    .sl-user-chip:hover .sl-avatar {
+        box-shadow:
+            0 2px 8px rgba(29, 78, 216, 0.28),
+            inset 0 1px 0 rgba(255, 255, 255, 0.28);
     }
 
     .sl-avatar--sm {
         width: 26px;
         height: 26px;
         font-size: var(--text-xs);
+        letter-spacing: 0.03em;
     }
 
     /* ===== Chip filter ===== */
@@ -2166,6 +2183,12 @@
 
 .sl-prof-tabs {
     @apply mb-5 flex gap-0.5 overflow-x-auto border-b border-border;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.sl-prof-tabs::-webkit-scrollbar {
+    display: none;
 }
 
 .sl-prof-tab {
