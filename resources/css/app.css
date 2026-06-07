@@ -582,7 +582,7 @@
     }
 
     .sl-fab {
-        @apply fixed z-41 grid cursor-pointer place-items-center rounded-full border-0 bg-primary text-white shadow-lg;
+        @apply fixed z-41 hidden cursor-pointer place-items-center rounded-full border-0 bg-primary text-white shadow-lg;
         right: 18px;
         bottom: 80px;
         width: 56px;
@@ -1024,7 +1024,7 @@
     }
 
     .sl-page-btn {
-        @apply inline-flex min-w-[38px] items-center justify-center rounded-sm border border-border bg-card text-sm font-semibold text-ink-soft transition-all;
+        @apply inline-flex min-w-[38px] cursor-pointer items-center justify-center rounded-sm border border-border bg-card text-sm font-semibold text-ink-soft transition-all;
         height: 38px;
         padding: 0 10px;
         border-radius: var(--radius-sm);
@@ -1218,7 +1218,7 @@
     }
 
     .sl-content {
-        padding: 20px 16px 90px;
+        padding: 20px 16px calc(80px + 56px + 24px + env(safe-area-inset-bottom, 0px));
     }
 
     .sl-topbar {
@@ -1528,7 +1528,7 @@
     }
 
     .sl-lib-search__clear {
-        @apply absolute top-1/2 grid h-[30px] w-[30px] -translate-y-1/2 place-items-center rounded-[7px] border-0 bg-transparent text-muted hover:bg-surface-2 hover:text-ink;
+        @apply absolute top-1/2 grid h-[30px] w-[30px] -translate-y-1/2 cursor-pointer place-items-center rounded-[7px] border-0 bg-transparent text-muted hover:bg-surface-2 hover:text-ink;
         right: 100px;
     }
 
@@ -1541,7 +1541,7 @@
     }
 
     .sl-lib-qtag {
-        @apply h-7 rounded-full border border-border bg-surface px-3 text-xs font-semibold text-ink-soft transition-colors hover:border-primary hover:bg-primary-tint hover:text-primary;
+        @apply h-7 cursor-pointer rounded-full border border-border bg-surface px-3 text-xs font-semibold text-ink-soft transition-colors hover:border-primary hover:bg-primary-tint hover:text-primary;
     }
 
     .sl-lib-layout {
@@ -1609,7 +1609,7 @@
     }
 
     .sl-lib-mobile-filter {
-        @apply inline-flex items-center gap-2 rounded-md border border-border-strong bg-card px-3 text-sm font-semibold;
+        @apply inline-flex cursor-pointer items-center gap-2 rounded-md border border-border-strong bg-card px-3 text-sm font-semibold;
         height: 38px;
     }
 
@@ -1622,7 +1622,7 @@
     }
 
     .sl-lib-vt-btn {
-        @apply grid h-8 w-[34px] place-items-center rounded-[7px] border-0 bg-transparent text-muted transition-all;
+        @apply grid h-8 w-[34px] cursor-pointer place-items-center rounded-[7px] border-0 bg-transparent text-muted transition-all;
     }
 
     .sl-lib-vt-btn.is-active {
@@ -1634,7 +1634,7 @@
     }
 
     .sl-lib-af-chip button {
-        @apply grid h-[18px] w-[18px] place-items-center rounded-full border-0 bg-primary/10 text-primary-active;
+        @apply grid h-[18px] w-[18px] cursor-pointer place-items-center rounded-full border-0 bg-primary/10 text-primary-active;
     }
 
     .sl-lib-list {
@@ -1807,7 +1807,7 @@
     }
 
     .sl-doc-act {
-        @apply inline-flex h-[46px] items-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-semibold text-ink-soft transition-all;
+        @apply inline-flex h-[46px] cursor-pointer items-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-semibold text-ink-soft transition-all;
     }
 
     .sl-doc-act:hover {
@@ -1831,7 +1831,7 @@
     }
 
     .sl-doc-preview__btn {
-        @apply grid h-8 w-8 place-items-center rounded-sm border border-border bg-card text-ink-soft transition-all;
+        @apply grid h-8 w-8 cursor-pointer place-items-center rounded-sm border border-border bg-card text-ink-soft transition-all;
     }
 
     .sl-doc-preview__btn:hover {
@@ -2003,7 +2003,7 @@
     }
 
     .sl-doc-rate-stars button {
-        @apply grid h-12 w-12 place-items-center border-0 bg-transparent;
+        @apply grid h-12 w-12 cursor-pointer place-items-center border-0 bg-transparent;
     }
 
 @media (max-width: 1080px) {
