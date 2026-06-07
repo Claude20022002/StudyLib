@@ -2741,3 +2741,150 @@
         @apply w-full;
     }
 }
+
+/* ===== Projects CV ===== */
+.sl-prj-hero {
+    @apply mb-5 flex flex-wrap items-center gap-4 rounded-lg border border-border bg-card p-6;
+}
+
+.sl-prj-hero__ico {
+    @apply grid h-14 w-14 shrink-0 place-items-center rounded-md bg-primary-soft text-primary;
+}
+
+.sl-prj-grid {
+    @apply mb-8 grid gap-4;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+}
+
+.sl-prj-card {
+    @apply flex cursor-pointer flex-col gap-3 rounded-lg border border-border bg-card p-5 transition-all;
+}
+
+.sl-prj-card:hover {
+    @apply -translate-y-0.5 border-border-strong shadow-md;
+}
+
+.sl-prj-card__top {
+    @apply flex flex-col gap-2;
+}
+
+.sl-prj-source {
+    @apply inline-flex w-fit items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold;
+}
+
+.sl-prj-source--student {
+    @apply bg-surface-2 text-ink-soft;
+}
+
+.sl-prj-source--ai {
+    background: linear-gradient(120deg, var(--color-primary-soft), #e0e7ff);
+    @apply text-primary-active;
+}
+
+.sl-prj-card__title {
+    @apply text-h4 leading-snug font-semibold text-pretty;
+}
+
+.sl-prj-card__desc {
+    @apply line-clamp-2 text-sm text-ink-soft;
+}
+
+.sl-prj-card__badges {
+    @apply flex flex-wrap gap-1.5;
+}
+
+.sl-prj-card__meta {
+    @apply mt-auto flex flex-wrap items-center gap-4 border-t border-border pt-3 text-xs text-muted;
+}
+
+.sl-prj-card__mi {
+    @apply inline-flex items-center gap-1.5;
+}
+
+.sl-prj-diff {
+    @apply inline-flex gap-0.5;
+}
+
+.sl-prj-diff__dot {
+    @apply h-1.5 w-1.5 rounded-full bg-border-strong;
+}
+
+.sl-prj-diff__dot.is-on {
+    background: var(--color-warning);
+}
+
+.sl-prj-card__foot {
+    @apply flex items-center justify-between;
+}
+
+.sl-prj-doers {
+    @apply flex items-center gap-2;
+}
+
+.sl-prj-doers__av {
+    @apply grid h-6 w-6 place-items-center rounded-full bg-primary-soft text-[9px] font-bold text-primary-active;
+}
+
+.sl-prj-doers__name {
+    @apply text-xs text-muted;
+}
+
+.sl-prj-fchip {
+    @apply h-[30px] rounded-full border border-border bg-surface px-3 text-xs font-semibold text-ink-soft transition-all;
+}
+
+.sl-prj-fchip.is-on {
+    @apply border-primary bg-primary text-white;
+}
+
+.sl-prj-ai {
+    @apply mt-8 rounded-lg border border-border bg-card p-6;
+}
+
+.sl-prj-ai__head {
+    @apply mb-5 flex items-start gap-3;
+}
+
+.sl-prj-ai__badge {
+    @apply grid h-10 w-10 shrink-0 place-items-center rounded-md bg-primary-soft text-primary;
+}
+
+.sl-prj-ai__body {
+    @apply flex flex-col gap-5;
+}
+
+.sl-prj-ai__form {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.sl-prj-ai__gen {
+    @apply self-end;
+}
+
+.sl-prj-ai__results {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.sl-prj-ai__empty {
+    @apply col-span-full rounded-md border border-dashed border-border-strong bg-surface px-6 py-10 text-center text-sm text-muted;
+}
+
+.sl-prj-det-section {
+    @apply mt-6;
+}
+
+.sl-prj-det-section__title {
+    @apply mb-2 text-h4 font-semibold;
+}
+
+@media (max-width: 860px) {
+    .sl-prj-hero > div:last-child {
+        @apply w-full;
+    }
+
+    .sl-prj-hero .sl-btn {
+        @apply flex-1;
+    }
+}
