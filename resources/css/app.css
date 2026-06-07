@@ -2192,7 +2192,7 @@
 }
 
 .sl-prof-tab {
-    @apply mb-[-1px] inline-flex items-center gap-1.5 border-0 border-b-2 border-transparent bg-transparent px-4 py-3 text-sm font-semibold whitespace-nowrap text-muted transition-all;
+    @apply mb-[-1px] inline-flex cursor-pointer items-center gap-1.5 border-0 border-b-2 border-transparent bg-transparent px-4 py-3 text-sm font-semibold whitespace-nowrap text-muted transition-all;
 }
 
 .sl-prof-tab:hover {
@@ -2322,7 +2322,7 @@
 }
 
 .sl-stg-hero__clear {
-    @apply absolute top-1/2 right-3 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-md text-muted transition-colors hover:bg-surface-2 hover:text-ink;
+    @apply absolute top-1/2 right-3 grid h-8 w-8 -translate-y-1/2 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-muted transition-colors hover:bg-surface-2 hover:text-ink;
 }
 
 .sl-stg-hero__cta {
