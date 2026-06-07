@@ -3,7 +3,7 @@
 ])
 
 <img
-    src="{{ asset('build/assets/hand.png') }}"
+    src="{{ asset('images/hand.png') }}"
     alt=""
     aria-hidden="true"
     loading="lazy"
