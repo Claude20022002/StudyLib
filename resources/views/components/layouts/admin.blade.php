@@ -1,3 +1,10 @@
+@props([
+    'title' => null,
+    'header' => null,
+    'breadcrumb' => null,
+    'topbar' => null,
+])
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>

@@ -73,4 +73,14 @@ interface DocumentRepositoryInterface extends RepositoryInterface
     public function examsInModule(Document $document, int $limit = 2): Collection;
 
     public function countApprovedByAuthor(string $userId): int;
+
+    /**
+     * @return array{all: int, pending: int, approved: int, rejected: int}
+     */
+    public function adminStatusCounts(): array;
+
+    /**
+     * @return LengthAwarePaginator<int, Document>
+     */
+    public function adminList(?DocumentStatus $status, ?string $search = null, int $perPage = 15): LengthAwarePaginator;
 }

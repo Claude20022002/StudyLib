@@ -8,7 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RejectDocumentRequest;
 use App\Models\Document;
 use App\Services\ModerationService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class ModerationController extends Controller
 {
@@ -16,26 +19,43 @@ class ModerationController extends Controller
         private readonly ModerationService $moderation,
     ) {}
 
-    public function index(): JsonResponse
+    public function index(Request $request): View|JsonResponse
     {
         $this->authorize('moderate', Document::class);
 
-        return response()->json($this->moderation->queue());
+        if ($request->expectsJson()) {
+            return response()->json($this->moderation->queue());
+        }
+
+        return view('pages.admin.index', [
+            'header' => 'Administration',
+            'breadcrumb' => 'Modération des documents',
+        ]);
     }
 
-    public function approve(Document $document): JsonResponse
+    public function approve(Request $request, Document $document): JsonResponse|RedirectResponse
     {
         $this->authorize('moderate', Document::class);
 
-        return response()->json($this->moderation->approve($document));
+        $this->moderation->approve($document);
+
+        if ($request->expectsJson()) {
+            return response()->json($document->fresh());
+        }
+
+        return back()->with('success', 'Document approuvé.');
     }
 
-    public function reject(RejectDocumentRequest $request, Document $document): JsonResponse
+    public function reject(RejectDocumentRequest $request, Document $document): JsonResponse|RedirectResponse
     {
         $this->authorize('moderate', Document::class);
 
-        return response()->json(
-            $this->moderation->reject($document, $request->validated('reason')),
-        );
+        $this->moderation->reject($document, $request->validated('reason'));
+
+        if ($request->expectsJson()) {
+            return response()->json($document->fresh());
+        }
+
+        return back()->with('success', 'Document refusé.');
     }
 }

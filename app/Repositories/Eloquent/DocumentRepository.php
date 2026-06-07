@@ -173,6 +173,40 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
             ->count();
     }
 
+    public function adminStatusCounts(): array
+    {
+        $query = $this->model->newQuery();
+
+        return [
+            'all' => (clone $query)->count(),
+            'pending' => (clone $query)->where('status', DocumentStatus::Pending)->count(),
+            'approved' => (clone $query)->where('status', DocumentStatus::Approved)->count(),
+            'rejected' => (clone $query)->where('status', DocumentStatus::Rejected)->count(),
+        ];
+    }
+
+    public function adminList(?DocumentStatus $status, ?string $search = null, int $perPage = 15): LengthAwarePaginator
+    {
+        $query = $this->model->newQuery()
+            ->with(['author', 'module'])
+            ->latest();
+
+        if ($status !== null) {
+            $query->where('status', $status);
+        }
+
+        if ($search !== null && $search !== '') {
+            $term = '%'.$search.'%';
+            $query->where(function ($builder) use ($term) {
+                $builder->where('title', 'like', $term)
+                    ->orWhereHas('module', fn ($module) => $module->where('name', 'like', $term))
+                    ->orWhereHas('author', fn ($author) => $author->where('name', 'like', $term));
+            });
+        }
+
+        return $query->paginate($perPage);
+    }
+
     /**
      * @param  array{
      *     q?: string,
