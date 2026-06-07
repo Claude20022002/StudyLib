@@ -7,7 +7,6 @@ namespace App\Livewire\Admin;
 use App\Models\Document;
 use App\Services\ModerationService;
 use Illuminate\Contracts\View\View;
-use Illuminate\Validation\Rule;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;

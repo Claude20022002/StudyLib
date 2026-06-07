@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories\Contracts;
 
+use App\Enums\DocumentStatus;
 use App\Enums\DocumentType;
 use App\Models\Document;
 use Carbon\CarbonInterface;

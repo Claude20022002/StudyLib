@@ -1,3 +1,3 @@
-<x-layouts.admin header="Administration" breadcrumb="Modération des documents">
+<x-layouts.admin :header="$header ?? 'Administration'" :breadcrumb="$breadcrumb ?? 'Modération des documents'">
     <livewire:admin.moderation-index />
 </x-layouts.admin>
