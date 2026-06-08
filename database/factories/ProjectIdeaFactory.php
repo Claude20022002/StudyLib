@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\IdeaSource;
+use App\Enums\ProjectDifficulty;
 use App\Enums\StudyLevel;
 use App\Models\Filiere;
 use App\Models\ProjectIdea;
@@ -29,6 +30,8 @@ class ProjectIdeaFactory extends Factory
             'title' => fake()->sentence(4),
             'description' => fake()->paragraphs(2, true),
             'level' => fake()->randomElement(StudyLevel::cases())->value,
+            'difficulty' => fake()->randomElement(ProjectDifficulty::cases())->value,
+            'estimated_weeks' => fake()->numberBetween(2, 16),
             'source' => IdeaSource::Student->value,
             'repo_url' => fake()->optional()->url(),
         ];

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\IdeaSource;
+use App\Enums\ProjectDifficulty;
 use App\Enums\StudyLevel;
 use Database\Factories\ProjectIdeaFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -25,6 +26,8 @@ class ProjectIdea extends Model
         'title',
         'description',
         'level',
+        'difficulty',
+        'estimated_weeks',
         'source',
         'repo_url',
     ];
@@ -33,6 +36,7 @@ class ProjectIdea extends Model
     {
         return [
             'level' => StudyLevel::class,
+            'difficulty' => ProjectDifficulty::class,
             'source' => IdeaSource::class,
         ];
     }
