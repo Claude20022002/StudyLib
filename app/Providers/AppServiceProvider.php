@@ -16,6 +16,7 @@ use App\Policies\InternshipReviewPolicy;
 use App\Policies\NotificationPolicy;
 use App\Policies\ProjectIdeaPolicy;
 use App\Policies\UserPolicy;
+use App\Services\Recommendation\ProjectMatchScorer;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -27,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        $this->app->singleton(ProjectMatchScorer::class, static fn (): ProjectMatchScorer => ProjectMatchScorer::default());
     }
 
     public function boot(): void
