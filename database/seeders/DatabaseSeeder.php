@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(FiliereSeeder::class);
+        $this->call(ProjectIdeaSeeder::class);
 
         User::factory()->create([
             'name' => 'Admin HESTIM',
