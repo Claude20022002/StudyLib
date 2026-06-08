@@ -87,7 +87,7 @@ class ProjectIdeaSeeder extends Seeder
             [
                 'filiere' => 'GI', 'level' => StudyLevel::L1, 'difficulty' => ProjectDifficulty::Beginner, 'weeks' => 2,
                 'title' => 'Jeu du pendu en ligne de commande',
-                'description' => "Implémenter le jeu du pendu en mode console, avec gestion des essais, des thèmes de mots et un système de score.",
+                'description' => 'Implémenter le jeu du pendu en mode console, avec gestion des essais, des thèmes de mots et un système de score.',
                 'tags' => ['Python'],
             ],
             [
@@ -171,7 +171,7 @@ class ProjectIdeaSeeder extends Seeder
             [
                 'filiere' => 'GI', 'level' => StudyLevel::M1, 'difficulty' => ProjectDifficulty::Advanced, 'weeks' => 10,
                 'title' => 'Application de gestion de projets agile type Kanban',
-                'description' => "Créer un outil de gestion de projets collaboratif inspiré de Trello, avec tableaux Kanban, étiquettes, pièces jointes et notifications en temps réel.",
+                'description' => 'Créer un outil de gestion de projets collaboratif inspiré de Trello, avec tableaux Kanban, étiquettes, pièces jointes et notifications en temps réel.',
                 'tags' => ['React', 'GraphQL', 'Node.js', 'PostgreSQL'],
             ],
             [
@@ -194,7 +194,7 @@ class ProjectIdeaSeeder extends Seeder
             ],
             [
                 'filiere' => 'GI', 'level' => StudyLevel::M2, 'difficulty' => ProjectDifficulty::Advanced, 'weeks' => 14,
-                'title' => "Système de détection de fraude par apprentissage automatique",
+                'title' => 'Système de détection de fraude par apprentissage automatique',
                 'description' => 'Développer un modèle d\'apprentissage automatique capable d\'identifier des transactions ou comportements suspects à partir de données historiques.',
                 'tags' => ['Python', 'Scikit-learn', 'Pandas'],
             ],
@@ -245,7 +245,7 @@ class ProjectIdeaSeeder extends Seeder
             [
                 'filiere' => 'GC', 'level' => StudyLevel::L1, 'difficulty' => ProjectDifficulty::Beginner, 'weeks' => 3,
                 'title' => 'Étude comparative de matériaux de construction écologiques',
-                'description' => "Mener une étude comparative de matériaux de construction durables (impact environnemental, coût, performance) et restituer les résultats sous forme de rapport et de présentation.",
+                'description' => 'Mener une étude comparative de matériaux de construction durables (impact environnemental, coût, performance) et restituer les résultats sous forme de rapport et de présentation.',
                 'tags' => ['Excel', 'Power BI'],
             ],
             [
@@ -281,7 +281,7 @@ class ProjectIdeaSeeder extends Seeder
             [
                 'filiere' => 'GC', 'level' => StudyLevel::L3, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 8,
                 'title' => 'Maquette BIM collaborative pour un projet de bâtiment',
-                'description' => "Élaborer une maquette numérique BIM collaborative intégrant les disciplines architecture, structure et fluides, avec détection des conflits.",
+                'description' => 'Élaborer une maquette numérique BIM collaborative intégrant les disciplines architecture, structure et fluides, avec détection des conflits.',
                 'tags' => ['Revit', 'BIM', 'Navisworks'],
             ],
             [
@@ -555,7 +555,7 @@ class ProjectIdeaSeeder extends Seeder
             [
                 'filiere' => 'MGT', 'level' => StudyLevel::L2, 'difficulty' => ProjectDifficulty::Beginner, 'weeks' => 5,
                 'title' => 'Application de facturation pour auto-entrepreneurs',
-                'description' => "Développer une application web simple de création et de suivi de factures et devis destinée aux auto-entrepreneurs.",
+                'description' => 'Développer une application web simple de création et de suivi de factures et devis destinée aux auto-entrepreneurs.',
                 'tags' => ['Laravel', 'MySQL', 'Bootstrap'],
             ],
             [
@@ -585,7 +585,7 @@ class ProjectIdeaSeeder extends Seeder
             [
                 'filiere' => 'MGT', 'level' => StudyLevel::L3, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 9,
                 'title' => 'Plateforme e-commerce pour produits artisanaux locaux',
-                'description' => "Concevoir une plateforme e-commerce dédiée à la vente de produits artisanaux locaux, avec gestion des commandes, paiement en ligne et avis clients.",
+                'description' => 'Concevoir une plateforme e-commerce dédiée à la vente de produits artisanaux locaux, avec gestion des commandes, paiement en ligne et avis clients.',
                 'tags' => ['Laravel', 'React', 'Stripe', 'PostgreSQL'],
             ],
             [
@@ -609,7 +609,7 @@ class ProjectIdeaSeeder extends Seeder
             [
                 'filiere' => 'MGT', 'level' => StudyLevel::L3, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 8,
                 'title' => 'Plan stratégique de transformation digitale pour une PME',
-                'description' => "Élaborer un plan stratégique de transformation digitale pour une PME, identifiant les processus à automatiser et les outils numériques à déployer.",
+                'description' => 'Élaborer un plan stratégique de transformation digitale pour une PME, identifiant les processus à automatiser et les outils numériques à déployer.',
                 'tags' => ['Power Apps', 'Power Automate', 'Excel'],
             ],
             [
