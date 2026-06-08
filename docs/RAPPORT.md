@@ -37,7 +37,7 @@
 
 **StudyLib** est une plateforme web collaborative destinée aux étudiants de **HESTIM** (Maroc). Elle vise à centraliser les ressources pédagogiques (cours, examens, TD, TP), faciliter le partage d'expériences de stage, proposer des idées de projets CV, recommander du contenu (IA Claude, YouTube) et gérer les événements de l'établissement, avec une modération administrative du contenu déposé.
 
-L'application repose sur **Laravel 11**, **PostgreSQL 16**, une architecture en couches (Clean Architecture), et une interface **Blade / Livewire / Tailwind CSS** conforme à un design system propriétaire.
+L'application repose sur **Laravel 11**, **MySQL 8**, une architecture en couches (Clean Architecture), et une interface **Blade / Livewire / Tailwind CSS** conforme à un design system propriétaire.
 
 **Contrainte métier majeure** : seuls les emails `@hestim.ma` peuvent s'inscrire.
 
@@ -136,7 +136,7 @@ StudyLib
 | Backend | Laravel 11, PHP 8.3 | API web, ORM, auth, queues |
 | Frontend | Blade, Livewire 4, Alpine.js | Interface réactive |
 | Styles | Tailwind CSS v4 | Design system `sl-*` |
-| Base de données | PostgreSQL 16 | Données relationnelles, UUID |
+| Base de données | MySQL 8 | Données relationnelles, UUID |
 | Cache / sessions | Redis 7 | Performance, sessions |
 | Fichiers | MinIO (S3-compatible) | PDF, DOCX, PPTX |
 | Recherche | Meilisearch | Full-text (post-MVP) |
@@ -160,7 +160,7 @@ flowchart TB
     end
 
     subgraph Data
-        PG[(PostgreSQL 16)]
+        SQL[(MySQL 8)]
         R[(Redis)]
         M[(MinIO)]
         MS[(Meilisearch)]
@@ -173,7 +173,7 @@ flowchart TB
 
     B --> LW
     LW --> L
-    L --> PG
+    L --> SQL
     L --> R
     L --> M
     L --> MS
@@ -196,7 +196,7 @@ flowchart LR
     FR --> SVC[Service metier]
     SVC --> REPO[Repository]
     REPO --> MODEL[Model Eloquent]
-    MODEL --> DB[(PostgreSQL)]
+    MODEL --> DB[(MySQL)]
 
     CTRL --> POL[Policy Laravel]
     LW[Livewire] --> SVC
@@ -412,7 +412,7 @@ sequenceDiagram
     participant C as DocumentController
     participant S as DocumentService
     participant M as MinIO
-    participant DB as PostgreSQL
+    participant DB as MySQL
     actor A as Admin
 
     E->>UI: Upload fichier metadonnees
@@ -437,7 +437,7 @@ sequenceDiagram
     participant F as Formulaire Login
     participant MW as EnsureHestimEmail
     participant AS as AuthService
-    participant DB as PostgreSQL
+    participant DB as MySQL
 
     U->>F: email password
     F->>MW: POST register validation email
@@ -550,7 +550,7 @@ StudyLib traite des contenus **collaboratifs** (documents, avis, événements) d
 | **Anticipation** | Étudiant | « Quand est le prochain événement campus ? » |
 | **Pilotage** | Administrateur | « Combien d'uploads attendent une validation ? » |
 
-Les KPI ne remplacent pas une analytics avancée (Google Analytics, BI) : ils sont **contextuels**, calculés à la volée depuis PostgreSQL via les **services métier** (`DashboardService`, `ModerationService`, `EventService`, `NotificationService`).
+Les KPI ne remplacent pas une analytics avancée (Google Analytics, BI) : ils sont **contextuels**, calculés à la volée depuis MySQL via les **services métier** (`DashboardService`, `ModerationService`, `EventService`, `NotificationService`).
 
 ```mermaid
 flowchart LR
@@ -569,7 +569,7 @@ flowchart LR
     end
 
     subgraph data [Donnees]
-        PG[(PostgreSQL)]
+        PG[(MySQL)]
     end
 
     D --> DS --> PG
@@ -1256,7 +1256,7 @@ sequenceDiagram
     participant PIS as ProjectIdeaService
     participant CS as ClaudeService
     participant API as API Anthropic
-    participant DB as PostgreSQL
+    participant DB as MySQL
 
     E->>UI: Filiere niveau interets
     UI->>PIS: generateAiIdeas
@@ -1473,7 +1473,7 @@ Les signaux **explicites** (notes) et **implicites** (téléchargements) constit
 
 ### 12.12 Paragraphe type mémoire (recommandation & IA)
 
-> Face à la dispersion des ressources pédagogiques, StudyLib met en œuvre une **stratégie de recommandation hybride**. En phase MVP, les contenus documentaires sont suggérés par **filtrage sur profil académique** (filière, module) et par **signaux collectifs** (notes moyennes, volumes de téléchargement), approche content-based transparente et performante en SQL. Les avis de stage s'appuient sur des **règles de réputation** à double seuil. L'intelligence artificielle intervient via l'API **Claude** pour la **génération d'idées de projets CV** : un prompt structuré produit un JSON validé, persisté à des fins d'audit, avec mécanisme de repli si l'API est indisponible. Cette architecture modulaire prépare l'intégration future de **Meilisearch** (recherche BM25) et de scores de matching stages plus fins, sans remettre en cause les fondations Clean Architecture (services → repositories → PostgreSQL).
+> Face à la dispersion des ressources pédagogiques, StudyLib met en œuvre une **stratégie de recommandation hybride**. En phase MVP, les contenus documentaires sont suggérés par **filtrage sur profil académique** (filière, module) et par **signaux collectifs** (notes moyennes, volumes de téléchargement), approche content-based transparente et performante en SQL. Les avis de stage s'appuient sur des **règles de réputation** à double seuil. L'intelligence artificielle intervient via l'API **Claude** pour la **génération d'idées de projets CV** : un prompt structuré produit un JSON validé, persisté à des fins d'audit, avec mécanisme de repli si l'API est indisponible. Cette architecture modulaire prépare l'intégration future de **Meilisearch** (recherche BM25) et de scores de matching stages plus fins, sans remettre en cause les fondations Clean Architecture (services → repositories → MySQL).
 
 ---
 
@@ -1573,7 +1573,7 @@ flowchart TB
 
 | Service | Image | Port par défaut | Rôle |
 |---|---|---|---|
-| postgres | postgres:16-alpine | 5432 | Base de données |
+| mysql | mysql:8.4 | 3306 | Base de données |
 | redis | redis:7-alpine | 6379 | Cache, sessions, queues |
 | minio | minio/minio | 9000 / 8900 | Stockage fichiers |
 | meilisearch | getmeili/meilisearch:v1.12 | 7700 | Recherche full-text |
@@ -1581,8 +1581,8 @@ flowchart TB
 ### Variables d'environnement cibles
 
 ```env
-DB_CONNECTION=pgsql
-DB_HOST=postgres
+DB_CONNECTION=mysql
+DB_HOST=mysql
 DB_DATABASE=studylib
 
 REDIS_HOST=redis
@@ -1703,12 +1703,12 @@ flowchart TD
 
 | Composant | Statut | Notes |
 |---|---|---|
-| Migrations PostgreSQL (13 tables métier) | ✅ | UUID, FK, index |
+| Migrations MySQL (13 tables métier) | ✅ | UUID, FK, index |
 | Services + Repositories | ✅ | 16 services |
 | Policies + Form Requests | ✅ | |
 | Design system Tailwind + Flaticon | ✅ | `resources/css/app.css`, `config/flaticon.php` |
 | Layouts + chrome Livewire | ✅ | sidebar, topbar, bottom nav, cloche notifications |
-| Docker Compose | ✅ | postgres, redis, minio, meilisearch |
+| Docker Compose | ✅ | mysql, redis, minio, meilisearch |
 | Auth (login + register Blade/Livewire) | ✅ | Domaine @hestim.ma |
 | Dashboard + KPIs documentés | ✅ | `DashboardService`, section 11 de ce rapport |
 | Bibliothèque, détail, upload, notation | ✅ | Tests Feature |
@@ -1726,7 +1726,7 @@ flowchart TD
 
 ### Introduction type mémoire
 
-> Ce projet consiste en la conception et le développement de **StudyLib**, une plateforme web collaborative à destination des étudiants de HESTIM. Face à la dispersion des ressources pédagogiques et à l'absence de mémoire collective sur les stages et projets, StudyLib propose un espace unique, sécurisé et modéré, accessible depuis le domaine institutionnel `@hestim.ma`. L'architecture retenue s'appuie sur Laravel et PostgreSQL, avec une séparation stricte entre présentation, logique métier et accès aux données.
+> Ce projet consiste en la conception et le développement de **StudyLib**, une plateforme web collaborative à destination des étudiants de HESTIM. Face à la dispersion des ressources pédagogiques et à l'absence de mémoire collective sur les stages et projets, StudyLib propose un espace unique, sécurisé et modéré, accessible depuis le domaine institutionnel `@hestim.ma`. L'architecture retenue s'appuie sur Laravel et MySQL, avec une séparation stricte entre présentation, logique métier et accès aux données.
 
 ### Méthodologie
 
@@ -1737,7 +1737,7 @@ flowchart TD
 | Choix | Justification |
 |---|---|
 | Laravel | Écosystème mature, auth, ORM, queues, communauté |
-| PostgreSQL | Intégrité relationnelle, JSON, performances, open source |
+| MySQL | Intégrité relationnelle, JSON, performances, open source, large adoption |
 | Livewire | Interactivité sans SPA complexe, cohérent avec Blade |
 | MinIO | Compatible S3, self-hosted, adapté aux fichiers pédagogiques |
 | UUID | Identifiants non séquentiels, fusion / export facilités |

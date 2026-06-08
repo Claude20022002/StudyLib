@@ -30,7 +30,7 @@ Contrainte métier clé : authentification réservée aux emails **`@hestim.ma`*
 |---|---|
 | Backend | Laravel 11 (cible projet), PHP 8.3, PSR-12 |
 | Frontend | Blade, Tailwind CSS, Alpine.js, Livewire |
-| Base de données | **PostgreSQL 16** (conteneur Docker) |
+| Base de données | **MySQL 8** (conteneur Docker) |
 | Cache / sessions / queues | Redis |
 | Recherche | Meilisearch |
 | Fichiers | MinIO (disque Laravel `minio`) |
@@ -38,7 +38,7 @@ Contrainte métier clé : authentification réservée aux emails **`@hestim.ma`*
 | Vidéo | YouTube Data API v3 |
 | Infra | Docker Compose |
 
-> **État actuel du dépôt** : le squelette backend est en place. Les controllers renvoient du **JSON** en attendant les vues Blade. Le fichier `.env` local peut encore pointer vers SQLite ; la cible production/dev est PostgreSQL via Docker. Docker Compose n'est pas encore présent dans le dépôt au moment de cette rédaction.
+> **État actuel du dépôt** : le squelette backend est en place. Les controllers renvoient du **JSON** en attendant les vues Blade. Le fichier `.env` local peut encore pointer vers SQLite ; la cible production/dev est MySQL via Docker. Docker Compose n'est pas encore présent dans le dépôt au moment de cette rédaction.
 
 > **Note composer** : `composer.json` peut afficher une version Laravel plus récente que la cible « Laravel 11 » des règles projet. Respecter les conventions Laravel 11+ documentées ici.
 
@@ -55,7 +55,7 @@ HTTP Request
   → Service         (logique métier — SEUL endroit autorisé)
   → Repository      (accès données via interface)
   → Model Eloquent
-  → PostgreSQL
+  → MySQL
 ```
 
 ### Interdictions strictes
@@ -122,7 +122,7 @@ routes/
 
 ---
 
-## 5. Modèle de données (PostgreSQL 16)
+## 5. Modèle de données (MySQL 8)
 
 Clés primaires : **UUID** (`HasUuids` côté Laravel).
 
@@ -339,9 +339,9 @@ resources/views/
 ### Variables d'environnement attendues (cible Docker)
 
 ```
-DB_CONNECTION=pgsql
-DB_HOST=postgres
-DB_PORT=5432
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
 DB_DATABASE=studylib
 DB_USERNAME=…
 DB_PASSWORD=…
@@ -430,7 +430,7 @@ vendor/bin/pint
 # Vérifier routes
 php artisan route:list
 
-# Migrations (PostgreSQL requis)
+# Migrations (MySQL requis)
 php artisan migrate
 php artisan db:seed
 
