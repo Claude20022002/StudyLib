@@ -6,6 +6,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Event;
 use App\Repositories\Contracts\EventRepositoryInterface;
+use Carbon\CarbonInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
@@ -43,7 +44,7 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
             return null;
         }
 
-        $startsAt = $next instanceof \Carbon\CarbonInterface ? $next : \Illuminate\Support\Carbon::parse($next);
+        $startsAt = $next instanceof CarbonInterface ? $next : Carbon::parse($next);
 
         return (int) now()->startOfDay()->diffInDays($startsAt->copy()->startOfDay(), false);
     }

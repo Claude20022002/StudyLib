@@ -20,7 +20,7 @@ class LevelMatchCriterionTest extends TestCase
         $student = User::factory()->create(['year_level' => 3]);
         $project = ProjectIdea::factory()->create(['level' => StudyLevel::L3->value]);
 
-        $this->assertSame(1.0, (new LevelMatchCriterion())->score($student, $project));
+        $this->assertSame(1.0, (new LevelMatchCriterion)->score($student, $project));
     }
 
     public function test_returns_partial_score_for_adjacent_level(): void
@@ -28,7 +28,7 @@ class LevelMatchCriterionTest extends TestCase
         $student = User::factory()->create(['year_level' => 3]);
         $project = ProjectIdea::factory()->create(['level' => StudyLevel::M1->value]);
 
-        $this->assertSame(0.5, (new LevelMatchCriterion())->score($student, $project));
+        $this->assertSame(0.5, (new LevelMatchCriterion)->score($student, $project));
     }
 
     public function test_returns_zero_for_distant_level(): void
@@ -36,7 +36,7 @@ class LevelMatchCriterionTest extends TestCase
         $student = User::factory()->create(['year_level' => 1]);
         $project = ProjectIdea::factory()->create(['level' => StudyLevel::M2->value]);
 
-        $this->assertSame(0.0, (new LevelMatchCriterion())->score($student, $project));
+        $this->assertSame(0.0, (new LevelMatchCriterion)->score($student, $project));
     }
 
     public function test_returns_neutral_score_when_student_has_no_year_level(): void
@@ -44,6 +44,6 @@ class LevelMatchCriterionTest extends TestCase
         $student = User::factory()->create(['year_level' => null]);
         $project = ProjectIdea::factory()->create(['level' => StudyLevel::L3->value]);
 
-        $this->assertSame(0.5, (new LevelMatchCriterion())->score($student, $project));
+        $this->assertSame(0.5, (new LevelMatchCriterion)->score($student, $project));
     }
 }

@@ -57,10 +57,10 @@ final class ProjectMatchScorer
     public static function default(): self
     {
         return new self([
-            new FiliereMatchCriterion(),
-            new LevelMatchCriterion(),
-            new FollowedModulesMatchCriterion(),
-            new SkillTagsMatchCriterion(),
+            new FiliereMatchCriterion,
+            new LevelMatchCriterion,
+            new FollowedModulesMatchCriterion,
+            new SkillTagsMatchCriterion,
         ]);
     }
 }

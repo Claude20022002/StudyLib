@@ -20,7 +20,7 @@ class SkillTagsMatchCriterionTest extends TestCase
         $student = User::factory()->create();
         $project = ProjectIdea::factory()->create();
 
-        $this->assertSame(0.5, (new SkillTagsMatchCriterion())->score($student, $project));
+        $this->assertSame(0.5, (new SkillTagsMatchCriterion)->score($student, $project));
     }
 
     public function test_returns_full_score_when_student_masters_every_required_skill(): void
@@ -40,7 +40,7 @@ class SkillTagsMatchCriterionTest extends TestCase
         $student->load('tags');
         $project->load('tags');
 
-        $this->assertSame(1.0, (new SkillTagsMatchCriterion())->score($student, $project));
+        $this->assertSame(1.0, (new SkillTagsMatchCriterion)->score($student, $project));
     }
 
     public function test_returns_partial_score_when_student_masters_only_some_required_skills(): void
@@ -59,6 +59,6 @@ class SkillTagsMatchCriterionTest extends TestCase
         $student->load('tags');
         $project->load('tags');
 
-        $this->assertSame(0.5, (new SkillTagsMatchCriterion())->score($student, $project));
+        $this->assertSame(0.5, (new SkillTagsMatchCriterion)->score($student, $project));
     }
 }

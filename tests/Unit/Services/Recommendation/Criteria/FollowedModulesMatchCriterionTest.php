@@ -20,7 +20,7 @@ class FollowedModulesMatchCriterionTest extends TestCase
         $student = User::factory()->create();
         $project = ProjectIdea::factory()->create();
 
-        $this->assertSame(0.5, (new FollowedModulesMatchCriterion())->score($student, $project));
+        $this->assertSame(0.5, (new FollowedModulesMatchCriterion)->score($student, $project));
     }
 
     public function test_returns_full_score_when_every_required_module_is_followed(): void
@@ -36,7 +36,7 @@ class FollowedModulesMatchCriterionTest extends TestCase
         $student->load('modules');
         $project->load('modules');
 
-        $this->assertSame(1.0, (new FollowedModulesMatchCriterion())->score($student, $project));
+        $this->assertSame(1.0, (new FollowedModulesMatchCriterion)->score($student, $project));
     }
 
     public function test_returns_partial_score_for_partial_overlap(): void
@@ -52,7 +52,7 @@ class FollowedModulesMatchCriterionTest extends TestCase
         $student->load('modules');
         $project->load('modules');
 
-        $this->assertSame(0.5, (new FollowedModulesMatchCriterion())->score($student, $project));
+        $this->assertSame(0.5, (new FollowedModulesMatchCriterion)->score($student, $project));
     }
 
     public function test_returns_zero_when_no_required_module_is_followed(): void
@@ -69,6 +69,6 @@ class FollowedModulesMatchCriterionTest extends TestCase
         $student->load('modules');
         $project->load('modules');
 
-        $this->assertSame(0.0, (new FollowedModulesMatchCriterion())->score($student, $project));
+        $this->assertSame(0.0, (new FollowedModulesMatchCriterion)->score($student, $project));
     }
 }
