@@ -1,16 +1,17 @@
 services:
-  postgres:
-    image: postgres:16-alpine
+  mysql:
+    image: mysql:8.4
     ports:
-      - "${FORWARD_DB_PORT:-5432}:5432"
+      - "${FORWARD_DB_PORT:-3306}:3306"
     environment:
-      POSTGRES_DB: "${DB_DATABASE:-studylib}"
-      POSTGRES_USER: "${DB_USERNAME:-studylib}"
-      POSTGRES_PASSWORD: "${DB_PASSWORD:-secret}"
+      MYSQL_DATABASE: "${DB_DATABASE:-studylib}"
+      MYSQL_USER: "${DB_USERNAME:-studylib}"
+      MYSQL_PASSWORD: "${DB_PASSWORD:-secret}"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD:-secret}"
     volumes:
-      - studylib-pgsql:/var/lib/postgresql/data
+      - studylib-mysql:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-studylib} -d ${DB_DATABASE:-studylib}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USERNAME:-studylib}", "--password=${DB_PASSWORD:-secret}"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -49,7 +50,7 @@ services:
       - studylib-meilisearch:/meili_data
 
 volumes:
-  studylib-pgsql:
+  studylib-mysql:
   studylib-redis:
   studylib-minio:
   studylib-meilisearch:
