@@ -8,6 +8,7 @@ use App\Models\ProjectIdea;
 use App\Repositories\Contracts\ProjectIdeaRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @extends BaseRepository<ProjectIdea>
@@ -40,6 +41,17 @@ class ProjectIdeaRepository extends BaseRepository implements ProjectIdeaReposit
         return $this->model->newQuery()
             ->with(['user', 'filiere'])
             ->find($id);
+    }
+
+    public function candidatesForRecommendation(string $excludeUserId): Collection
+    {
+        return $this->model->newQuery()
+            ->where(function (Builder $builder) use ($excludeUserId): void {
+                $builder->whereNull('user_id')
+                    ->orWhere('user_id', '!=', $excludeUserId);
+            })
+            ->with(['filiere', 'tags', 'modules'])
+            ->get();
     }
 
     /** @return Builder<ProjectIdea> */

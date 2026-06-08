@@ -6,6 +6,7 @@ namespace App\Repositories\Contracts;
 
 use App\Models\ProjectIdea;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @extends RepositoryInterface<ProjectIdea>
@@ -19,4 +20,12 @@ interface ProjectIdeaRepositoryInterface extends RepositoryInterface
     public function search(array $filters, int $perPage = 15): LengthAwarePaginator;
 
     public function findWithRelations(string $id): ?ProjectIdea;
+
+    /**
+     * Idées de projet éligibles à la recommandation pour un étudiant donné
+     * (hors propres idées de l'étudiant), avec les relations de matching pré-chargées.
+     *
+     * @return Collection<int, ProjectIdea>
+     */
+    public function candidatesForRecommendation(string $excludeUserId): Collection;
 }

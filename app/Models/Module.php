@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Module extends Model
@@ -43,5 +44,21 @@ class Module extends Model
     public function youtubeRecommendations(): HasMany
     {
         return $this->hasMany(YoutubeRecommendation::class);
+    }
+
+    /**
+     * Étudiants inscrits à ce module (signal de personnalisation : recommandations).
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * Idées de projet rattachées à ce module (signal de matching : recommandations).
+     */
+    public function projectIdeas(): BelongsToMany
+    {
+        return $this->belongsToMany(ProjectIdea::class);
     }
 }
