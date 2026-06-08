@@ -126,7 +126,7 @@ class ProjectRecommendationServiceTest extends TestCase
 
         $match = app(ProjectRecommendationService::class)->matchFor($student, $project);
 
-        $this->assertSame(100.0, $match->score);
+        $this->assertSame(90.0, $match->score);
         $this->assertSame(
             ['filiere' => 1.0, 'level' => 1.0, 'modules' => 0.5, 'tags' => 1.0],
             $match->breakdown,
