@@ -140,6 +140,19 @@
                 </span>
                 <span class="text-sm text-ink-soft"><strong class="text-ink">Stage rémunéré</strong> — cochez si vous avez perçu une gratification.</span>
             </label>
+
+            <div>
+                <label class="sl-lib-fcheck sl-stg-paid cursor-pointer">
+                    <input type="checkbox" wire:model="shareConsent" class="sr-only" />
+                    <span class="sl-lib-fbox">
+                        <x-ui.icon name="check" class="h-3.5 w-3.5" />
+                    </span>
+                    <span class="text-sm text-ink-soft">J'accepte que ce retour soit publié dans la bibliothèque, visible des étudiants HESTIM.</span>
+                </label>
+                @error('shareConsent')
+                    <p class="mt-2 text-sm text-danger" role="alert">{{ $message }}</p>
+                @enderror
+            </div>
         </div>
 
         <div class="sl-lib-drawer__foot">

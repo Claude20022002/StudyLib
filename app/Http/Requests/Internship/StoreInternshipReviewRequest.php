@@ -29,6 +29,8 @@ class StoreInternshipReviewRequest extends FormRequest
             'year_level' => ['nullable', 'integer', 'between:1,5'],
             'year_done' => ['nullable', 'integer', 'between:2000,2100'],
             'is_paid' => ['boolean'],
+            // Accord explicite de l'auteur pour la publication (case de l'application et du formulaire web)
+            'consent' => ['accepted'],
         ];
     }
 }

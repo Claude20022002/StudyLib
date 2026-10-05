@@ -68,6 +68,9 @@ return [
             'bucket' => env('MINIO_BUCKET', 'studylib'),
             'url' => env('MINIO_URL'),
             'endpoint' => env('MINIO_ENDPOINT', 'http://localhost:9000'),
+            // URL publique des liens signés (ex. https://fichiers.hestim.ma) : la passerelle y
+            // remet l'en-tête Host de MINIO_ENDPOINT, la signature reste donc valide
+            'temporary_url' => env('MINIO_TEMPORARY_URL'),
             'use_path_style_endpoint' => true,
             'throw' => false,
             'report' => false,

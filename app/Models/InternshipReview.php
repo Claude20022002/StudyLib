@@ -26,6 +26,7 @@ class InternshipReview extends Model
         'year_level',
         'year_done',
         'is_paid',
+        'consent_at',
     ];
 
     protected function casts(): array
@@ -35,6 +36,7 @@ class InternshipReview extends Model
             'year_level' => 'integer',
             'year_done' => 'integer',
             'is_paid' => 'boolean',
+            'consent_at' => 'datetime',
         ];
     }
 

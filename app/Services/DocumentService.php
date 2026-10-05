@@ -11,8 +11,8 @@ use App\Models\DocumentRating;
 use App\Models\User;
 use App\Repositories\Contracts\DocumentRatingRepositoryInterface;
 use App\Repositories\Contracts\DocumentRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -87,7 +87,8 @@ class DocumentService
             'file_size' => $file->getSize(),
             'mime_type' => $file->getMimeType(),
             'year_concern' => $data['year_concern'] ?? null,
-            'status' => DocumentStatus::Pending->value,
+            // Enseignants et administration publient directement ; les étudiants passent par la modération
+            'status' => $author->role->publishesWithoutModeration() ? DocumentStatus::Approved->value : DocumentStatus::Pending->value,
         ]);
     }
 

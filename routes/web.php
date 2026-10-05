@@ -12,6 +12,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\InternshipReviewController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\ModuleSupportsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectIdeaController;
@@ -37,6 +38,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
     Route::post('/documents/{document}/ratings', [DocumentRatingController::class, 'store'])->name('documents.ratings.store');
     Route::post('/documents/{document}/download', [DocumentDownloadController::class, 'store'])->name('documents.download');
+
+    // Supports de cours des séances Planner (tableau de bord Planner, même origine)
+    Route::get('/modules/supports', [ModuleSupportsController::class, 'index'])->name('modules.supports');
 
     Route::get('/modules/{module}/youtube', [YoutubeRecommendationController::class, 'index'])->name('modules.youtube');
 

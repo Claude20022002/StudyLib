@@ -149,6 +149,8 @@ class InternshipReviewService
             'year_level' => $data['year_level'] ?? null,
             'year_done' => $data['year_done'] ?? null,
             'is_paid' => $data['is_paid'] ?? false,
+            // Les deux points d'entrée (API, formulaire web) exigent la case d'accord avant d'arriver ici
+            'consent_at' => now(),
         ]);
     }
 

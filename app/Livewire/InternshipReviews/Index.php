@@ -70,6 +70,8 @@ class Index extends Component
 
     public bool $shareIsPaid = false;
 
+    public bool $shareConsent = false;
+
     public function mount(): void
     {
         if (request()->boolean('partager')) {
@@ -192,7 +194,9 @@ class Index extends Component
             'shareYearLevel' => ['nullable', 'integer', 'between:1,5'],
             'shareYearDone' => ['nullable', 'integer', 'between:2000,2100'],
             'shareIsPaid' => ['boolean'],
+            'shareConsent' => ['accepted'],
         ], [
+            'shareConsent.accepted' => 'Cochez la case pour accepter la publication de votre retour.',
             'shareRating.required' => 'Veuillez attribuer une note à votre expérience.',
             'shareRating.between' => 'La note doit être entre 1 et 5.',
         ]);
@@ -277,6 +281,7 @@ class Index extends Component
         $this->shareYearLevel = '';
         $this->shareYearDone = '';
         $this->shareIsPaid = false;
+        $this->shareConsent = false;
         $this->resetValidation();
     }
 }

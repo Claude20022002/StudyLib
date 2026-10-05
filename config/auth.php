@@ -16,6 +16,7 @@ return [
     */
 
     'defaults' => [
+        // Connexion unique : l'identité vient des jetons de HESTIM Planner (voir config/planner.php)
         'guard' => env('AUTH_GUARD', 'web'),
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
@@ -38,8 +39,15 @@ return [
     */
 
     'guards' => [
+        // Pages web : jeton de Planner lu dans son cookie d'accès (même origine) ou en Bearer
         'web' => [
-            'driver' => 'session',
+            'driver' => 'planner',
+            'provider' => 'users',
+        ],
+
+        // API JSON (application mobile) : Bearer uniquement, jamais de cookie (pas de CSRF possible)
+        'api' => [
+            'driver' => 'planner-bearer',
             'provider' => 'users',
         ],
     ],

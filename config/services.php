@@ -45,4 +45,10 @@ return [
         'key' => env('YOUTUBE_API_KEY'),
     ],
 
+    // Import des supports depuis Google Drive (studylib:import-drive) : clé JSON d'un compte de
+    // service, hors Git ; le dossier à importer est partagé en Lecteur avec son adresse
+    'google_drive' => [
+        'credentials' => env('GOOGLE_DRIVE_CREDENTIALS') ?: storage_path('app/private/google-drive.json'),
+    ],
+
 ];

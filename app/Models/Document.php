@@ -27,6 +27,7 @@ class Document extends Model
         'title',
         'description',
         'file_path',
+        'source_ref',
         'file_size',
         'mime_type',
         'year_concern',
@@ -35,6 +36,7 @@ class Document extends Model
 
     protected $hidden = [
         'file_path',
+        'source_ref',
     ];
 
     protected function casts(): array

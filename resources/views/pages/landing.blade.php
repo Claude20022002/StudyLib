@@ -21,11 +21,9 @@
                         Tableau de bord
                     </x-ui.button>
                 @else
-                    <x-ui.button href="{{ route('login') }}" variant="secondary" size="sm" class="hidden sm:inline-flex">
-                        Se connecter
-                    </x-ui.button>
-                    <x-ui.button href="{{ route('register') }}" variant="primary" size="sm" class="hidden sm:inline-flex">
-                        Créer un compte
+                    {{-- Comptes créés par l'administration dans HESTIM Planner : pas d'inscription ici --}}
+                    <x-ui.button href="{{ route('login') }}" variant="primary" size="sm" class="hidden sm:inline-flex">
+                        Se connecter avec HESTIM Planner
                     </x-ui.button>
                 @endauth
 
@@ -55,8 +53,7 @@
                 <a href="#trust" class="sl-landing-mobile-link" @click="menuOpen = false">Sécurité</a>
                 <a href="#stats" class="sl-landing-mobile-link" @click="menuOpen = false">Communauté</a>
                 @guest
-                    <a href="{{ route('login') }}" class="sl-landing-mobile-link" @click="menuOpen = false">Se connecter</a>
-                    <a href="{{ route('register') }}" class="sl-landing-mobile-link" @click="menuOpen = false">Créer un compte</a>
+                    <a href="{{ route('login') }}" class="sl-landing-mobile-link" @click="menuOpen = false">Se connecter avec HESTIM Planner</a>
                 @endguest
             </div>
         </nav>
@@ -233,7 +230,7 @@
                     </div>
                     <div>
                         <h4>Accès vérifié uniquement</h4>
-                        <p>Seuls les comptes confirmés par une adresse @hestim.ma peuvent consulter et déposer des ressources.</p>
+                        <p>Seuls les comptes HESTIM, créés par l'administration et ouverts avec votre connexion HESTIM Planner, peuvent consulter et déposer des ressources.</p>
                     </div>
                 </div>
                 <div class="sl-landing-trust-item">

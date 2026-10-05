@@ -2,28 +2,19 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Middleware\EnsureHestimEmail;
+use App\Http\Controllers\Auth\PlannerSessionController;
 use Illuminate\Support\Facades\Route;
 
+/*
+ * Connexion unique : les comptes sont créés par l'administration dans HESTIM Planner, qui
+ * authentifie tout le monde. StudyLib n'a ni inscription ni formulaire de connexion :
+ * /login et /register renvoient vers la page de connexion de Planner, qui ramène ici ensuite.
+ */
 Route::middleware('web')->group(function () {
-    Route::middleware('guest')->group(function () {
-        Route::view('/login', 'pages.auth.login')->name('login');
+    Route::get('/login', [PlannerSessionController::class, 'login'])->name('login');
+    Route::get('/register', [PlannerSessionController::class, 'login'])->name('register');
 
-        Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-
-        Route::post('/register', [RegisteredUserController::class, 'store'])
-            ->middleware([EnsureHestimEmail::class, 'throttle:register'])
-            ->name('register.store');
-
-        Route::post('/login', [AuthenticatedSessionController::class, 'store'])
-            ->middleware('throttle:login')
-            ->name('login.store');
-    });
-
-    Route::middleware('auth')->group(function () {
-        Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-            ->name('logout');
-    });
+    Route::post('/logout', [PlannerSessionController::class, 'logout'])
+        ->middleware('auth')
+        ->name('logout');
 });

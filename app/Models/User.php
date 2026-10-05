@@ -28,6 +28,7 @@ class User extends Authenticatable
         'year_level',
         'role',
         'avatar_path',
+        'planner_id',
     ];
 
     protected $hidden = [

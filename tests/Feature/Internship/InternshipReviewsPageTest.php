@@ -124,6 +124,7 @@ class InternshipReviewsPageTest extends TestCase
             ->set('shareRating', 4)
             ->set('shareYearLevel', '3')
             ->set('shareYearDone', '2024')
+            ->set('shareConsent', true)
             ->call('submitShare')
             ->assertHasNoErrors();
 
@@ -156,8 +157,50 @@ class InternshipReviewsPageTest extends TestCase
                 'year_level' => 3,
                 'year_done' => 2023,
                 'is_paid' => true,
+                'consent' => '1',
             ])
             ->assertRedirect(route('internship-reviews.index'))
             ->assertSessionHas('success');
+    }
+
+    public function test_a_review_is_refused_without_the_publication_consent(): void
+    {
+        $user = User::factory()->create(['email' => 'sans-accord@hestim.ma']);
+
+        Livewire::actingAs($user)
+            ->test(Index::class)
+            ->set('shareCompanyName', 'CapFinance')
+            ->set('shareDescription', 'Reporting Excel et automatisation.')
+            ->set('shareRating', 4)
+            ->call('submitShare')
+            ->assertHasErrors(['shareConsent' => 'accepted']);
+
+        $this->actingAs($user)
+            ->postJson(route('internship-reviews.store'), [
+                'company_name' => 'VoltEdge',
+                'description' => 'Tests électroniques.',
+                'rating' => 4,
+            ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('consent');
+
+        $this->assertSame(0, InternshipReview::query()->count());
+    }
+
+    public function test_the_consent_date_is_recorded_with_the_review(): void
+    {
+        $user = User::factory()->create(['email' => 'avec-accord@hestim.ma']);
+        $this->freezeTime();
+
+        $this->actingAs($user)
+            ->postJson(route('internship-reviews.store'), [
+                'company_name' => 'VoltEdge',
+                'description' => 'Tests électroniques.',
+                'rating' => 4,
+                'consent' => true,
+            ])
+            ->assertCreated();
+
+        $this->assertTrue(now()->startOfSecond()->equalTo(InternshipReview::query()->sole()->consent_at));
     }
 }
