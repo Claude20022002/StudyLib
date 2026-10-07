@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\GoogleDrive;
 
 use Firebase\JWT\JWT;
-use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -20,6 +20,8 @@ class GoogleDriveClient
 {
     public const FOLDER = 'application/vnd.google-apps.folder';
 
+    public const SHORTCUT = 'application/vnd.google-apps.shortcut';
+
     private const API = 'https://www.googleapis.com/drive/v3';
 
     private const SCOPE = 'https://www.googleapis.com/auth/drive.readonly';
@@ -31,12 +33,12 @@ class GoogleDriveClient
     public function __construct(private readonly string $credentialsPath) {}
 
     /**
-     * @return array{id: string, name: string, mimeType: string}
+     * @return array{id: string, name: string, mimeType: string, size?: string}
      */
     public function file(string $fileId): array
     {
-        $response = $this->api()->get(self::API.'/files/'.$this->id($fileId), [
-            'fields' => 'id, name, mimeType',
+        $response = $this->get(self::API.'/files/'.$this->id($fileId), [
+            'fields' => 'id, name, mimeType, size',
             'supportsAllDrives' => 'true',
         ]);
 
@@ -46,7 +48,7 @@ class GoogleDriveClient
     /**
      * Contenu direct d'un dossier (sans la corbeille), toutes pages confondues.
      *
-     * @return list<array{id: string, name: string, mimeType: string, size?: string}>
+     * @return list<array{id: string, name: string, mimeType: string, size?: string, shortcutDetails?: array{targetId: string, targetMimeType: string}}>
      */
     public function children(string $folderId): array
     {
@@ -54,9 +56,9 @@ class GoogleDriveClient
         $pageToken = null;
 
         do {
-            $response = $this->api()->get(self::API.'/files', array_filter([
+            $response = $this->get(self::API.'/files', array_filter([
                 'q' => "'{$this->id($folderId)}' in parents and trashed = false",
-                'fields' => 'nextPageToken, files(id, name, mimeType, size)',
+                'fields' => 'nextPageToken, files(id, name, mimeType, size, shortcutDetails(targetId, targetMimeType))',
                 'pageSize' => 1000,
                 'supportsAllDrives' => 'true',
                 'includeItemsFromAllDrives' => 'true',
@@ -71,7 +73,7 @@ class GoogleDriveClient
 
     public function download(string $fileId): string
     {
-        $response = $this->api()->get(self::API.'/files/'.$this->id($fileId), [
+        $response = $this->get(self::API.'/files/'.$this->id($fileId), [
             'alt' => 'media',
             'supportsAllDrives' => 'true',
         ]);
@@ -82,16 +84,38 @@ class GoogleDriveClient
     /** Export d'un fichier Google (Docs, Slides) dans un format bureautique, PDF en général. */
     public function export(string $fileId, string $mimeType): string
     {
-        $response = $this->api()->get(self::API.'/files/'.$this->id($fileId).'/export', [
+        $response = $this->get(self::API.'/files/'.$this->id($fileId).'/export', [
             'mimeType' => $mimeType,
         ]);
 
         return $this->ensure($response)->body();
     }
 
-    private function api(): PendingRequest
+    /** @param array<string, mixed> $query */
+    private function get(string $url, array $query): Response
     {
-        return Http::timeout(60)->withToken($this->accessToken());
+        $request = Http::timeout(60)->withToken($this->accessToken());
+
+        return $this->connect(fn () => $request->get($url, $query));
+    }
+
+    /**
+     * Une panne réseau (DNS, proxy, certificats racine absents du PHP local) devient un
+     * message lisible au lieu d'une trace Guzzle.
+     *
+     * @param  callable(): Response  $send
+     */
+    private function connect(callable $send): Response
+    {
+        try {
+            return $send();
+        } catch (ConnectionException $e) {
+            $hint = str_contains($e->getMessage(), 'cURL error 60')
+                ? 'certificats racine introuvables : renseignez curl.cainfo et openssl.cafile dans php.ini'
+                : $e->getMessage();
+
+            throw new GoogleDriveException("Connexion à Google impossible ({$hint}).", previous: $e);
+        }
     }
 
     private function accessToken(): string
@@ -123,10 +147,10 @@ class GoogleDriveClient
             'exp' => $now + 3600,
         ], $key['private_key'], 'RS256', is_string($key['private_key_id'] ?? null) ? $key['private_key_id'] : null);
 
-        $response = Http::asForm()->timeout(15)->post(self::TOKEN_URI, [
+        $response = $this->connect(fn () => Http::asForm()->timeout(15)->post(self::TOKEN_URI, [
             'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
             'assertion' => $assertion,
-        ]);
+        ]));
         $token = $response->json('access_token');
         if (! $response->successful() || ! is_string($token) || $token === '') {
             $error = is_string($response->json('error')) ? $response->json('error') : 'réponse inattendue';

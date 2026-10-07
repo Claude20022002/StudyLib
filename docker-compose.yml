@@ -29,7 +29,7 @@ services:
       retries: 10
 
   minio:
-    image: minio/minio:latest
+    image: quay.io/minio/aistor/minio:RELEASE.2026-09-19T17-05-25Z
     command: server /data --console-address ":8900"
     ports:
       - "${FORWARD_MINIO_PORT:-9000}:9000"

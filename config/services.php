@@ -49,6 +49,12 @@ return [
     // service, hors Git ; le dossier à importer est partagé en Lecteur avec son adresse
     'google_drive' => [
         'credentials' => env('GOOGLE_DRIVE_CREDENTIALS') ?: storage_path('app/private/google-drive.json'),
+        // Dossier importé quand la commande est lancée sans argument
+        'folder' => env('GOOGLE_DRIVE_FOLDER_ID'),
+        // Correspondance facultative nom de dossier → code de module (dossiers Classroom aux intitulés libres)
+        'module_map' => env('GOOGLE_DRIVE_MODULE_MAP') ?: storage_path('app/private/drive-modules.json'),
+        // Filière à laquelle rattacher les documents quand le Drive ne la précise pas (ex. IIIA)
+        'filiere' => env('GOOGLE_DRIVE_FILIERE'),
     ],
 
 ];
