@@ -107,7 +107,7 @@
 
 /* Drawers */
 .sl-lib-drawer {
-    transition: transform var(--dur-slow) cubic-bezier(0.16, 1, 0.3, 1);
+    transition: translate var(--dur-slow) cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: -12px 0 48px rgba(15, 23, 42, 0.1);
 }
 

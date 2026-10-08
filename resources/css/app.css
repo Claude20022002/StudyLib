@@ -1694,11 +1694,13 @@
     }
 
     .sl-lib-drawer {
-        @apply fixed top-0 right-0 z-50 flex h-screen w-full max-w-[480px] translate-x-full flex-col bg-card shadow-lg transition-transform;
+        @apply fixed top-0 right-0 z-50 flex h-dvh w-full max-w-[480px] translate-x-full flex-col bg-card shadow-lg transition-transform;
     }
 
+    /* Tailwind v4 décale avec la propriété « translate » (et non « transform ») : c'est elle qu'il
+       faut annuler, sinon le panneau ouvert reste hors de l'écran */
     .sl-lib-drawer.is-open {
-        transform: translateX(0);
+        translate: 0 0;
     }
 
     .sl-lib-drawer__head {
@@ -2020,12 +2022,12 @@
     }
 
     .sl-lib-filters {
-        @apply fixed top-0 left-0 z-[45] h-screen w-[320px] max-w-[88vw] -translate-x-full overflow-y-auto rounded-none;
-        transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1);
+        @apply fixed top-0 left-0 z-[45] h-dvh w-[320px] max-w-[88vw] -translate-x-full overflow-y-auto rounded-none;
+        transition: translate 180ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .sl-lib-filters.is-open {
-        transform: translateX(0);
+        translate: 0 0;
         box-shadow: var(--shadow-lg);
     }
 }

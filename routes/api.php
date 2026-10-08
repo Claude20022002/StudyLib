@@ -21,12 +21,16 @@ Route::middleware(['auth:api', 'throttle:api'])->group(function () {
 
     Route::get('/modules/supports', [ModuleSupportsController::class, 'index']);
 
+    Route::get('/documents/search', [MobileController::class, 'searchDocuments']);
     Route::get('/documents', [DocumentController::class, 'index']);
     Route::get('/documents/{document}', [DocumentController::class, 'show']);
     Route::post('/documents/{document}/download', [MobileController::class, 'download'])->middleware('throttle:downloads');
 
+    Route::get('/internship-reviews/recent', [MobileController::class, 'recentInternshipReviews']);
+    Route::get('/internship-reviews/{review}/photo', [MobileController::class, 'internshipReviewPhoto'])->whereUuid('review');
     Route::get('/internship-reviews', [InternshipReviewController::class, 'index']);
     Route::post('/internship-reviews', [InternshipReviewController::class, 'store']);
+    Route::get('/project-ideas/mobile', [MobileController::class, 'projectIdeas']);
     Route::get('/project-ideas', [ProjectIdeaController::class, 'index']);
     Route::get('/events', [EventController::class, 'index']);
 });

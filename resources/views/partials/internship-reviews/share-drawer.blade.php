@@ -138,7 +138,7 @@
                 <span class="sl-lib-fbox">
                     <x-ui.icon name="check" class="h-3.5 w-3.5" />
                 </span>
-                <span class="text-sm text-ink-soft"><strong class="text-ink">Stage rémunéré</strong> — cochez si vous avez perçu une gratification.</span>
+                <span class="text-sm text-ink-soft"><strong class="text-ink">Stage rémunéré</strong> : cochez si vous avez perçu une gratification.</span>
             </label>
 
             <div>

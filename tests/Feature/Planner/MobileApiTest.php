@@ -8,6 +8,7 @@ use App\Enums\DocumentStatus;
 use App\Models\Document;
 use App\Models\Filiere;
 use App\Models\Module;
+use App\Models\ProjectIdea;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Tests\Concerns\IssuesPlannerTokens;
@@ -96,5 +97,34 @@ class MobileApiTest extends TestCase
         $this->withToken($this->plannerToken())->getJson('/api/modules/supports?codes[]=bad%20code')->assertUnprocessable();
         $this->app['auth']->forgetGuards();
         $this->withToken($this->plannerToken())->getJson('/api/modules/supports?'.http_build_query(['codes' => array_map(fn ($i) => "M{$i}", range(1, 51))]))->assertUnprocessable();
+    }
+
+    public function test_library_search_finds_published_documents_by_title_or_module(): void
+    {
+        $module = Module::factory()->create(['name' => 'Big Data', 'code' => 'IIIA-BD']);
+        Document::factory()->create(['module_id' => $module->id, 'title' => 'Introduction', 'status' => DocumentStatus::Approved->value]);
+        Document::factory()->create(['title' => 'Résumé Hadoop', 'status' => DocumentStatus::Approved->value]);
+        Document::factory()->create(['title' => 'Hadoop brouillon', 'status' => DocumentStatus::Pending->value]);
+
+        $parTitre = $this->withToken($this->plannerToken())->getJson('/api/documents/search?q=hadoop')->assertOk();
+        $this->assertSame(['Résumé Hadoop'], array_column($parTitre->json('data'), 'title'));
+        $parModule = $this->withToken($this->plannerToken())->getJson('/api/documents/search?q=big%20data')->assertOk();
+        $this->assertSame('IIIA-BD', $parModule->json('data.0.module.code'));
+        $this->withToken($this->plannerToken())->getJson('/api/documents/search?q=a')->assertUnprocessable();
+    }
+
+    public function test_project_ideas_for_the_app_are_light_paginated_and_searchable(): void
+    {
+        ProjectIdea::factory()->count(13)->create();
+        ProjectIdea::factory()->create(['title' => 'Robot suiveur de ligne']);
+
+        $premiere = $this->withToken($this->plannerToken())->getJson('/api/project-ideas/mobile')->assertOk();
+        $this->assertCount(12, $premiere->json('data'));
+        $this->assertTrue($premiere->json('has_more'));
+        $this->assertSame(['id', 'title', 'description', 'level', 'difficulty', 'estimated_weeks', 'filiere'], array_keys($premiere->json('data.0')));
+        $this->assertStringNotContainsString('@', $premiere->getContent());
+
+        $trouvee = $this->withToken($this->plannerToken())->getJson('/api/project-ideas/mobile?q=robot')->assertOk();
+        $this->assertSame(['Robot suiveur de ligne'], array_column($trouvee->json('data'), 'title'));
     }
 }

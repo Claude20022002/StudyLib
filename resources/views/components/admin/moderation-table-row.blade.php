@@ -27,11 +27,11 @@
             <span>{{ $document->title }}</span>
         </div>
     </td>
-    <td>{{ $document->module?->name ?? '—' }}</td>
+    <td>{{ $document->module?->name ?? '-' }}</td>
     <td>
         <div class="flex items-center gap-2">
             <x-ui.avatar :initials="$initials !== '' ? $initials : '?'" class="!h-[26px] !w-[26px] !text-[10px]" />
-            {{ $document->author?->name ?? '—' }}
+            {{ $document->author?->name ?? '-' }}
         </div>
     </td>
     <td>{{ $document->type->label() }}</td>

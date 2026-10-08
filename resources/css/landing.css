@@ -33,10 +33,18 @@
     height: var(--header-h);
 }
 
+/* Ces styles sont hors des couches Tailwind : ils l'emporteraient sur « hidden md:flex ».
+   L'affichage selon la largeur est donc décidé ici (md = 768 px, comme Tailwind). */
 .sl-landing-nav {
-    display: flex;
+    display: none;
     align-items: center;
     gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+    .sl-landing-nav {
+        display: flex;
+    }
 }
 
 .sl-landing-nav-link {
@@ -87,6 +95,12 @@
     background: var(--color-card);
     color: var(--color-ink);
     cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    .sl-landing-menu-btn {
+        display: none;
+    }
 }
 
 .sl-landing-mobile-nav {

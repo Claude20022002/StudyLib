@@ -61,7 +61,7 @@
             @enderror
 
             <x-ui.field label="Titre du document" id="upload-title" class="mt-5" :error="$errors->first('uploadTitle')">
-                <input id="upload-title" wire:model="uploadTitle" type="text" class="sl-input w-full @error('uploadTitle') is-error @enderror" placeholder="ex. Fiche de révision — Bases de données" />
+                <input id="upload-title" wire:model="uploadTitle" type="text" class="sl-input w-full @error('uploadTitle') is-error @enderror" placeholder="ex. Fiche de révision : bases de données" />
             </x-ui.field>
 
             <x-ui.field label="Module" id="upload-module" class="mt-5" :error="$errors->first('uploadModuleId')">

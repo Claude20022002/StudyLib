@@ -156,4 +156,21 @@ class DocumentShowPageTest extends TestCase
             ->test(Show::class, ['document' => $document])
             ->assertSee('Recommandé pour votre niveau');
     }
+
+    /** Supports importés depuis Drive : sans auteur, la fiche s'affichait en erreur 500. */
+    public function test_an_imported_document_without_author_can_be_viewed(): void
+    {
+        $user = User::factory()->create(['email' => 'import@hestim.ma']);
+        $document = Document::factory()->create([
+            'module_id' => Module::factory()->create()->id,
+            'user_id' => null,
+            'status' => DocumentStatus::Approved->value,
+            'year_concern' => null,
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('documents.show', $document))
+            ->assertOk()
+            ->assertSee($document->title);
+    }
 }

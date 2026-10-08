@@ -23,6 +23,12 @@ use Illuminate\Support\Str;
  */
 class ProjectIdeaSeeder extends Seeder
 {
+    /**
+     * Codes des filières de démonstration d'origine → filières HESTIM synchronisées depuis Planner :
+     * les idées restent rattachées à une vraie filière quand l'ancien code n'existe pas.
+     */
+    private const FILIERES_HESTIM = ['GI' => 'IIIA', 'GC' => 'GCAU', 'GIND' => 'GIL', 'MGT' => 'LMEO'];
+
     /** @var array<string, Tag> */
     private array $tags = [];
 
@@ -30,8 +36,8 @@ class ProjectIdeaSeeder extends Seeder
     {
         $filieres = Filiere::query()->get()->keyBy('code');
 
-        foreach (self::projects() as $definition) {
-            $filiere = $filieres->get($definition['filiere']);
+        foreach ([...self::projects(), ...self::hestimProjects()] as $definition) {
+            $filiere = $filieres->get($definition['filiere']) ?? $filieres->get(self::FILIERES_HESTIM[$definition['filiere']] ?? '');
 
             $project = ProjectIdea::query()->updateOrCreate(
                 ['title' => $definition['title']],
@@ -671,6 +677,186 @@ class ProjectIdeaSeeder extends Seeder
                 'title' => 'Plan stratégique de transformation organisationnelle à 5 ans',
                 'description' => 'Réaliser une étude prospective et élaborer un plan stratégique de transformation organisationnelle à horizon cinq ans pour une entreprise donnée.',
                 'tags' => ['Excel', 'Power BI', 'R'],
+            ],
+        ];
+    }
+
+    /**
+     * Idées propres aux filières HESTIM qui n'en avaient pas (spécialités d'ingénieur, PGE, masters,
+     * cycle préparatoire), rattachées par leur code Planner.
+     *
+     * @return list<array{filiere: string, level: StudyLevel, difficulty: ProjectDifficulty, weeks: int, title: string, description: string, tags: list<string>}>
+     */
+    private static function hestimProjects(): array
+    {
+        return [
+            [
+                'filiere' => 'IIIA-IABD', 'level' => StudyLevel::L3, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 6,
+                'title' => 'Tableau de bord de la qualité de l\'air à Casablanca',
+                'description' => 'Collecter des mesures publiques de qualité de l\'air, les nettoyer et les présenter dans un tableau de bord interactif, avec une prévision simple sur 24 heures.',
+                'tags' => ['Python', 'Pandas', 'Power BI'],
+            ],
+            [
+                'filiere' => 'IIIA-IABD', 'level' => StudyLevel::M1, 'difficulty' => ProjectDifficulty::Advanced, 'weeks' => 10,
+                'title' => 'Détection de fraude sur des transactions bancaires',
+                'description' => 'Entraîner et comparer plusieurs modèles de classification sur un jeu de transactions déséquilibré, puis expliquer les décisions du meilleur modèle.',
+                'tags' => ['Python', 'Scikit-learn', 'SHAP'],
+            ],
+            [
+                'filiere' => 'IIIA-IABD', 'level' => StudyLevel::M1, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 8,
+                'title' => 'Assistant de recherche dans les supports de cours',
+                'description' => 'Indexer les PDF d\'un module et permettre de poser une question en langage naturel, avec la page source citée dans chaque réponse.',
+                'tags' => ['Python', 'NLP', 'Recherche sémantique'],
+            ],
+            [
+                'filiere' => 'IIIA-IABD', 'level' => StudyLevel::M2, 'difficulty' => ProjectDifficulty::Advanced, 'weeks' => 14,
+                'title' => 'Prévision de la demande pour une chaîne de distribution',
+                'description' => 'Construire un pipeline de prévision des ventes par magasin et par produit, avec suivi de la dérive des données et réentraînement planifié.',
+                'tags' => ['Python', 'Spark', 'MLflow'],
+            ],
+            [
+                'filiere' => 'IIIA-CYB', 'level' => StudyLevel::L3, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 6,
+                'title' => 'Audit de sécurité d\'une application web d\'école',
+                'description' => 'Mener un audit selon l\'OWASP Top 10 sur une application volontairement vulnérable, puis rédiger le rapport et les correctifs priorisés.',
+                'tags' => ['OWASP', 'Burp Suite', 'Linux'],
+            ],
+            [
+                'filiere' => 'IIIA-CYB', 'level' => StudyLevel::M1, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 8,
+                'title' => 'Mini centre de supervision (SOC) pour un réseau de campus',
+                'description' => 'Centraliser les journaux de quelques machines, écrire des règles de détection et produire des alertes lisibles par un analyste.',
+                'tags' => ['Wazuh', 'Elastic', 'Linux'],
+            ],
+            [
+                'filiere' => 'IIIA-CYB', 'level' => StudyLevel::M1, 'difficulty' => ProjectDifficulty::Advanced, 'weeks' => 10,
+                'title' => 'Plateforme de défis de sécurité (CTF) pour les étudiants',
+                'description' => 'Concevoir une dizaine de défis progressifs (web, cryptographie, forensique) et la plateforme qui suit les scores des équipes.',
+                'tags' => ['Docker', 'Python', 'Cryptographie'],
+            ],
+            [
+                'filiere' => 'IIIA-CYB', 'level' => StudyLevel::M2, 'difficulty' => ProjectDifficulty::Advanced, 'weeks' => 12,
+                'title' => 'Politique de sécurité et plan de continuité pour une PME',
+                'description' => 'Analyser les risques d\'une PME réelle, proposer une politique de sécurité adaptée et un plan de reprise après incident testé sur maquette.',
+                'tags' => ['ISO 27001', 'EBIOS', 'Sauvegarde'],
+            ],
+            [
+                'filiere' => 'IIIA-GL', 'level' => StudyLevel::L3, 'difficulty' => ProjectDifficulty::Beginner, 'weeks' => 4,
+                'title' => 'Application de covoiturage entre étudiants',
+                'description' => 'Développer une application mobile qui met en relation les étudiants d\'un même trajet, avec messagerie et notation des trajets.',
+                'tags' => ['React Native', 'Node.js', 'PostgreSQL'],
+            ],
+            [
+                'filiere' => 'IIIA-GL', 'level' => StudyLevel::L3, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 6,
+                'title' => 'Gestion des emprunts du matériel du FabLab',
+                'description' => 'Concevoir une application de réservation et d\'emprunt du matériel (robots, cartes, imprimantes 3D) avec rappels de retour.',
+                'tags' => ['Laravel', 'MySQL', 'UML'],
+            ],
+            [
+                'filiere' => 'IIIA-GL', 'level' => StudyLevel::M1, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 8,
+                'title' => 'Chaîne d\'intégration et de déploiement continus',
+                'description' => 'Mettre en place tests automatiques, analyse de code et déploiement continu pour une application existante, avec un tableau de bord qualité.',
+                'tags' => ['GitHub Actions', 'Docker', 'SonarQube'],
+            ],
+            [
+                'filiere' => 'IIIA-GL', 'level' => StudyLevel::M2, 'difficulty' => ProjectDifficulty::Advanced, 'weeks' => 12,
+                'title' => 'Découpage d\'une application monolithique en services',
+                'description' => 'Étudier une application monolithique, identifier ses domaines et en extraire deux services indépendants sans interrompre le fonctionnement.',
+                'tags' => ['Architecture', 'Docker', 'API REST'],
+            ],
+            [
+                'filiere' => 'PGE-MDI', 'level' => StudyLevel::L2, 'difficulty' => ProjectDifficulty::Beginner, 'weeks' => 3,
+                'title' => 'Audit de la présence en ligne d\'un commerce local',
+                'description' => 'Analyser le site, les réseaux sociaux et les avis d\'un commerce de quartier, puis proposer un plan d\'actions simple sur trois mois.',
+                'tags' => ['Google Analytics', 'Réseaux sociaux', 'SEO'],
+            ],
+            [
+                'filiere' => 'PGE-MDI', 'level' => StudyLevel::L3, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 6,
+                'title' => 'Campagne d\'acquisition pour une start-up marocaine',
+                'description' => 'Définir les cibles, créer les contenus et piloter une campagne payante avec un budget limité, puis mesurer le coût par client acquis.',
+                'tags' => ['Meta Ads', 'Google Ads', 'Excel'],
+            ],
+            [
+                'filiere' => 'PGE-MDI', 'level' => StudyLevel::M1, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 8,
+                'title' => 'Lancement d\'une marque sur le marché étudiant',
+                'description' => 'Construire le positionnement, l\'identité et le plan de lancement d\'une marque destinée aux étudiants, avec tests auprès d\'un panel.',
+                'tags' => ['Branding', 'Études de marché', 'Canva'],
+            ],
+            [
+                'filiere' => 'PGE-MDI', 'level' => StudyLevel::M2, 'difficulty' => ProjectDifficulty::Advanced, 'weeks' => 12,
+                'title' => 'Stratégie omnicanale pour une enseigne de distribution',
+                'description' => 'Cartographier le parcours client en magasin et en ligne, et proposer une stratégie omnicanale chiffrée avec ses indicateurs de suivi.',
+                'tags' => ['CRM', 'Parcours client', 'Power BI'],
+            ],
+            [
+                'filiere' => 'MASC', 'level' => StudyLevel::M1, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 8,
+                'title' => 'Optimisation des stocks d\'un entrepôt',
+                'description' => 'Analyser les rotations de stock, classer les articles (ABC) et proposer des niveaux de réapprovisionnement réduisant les ruptures.',
+                'tags' => ['Excel', 'Gestion des stocks', 'Python'],
+            ],
+            [
+                'filiere' => 'MASC', 'level' => StudyLevel::M1, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 6,
+                'title' => 'Évaluation et sélection de fournisseurs',
+                'description' => 'Construire une grille d\'évaluation multicritère des fournisseurs et l\'appliquer à un achat réel, avec recommandation argumentée.',
+                'tags' => ['Achats', 'Analyse multicritère', 'Excel'],
+            ],
+            [
+                'filiere' => 'MASC', 'level' => StudyLevel::M2, 'difficulty' => ProjectDifficulty::Advanced, 'weeks' => 12,
+                'title' => 'Réseau de distribution du dernier kilomètre à Casablanca',
+                'description' => 'Modéliser les tournées de livraison d\'une entreprise et comparer plusieurs scénarios de points relais en coût et en délai.',
+                'tags' => ['Recherche opérationnelle', 'Python', 'SIG'],
+            ],
+            [
+                'filiere' => 'MASC', 'level' => StudyLevel::M2, 'difficulty' => ProjectDifficulty::Advanced, 'weeks' => 10,
+                'title' => 'Bilan carbone d\'une chaîne d\'approvisionnement',
+                'description' => 'Mesurer les émissions d\'une chaîne d\'approvisionnement, identifier les postes principaux et proposer un plan de réduction chiffré.',
+                'tags' => ['Bilan carbone', 'Excel', 'RSE'],
+            ],
+            [
+                'filiere' => 'MFAC', 'level' => StudyLevel::M1, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 6,
+                'title' => 'Tableau de bord financier d\'une PME',
+                'description' => 'Construire, à partir des états financiers, un tableau de bord mensuel (trésorerie, marges, BFR) utile au dirigeant.',
+                'tags' => ['Excel', 'Power BI', 'Analyse financière'],
+            ],
+            [
+                'filiere' => 'MFAC', 'level' => StudyLevel::M1, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 8,
+                'title' => 'Évaluation d\'une entreprise cotée à la Bourse de Casablanca',
+                'description' => 'Évaluer une entreprise cotée par plusieurs méthodes (flux actualisés, comparables) et discuter les écarts avec le cours de bourse.',
+                'tags' => ['Finance d\'entreprise', 'Excel', 'Évaluation'],
+            ],
+            [
+                'filiere' => 'MFAC', 'level' => StudyLevel::M2, 'difficulty' => ProjectDifficulty::Advanced, 'weeks' => 10,
+                'title' => 'Mission d\'audit interne sur le cycle achats',
+                'description' => 'Conduire une mission d\'audit interne simulée sur le cycle achats : cartographie des risques, tests de contrôles et recommandations.',
+                'tags' => ['Audit interne', 'Contrôle interne', 'COSO'],
+            ],
+            [
+                'filiere' => 'MFAC', 'level' => StudyLevel::M2, 'difficulty' => ProjectDifficulty::Advanced, 'weeks' => 12,
+                'title' => 'Contrôle de gestion et budget d\'une école privée',
+                'description' => 'Mettre en place le budget, le calcul des coûts par filière et le suivi des écarts d\'une école privée, avec un tableau de bord de direction.',
+                'tags' => ['Contrôle de gestion', 'Budget', 'Excel'],
+            ],
+            [
+                'filiere' => 'CPI', 'level' => StudyLevel::L1, 'difficulty' => ProjectDifficulty::Beginner, 'weeks' => 2,
+                'title' => 'Simulation de la chute libre et des frottements',
+                'description' => 'Programmer la simulation d\'une chute avec et sans frottements, comparer aux mesures d\'une vidéo et tracer les courbes.',
+                'tags' => ['Python', 'Physique', 'Matplotlib'],
+            ],
+            [
+                'filiere' => 'CPI', 'level' => StudyLevel::L1, 'difficulty' => ProjectDifficulty::Beginner, 'weeks' => 3,
+                'title' => 'Station météo connectée avec un microcontrôleur',
+                'description' => 'Monter une petite station (température, humidité) sur carte Arduino et afficher les mesures en direct sur un ordinateur.',
+                'tags' => ['Arduino', 'Capteurs', 'Électronique'],
+            ],
+            [
+                'filiere' => 'CPI', 'level' => StudyLevel::L2, 'difficulty' => ProjectDifficulty::Beginner, 'weeks' => 3,
+                'title' => 'Résolution numérique d\'équations et de systèmes',
+                'description' => 'Implémenter les méthodes de dichotomie, de Newton et de Gauss, puis comparer leur précision et leur vitesse sur des cas concrets.',
+                'tags' => ['Python', 'Analyse numérique', 'NumPy'],
+            ],
+            [
+                'filiere' => 'CPI', 'level' => StudyLevel::L2, 'difficulty' => ProjectDifficulty::Intermediate, 'weeks' => 4,
+                'title' => 'Robot suiveur de ligne',
+                'description' => 'Construire et programmer un petit robot qui suit une ligne au sol, en réglant un correcteur pour qu\'il reste stable dans les virages.',
+                'tags' => ['Arduino', 'Robotique', 'Asservissement'],
             ],
         ];
     }

@@ -27,7 +27,11 @@ class InternshipReview extends Model
         'year_done',
         'is_paid',
         'consent_at',
+        'photo_path',
     ];
+
+    /** Le chemin de stockage ne sort pas : la photo passe par GET /api/internship-reviews/{id}/photo */
+    protected $hidden = ['photo_path'];
 
     protected function casts(): array
     {

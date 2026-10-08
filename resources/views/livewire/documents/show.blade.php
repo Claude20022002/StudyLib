@@ -116,7 +116,7 @@
                 <div class="sl-doc-preview__toolbar">
                     <span class="sl-doc-preview__title">
                         <x-ui.icon name="file" class="h-4 w-4 text-danger-ink" />
-                        Aperçu — {{ $document->fileBasename() }}
+                        Aperçu : {{ $document->fileBasename() }}
                     </span>
                     <div class="flex-1"></div>
                     <div class="sl-doc-preview__ctrl">
@@ -148,7 +148,7 @@
                         @if ($document->description)
                             <p class="mt-4 text-[10px] leading-relaxed text-muted">{{ \Illuminate\Support\Str::limit($document->description, 200) }}</p>
                         @endif
-                        <div class="sl-doc-preview__pagenum">— 1 —</div>
+                        <div class="sl-doc-preview__pagenum">1</div>
                     </div>
                 </div>
             </section>
@@ -212,7 +212,7 @@
                             L{{ $viewer->year_level }}
                         @endif
                         @if ($document->module)
-                            — Semestre {{ $document->module->semester }}
+                            · Semestre {{ $document->module->semester }}
                         @endif
                         , votre filière actuelle.
                     </p>
@@ -236,7 +236,7 @@
             @if ($examDocuments->isNotEmpty())
                 <div class="sl-doc-panel">
                     <div class="sl-doc-panel__head">
-                        <h3 class="text-h4 font-semibold">Examens — même module</h3>
+                        <h3 class="text-h4 font-semibold">Examens du même module</h3>
                         <a href="{{ route('documents.index', ['module' => $document->module_id, 'types' => ['examen']]) }}" wire:navigate class="text-xs font-semibold text-primary">Tout voir</a>
                     </div>
                     <div class="sl-doc-panel__body">

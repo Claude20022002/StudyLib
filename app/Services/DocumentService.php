@@ -118,7 +118,8 @@ class DocumentService
             'document' => $document,
             'similarDocuments' => $this->documents->similarInModule($document),
             'examDocuments' => $this->documents->examsInModule($document),
-            'authorDocumentCount' => $this->documents->countApprovedByAuthor($document->user_id),
+            // Supports importés depuis Drive : pas d'auteur, donc rien à compter
+            'authorDocumentCount' => $document->user_id ? $this->documents->countApprovedByAuthor($document->user_id) : 0,
             'userRating' => $userRating,
         ];
     }
