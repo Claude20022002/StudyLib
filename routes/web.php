@@ -19,7 +19,8 @@ use App\Http\Controllers\ProjectIdeaController;
 use App\Http\Controllers\YoutubeRecommendationController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'pages.landing')->name('home');
+// Un utilisateur déjà connecté n'a pas à repasser par la page d'accueil : il arrive sur son tableau de bord
+Route::get('/', fn () => auth()->check() ? redirect()->route('dashboard') : view('pages.landing'))->name('home');
 
 Route::get('/filieres', [FiliereController::class, 'index'])->name('filieres.index');
 Route::get('/filieres/{filiere}/modules', [ModuleController::class, 'index'])->name('filieres.modules');
