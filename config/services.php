@@ -39,6 +39,8 @@ return [
         'key' => env('CLAUDE_API_KEY'),
         'url' => env('CLAUDE_API_URL', 'https://api.anthropic.com/v1/messages'),
         'model' => env('CLAUDE_MODEL', 'claude-3-5-sonnet-latest'),
+        // Délai maximal d'une réponse (secondes) : au-delà, l'appelant propose son repli
+        'timeout' => (int) env('CLAUDE_TIMEOUT', 20),
     ],
 
     'youtube' => [

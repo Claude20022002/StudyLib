@@ -7,16 +7,24 @@
         <div class="sl-prj-hero__ico" aria-hidden="true">
             <x-ui.flaticon name="idea" class="sl-flaticon--hero" />
         </div>
+        @php($enseignant = auth()->user()?->isTeacher() ?? false)
         <div class="min-w-0 flex-1">
-            <h2 class="text-h4 leading-tight font-bold tracking-tight">Trouvez un projet pertinent pour votre filière</h2>
-            <p class="mt-1 text-sm text-muted">Des idées concrètes pour étoiler votre CV, proposées par la promo ou générées pour votre profil.</p>
+            @if ($enseignant)
+                <h2 class="text-h4 leading-tight font-bold tracking-tight">Proposez un projet aux étudiants</h2>
+                <p class="mt-1 text-sm text-muted">Une idée de projet que vous aimeriez voir réalisée : les étudiants de l'école la retrouvent ici, toutes classes confondues.</p>
+            @else
+                <h2 class="text-h4 leading-tight font-bold tracking-tight">Trouvez un projet pertinent pour votre filière</h2>
+                <p class="mt-1 text-sm text-muted">Des idées concrètes pour étoiler votre CV, proposées par la promo ou générées pour votre profil.</p>
+            @endif
         </div>
         <div class="hidden flex-1 lg:block"></div>
         <div class="flex w-full flex-wrap gap-2 sm:w-auto">
-            <a href="#ai-module" class="sl-btn sl-btn--secondary">
-                <x-ui.icon name="sparkles" class="h-4 w-4" />
-                Idées IA
-            </a>
+            @unless ($enseignant)
+                <a href="#ai-module" class="sl-btn sl-btn--secondary">
+                    <x-ui.icon name="sparkles" class="h-4 w-4" />
+                    Idées IA
+                </a>
+            @endunless
             <button type="button" wire:click="openPropose" class="sl-btn sl-btn--primary">
                 <x-ui.icon name="plus" class="h-4 w-4" />
                 Proposer un projet
@@ -129,6 +137,8 @@
                 </div>
             @endif
 
+            {{-- Idées générées pour le CV d'un étudiant : pas dans l'espace de l'enseignant --}}
+            @unless ($enseignant)
             <section id="ai-module" class="sl-prj-ai" aria-label="Génération IA">
                 <div class="sl-prj-ai__head">
                     <div class="sl-prj-ai__badge" aria-hidden="true">
@@ -192,6 +202,7 @@
                     </div>
                 </form>
             </section>
+            @endunless
         </section>
     </div>
 

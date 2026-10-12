@@ -21,6 +21,9 @@ class Index extends Component
 
     public bool $ready = false;
 
+    /** Enseignant : ni événements étudiants, ni suggestions pour le CV. */
+    public bool $teacher = false;
+
     /** @var Collection<int, \App\Models\Document> */
     public Collection $documents;
 
@@ -35,6 +38,7 @@ class Index extends Component
         $this->documents = collect();
         $this->events = collect();
         $this->videos = collect();
+        $this->teacher = Auth::user()?->isTeacher() ?? false;
     }
 
     public function loadDashboard(DashboardService $dashboard): void
@@ -49,7 +53,7 @@ class Index extends Component
 
         $this->overview = $dashboard->overview($user);
         $this->documents = $dashboard->recommendedDocuments($user, $this->resolveType());
-        $this->events = $dashboard->upcomingEvents();
+        $this->events = $this->teacher ? collect() : $dashboard->upcomingEvents();
         $this->videos = $dashboard->featuredVideos($user);
         $this->ready = true;
     }

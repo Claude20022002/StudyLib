@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Layout;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Livewire\Component;
 
@@ -16,9 +17,25 @@ class AppSidebar extends Component
     public function render(): View
     {
         return view('livewire.layout.app-sidebar', [
-            'mainNav' => config('studylib.nav.main', []),
-            'personalNav' => config('studylib.nav.personal', []),
+            'mainNav' => $this->pourLeRole(config('studylib.nav.main', [])),
+            'personalNav' => $this->pourLeRole(config('studylib.nav.personal', [])),
         ]);
+    }
+
+    /**
+     * Entrées du menu visibles pour le rôle connecté ('sauf' => rôles exclus).
+     *
+     * @param  array<int, array<string, mixed>>  $items
+     * @return array<int, array<string, mixed>>
+     */
+    private function pourLeRole(array $items): array
+    {
+        $role = Auth::user()?->role?->value;
+
+        return array_values(array_filter(
+            $items,
+            fn (array $item): bool => ! in_array($role, $item['sauf'] ?? [], true),
+        ));
     }
 
     public function isActive(?string $routeName, array $query = []): bool

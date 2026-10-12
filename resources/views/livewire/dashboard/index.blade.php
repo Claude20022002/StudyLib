@@ -95,13 +95,15 @@
 
         {{-- Rail --}}
         <aside class="sl-dashboard-rail" aria-label="Informations complémentaires">
-            <x-ui.panel title="Événements proches" action-label="Tout voir" :action-href="route('events.index')">
-                @forelse ($events as $event)
-                    <x-dashboard.event-item :event="$event" />
-                @empty
-                    <p class="py-3 text-sm text-muted">Aucun événement à venir.</p>
-                @endforelse
-            </x-ui.panel>
+            @unless ($teacher)
+                <x-ui.panel title="Événements proches" action-label="Tout voir" :action-href="route('events.index')">
+                    @forelse ($events as $event)
+                        <x-dashboard.event-item :event="$event" />
+                    @empty
+                        <p class="py-3 text-sm text-muted">Aucun événement à venir.</p>
+                    @endforelse
+                </x-ui.panel>
+            @endunless
 
             <x-ui.panel title="Vidéos recommandées" action-label="YouTube" action-href="#">
                 @forelse ($videos as $video)
@@ -111,10 +113,12 @@
                 @endforelse
             </x-ui.panel>
 
-            <x-dashboard.ai-panel
-                :completion="$overview['profile_completion'] ?? 0"
-                :internship-count="$overview['internship_match_label'] ?? '0'"
-            />
+            @unless ($teacher)
+                <x-dashboard.ai-panel
+                    :completion="$overview['profile_completion'] ?? 0"
+                    :internship-count="$overview['internship_match_label'] ?? '0'"
+                />
+            @endunless
         </aside>
     </div>
 </div>

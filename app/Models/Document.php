@@ -111,9 +111,9 @@ class Document extends Model
     public function thumbColors(): array
     {
         return match ($this->type) {
-            DocumentType::Cours => ['bg' => 'var(--color-primary-soft)', 'text' => 'var(--color-primary-active)'],
+            DocumentType::Cours, DocumentType::Article => ['bg' => 'var(--color-primary-soft)', 'text' => 'var(--color-primary-active)'],
             DocumentType::Examen => ['bg' => 'var(--color-warning-soft)', 'text' => 'var(--color-warning-ink)'],
-            DocumentType::Td, DocumentType::Tp => ['bg' => 'var(--color-success-soft)', 'text' => 'var(--color-success-ink)'],
+            DocumentType::Td, DocumentType::Tp, DocumentType::Exercice => ['bg' => 'var(--color-success-soft)', 'text' => 'var(--color-success-ink)'],
         };
     }
 }

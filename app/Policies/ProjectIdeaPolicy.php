@@ -14,6 +14,12 @@ class ProjectIdeaPolicy
         return true;
     }
 
+    /** Idées générées pour le CV d'un étudiant : un enseignant propose les siennes. */
+    public function generate(User $user): bool
+    {
+        return ! $user->isTeacher();
+    }
+
     public function update(User $user, ProjectIdea $idea): bool
     {
         return $idea->user_id === $user->getKey() || $user->isAdmin();

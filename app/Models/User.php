@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->role === UserRole::Admin;
     }
 
+    public function isTeacher(): bool
+    {
+        return $this->role === UserRole::Teacher;
+    }
+
     public function filiere(): BelongsTo
     {
         return $this->belongsTo(Filiere::class);

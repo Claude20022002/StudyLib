@@ -13,6 +13,7 @@ use App\Services\FiliereService;
 use App\Services\ProjectIdeaService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -191,6 +192,8 @@ class Index extends Component
 
     public function generateAiIdeas(ProjectIdeaService $ideas, FiliereService $filieres): void
     {
+        Gate::authorize('generate', ProjectIdea::class);
+
         $this->validate([
             'aiFiliereId' => ['required', 'uuid', 'exists:filieres,id'],
             'aiLevel' => ['required', 'string', Rule::enum(StudyLevel::class)],
