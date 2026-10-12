@@ -21,15 +21,13 @@ class LandingPageTest extends TestCase
             ->assertSee('Se connecter avec mon email @hestim.ma');
     }
 
-    public function test_landing_page_shows_dashboard_link_for_authenticated_users(): void
+    public function test_authenticated_users_land_on_their_dashboard(): void
     {
         $user = User::factory()->create(['email' => 'etudiant@hestim.ma']);
 
         $this->actingAs($user)
             ->get(route('home'))
-            ->assertOk()
-            ->assertSee('Accéder au tableau de bord')
-            ->assertDontSee('Se connecter avec mon email @hestim.ma');
+            ->assertRedirect(route('dashboard'));
     }
 
     public function test_landing_page_includes_feature_and_trust_sections(): void
