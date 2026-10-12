@@ -2069,22 +2069,6 @@
     .sl-lib-search__clear {
         right: 48px;
     }
-
-    .sl-prof-stats {
-        grid-template-columns: 1fr;
-    }
-
-    .sl-prof-head__body {
-        @apply flex-col items-start;
-    }
-
-    .sl-prof-item {
-        @apply flex-wrap;
-    }
-
-    .sl-prof-item > div:last-child {
-        @apply w-full;
-    }
 }
 
 /* Profile page */
@@ -2122,7 +2106,7 @@
 
 .sl-prof-stats {
     @apply grid gap-4;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .sl-prof-stat {
@@ -2176,7 +2160,7 @@
 
 .sl-prof-split {
     @apply grid items-start gap-5;
-    grid-template-columns: 1fr 320px;
+    grid-template-columns: minmax(0, 1fr) 320px;
 }
 
 .sl-prof-tabs {
@@ -2219,6 +2203,25 @@
 
 .sl-prof-item:hover {
     @apply border-border-strong shadow-sm;
+}
+
+/* Profil sur téléphone : après les règles de base, sinon elles l'emportent (même spécificité, ordre du fichier) */
+@media (max-width: 560px) {
+    .sl-prof-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .sl-prof-head__body {
+        @apply flex-col items-start;
+    }
+
+    .sl-prof-item {
+        @apply flex-wrap;
+    }
+
+    .sl-prof-item > div:last-child {
+        @apply w-full;
+    }
 }
 
 .sl-prof-item__ico {
@@ -2282,7 +2285,7 @@
 @media (max-width: 1080px) {
     .sl-prof-overview,
     .sl-prof-split {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .sl-prof-rail {
