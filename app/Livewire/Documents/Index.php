@@ -77,6 +77,8 @@ class Index extends Component
     {
         if (request()->boolean('upload')) {
             $this->uploadOpen = true;
+            // Depuis « Mes classes » de Planner : le dépôt part du module de la classe
+            $this->uploadModuleId = $this->moduleId;
         }
     }
 
