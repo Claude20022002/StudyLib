@@ -54,7 +54,7 @@ class Index extends Component
         $this->overview = $dashboard->overview($user);
         $this->documents = $dashboard->recommendedDocuments($user, $this->resolveType());
         $this->events = $this->teacher ? collect() : $dashboard->upcomingEvents();
-        $this->videos = $dashboard->featuredVideos($user);
+        $this->videos = $this->teacher ? collect() : $dashboard->featuredVideos($user);
         $this->ready = true;
     }
 

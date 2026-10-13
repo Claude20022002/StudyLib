@@ -105,13 +105,16 @@
                 </x-ui.panel>
             @endunless
 
-            <x-ui.panel title="Vidéos recommandées" action-label="YouTube" action-href="#">
-                @forelse ($videos as $video)
-                    <x-dashboard.video-item :video="$video" />
-                @empty
-                    <p class="py-3 text-sm text-muted">Aucune vidéo recommandée pour le moment.</p>
-                @endforelse
-            </x-ui.panel>
+            {{-- Recommandations de vidéos : pour les étudiants, pas pour l'enseignant --}}
+            @unless ($teacher)
+                <x-ui.panel title="Vidéos recommandées" action-label="YouTube" action-href="#">
+                    @forelse ($videos as $video)
+                        <x-dashboard.video-item :video="$video" />
+                    @empty
+                        <p class="py-3 text-sm text-muted">Aucune vidéo recommandée pour le moment.</p>
+                    @endforelse
+                </x-ui.panel>
+            @endunless
 
             @unless ($teacher)
                 <x-dashboard.ai-panel
