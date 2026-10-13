@@ -26,6 +26,11 @@
         <x-ui.icon name="search" class="h-5 w-5" />
     </button>
 
+    {{-- Planner et StudyLib partagent la même origine : le retour est un lien simple, sans wire:navigate --}}
+    <a href="/tableau" class="sl-icon-btn" aria-label="Retour à Planner" title="Retour à Planner">
+        <x-ui.icon name="calendar" class="h-5 w-5" />
+    </a>
+
     <livewire:ui.notification-bell />
 
     @if ($user)

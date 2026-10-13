@@ -27,6 +27,15 @@ class DashboardPageTest extends TestCase
             ->assertRedirect(route('login'));
     }
 
+    public function test_topbar_links_back_to_planner_in_one_click(): void
+    {
+        $this->actingAs($this->createStudent())
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('href="/tableau"', false)
+            ->assertSee('Retour à Planner', false);
+    }
+
     public function test_authenticated_user_can_view_dashboard(): void
     {
         $user = $this->createStudent();

@@ -69,6 +69,18 @@ class DocumentLibraryPageTest extends TestCase
             ->assertDontSee('Brouillon caché');
     }
 
+    public function test_upload_link_from_planner_opens_on_the_class_module(): void
+    {
+        $user = User::factory()->create(['email' => 'partage@hestim.ma']);
+        $module = Module::factory()->create();
+
+        Livewire::withQueryParams(['module' => (string) $module->id, 'upload' => 1])
+            ->actingAs($user)
+            ->test(Index::class)
+            ->assertSet('uploadOpen', true)
+            ->assertSet('uploadModuleId', (string) $module->id);
+    }
+
     public function test_library_search_filters_by_title(): void
     {
         $user = User::factory()->create(['email' => 'search@hestim.ma']);
