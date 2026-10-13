@@ -40,6 +40,7 @@ class TeacherSpaceTest extends TestCase
             ->assertSee('Recommandés pour vous', false)
             ->assertDontSee('Événements proches', false)
             ->assertDontSee('Suggestion IA', false)
+            ->assertDontSee('Vidéos recommandées', false)
             ->assertDontSee(route('events.index'), false);
     }
 
