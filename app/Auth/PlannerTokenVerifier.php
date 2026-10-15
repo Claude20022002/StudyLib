@@ -35,6 +35,50 @@ final class PlannerTokenVerifier
      */
     public function verify(string $jwt): array
     {
+        $claims = $this->decode($jwt);
+        $audiences = (array) ($claims['aud'] ?? []);
+        if (! in_array(config('planner.audience'), $audiences, true)) {
+            throw new UnexpectedValueException('Jeton non destiné à StudyLib');
+        }
+        foreach (['sub', 'sid', 'email', 'role'] as $required) {
+            if (! is_string($claims[$required] ?? null) || $claims[$required] === '') {
+                throw new UnexpectedValueException("Revendication absente : {$required}");
+            }
+        }
+
+        return $claims;
+    }
+
+    /**
+     * Jeton de service de Planner (espace de cours) : audience distincte de celle des utilisateurs,
+     * donc refusé par les gardes « web » et « api ». Il autorise une seule opération (`scope`) sur un
+     * seul document (`doc`), pour une minute ; Planner a déjà vérifié les droits de l'étudiant.
+     *
+     * @return array<string, mixed>
+     */
+    public function verifyService(string $jwt, string $scope): array
+    {
+        $claims = $this->decode($jwt);
+        if ((array) ($claims['aud'] ?? []) !== [config('planner.service_audience')]) {
+            throw new UnexpectedValueException('Jeton non destiné au service interne');
+        }
+        if (($claims['scope'] ?? null) !== $scope || ! is_string($claims['doc'] ?? null) || $claims['doc'] === '') {
+            throw new UnexpectedValueException('Portée du jeton de service refusée');
+        }
+        if (! isset($claims['exp'], $claims['iat']) || $claims['exp'] - $claims['iat'] > 120) {
+            throw new UnexpectedValueException('Jeton de service trop long');
+        }
+
+        return $claims;
+    }
+
+    /**
+     * Signature RS256 par une clé du JWKS de Planner, dates et émetteur.
+     *
+     * @return array<string, mixed>
+     */
+    private function decode(string $jwt): array
+    {
         $kid = $this->kid($jwt);
         $jwks = $this->jwks();
         if (! $this->hasKey($jwks, $kid) && $this->cache->add(self::REFRESH_LOCK, true, 30)) {
@@ -44,21 +88,10 @@ final class PlannerTokenVerifier
         if (! $this->hasKey($jwks, $kid)) {
             throw new UnexpectedValueException('Clé de signature inconnue');
         }
-
         JWT::$leeway = (int) config('planner.leeway');
         $claims = (array) JWT::decode($jwt, JWK::parseKeySet($jwks, 'RS256'));
-
         if (($claims['iss'] ?? null) !== config('planner.issuer')) {
             throw new UnexpectedValueException('Émetteur inattendu');
-        }
-        $audiences = (array) ($claims['aud'] ?? []);
-        if (! in_array(config('planner.audience'), $audiences, true)) {
-            throw new UnexpectedValueException('Jeton non destiné à StudyLib');
-        }
-        foreach (['sub', 'sid', 'email', 'role'] as $required) {
-            if (! is_string($claims[$required] ?? null) || $claims[$required] === '') {
-                throw new UnexpectedValueException("Revendication absente : {$required}");
-            }
         }
 
         return $claims;

@@ -77,6 +77,10 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('downloads', fn (Request $request) => Limit::perMinute(20)->by(
             $request->user()?->getKey() ?? $request->ip(),
         ));
+
+        // Liens demandés par le serveur de Planner pour toute l'école (une seule adresse) : Planner
+        // limite déjà chaque étudiant ; ce plafond ne fait que borner un serveur emballé
+        RateLimiter::for('interne', fn (Request $request) => Limit::perMinute(600)->by($request->ip()));
     }
 
     /**

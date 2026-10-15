@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsurePlannerServiceToken;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin' => EnsureUserIsAdmin::class,
+            'planner.service' => EnsurePlannerServiceToken::class,
         ]);
         // Derrière la passerelle de la plateforme (seule à joindre ce conteneur) : elle retire le
         // préfixe /biblio et le transmet dans X-Forwarded-Prefix, d'où les URL générées
