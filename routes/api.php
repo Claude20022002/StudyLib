@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\ClassDocumentController;
 use App\Http\Controllers\Api\InternalDocumentController;
+use App\Http\Controllers\Api\InternshipReviewMobileController;
 use App\Http\Controllers\Api\MobileController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EventController;
@@ -29,6 +30,10 @@ Route::middleware(['auth:api', 'throttle:api'])->group(function () {
     Route::post('/documents/{document}/download', [MobileController::class, 'download'])->middleware('throttle:downloads');
 
     Route::get('/internship-reviews/recent', [MobileController::class, 'recentInternshipReviews']);
+    // Écran « Stages » de l'application : tous les retours (filtres), les miens, les valeurs des filtres
+    Route::get('/internship-reviews/mobile', [InternshipReviewMobileController::class, 'index']);
+    Route::get('/internship-reviews/miens', [InternshipReviewMobileController::class, 'mine']);
+    Route::get('/internship-reviews/filtres', [InternshipReviewMobileController::class, 'filters']);
     Route::get('/internship-reviews/{review}/photo', [MobileController::class, 'internshipReviewPhoto'])->whereUuid('review');
     Route::get('/internship-reviews', [InternshipReviewController::class, 'index']);
     Route::post('/internship-reviews', [InternshipReviewController::class, 'store']);
