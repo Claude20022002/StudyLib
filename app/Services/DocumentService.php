@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Enums\DocumentStatus;
 use App\Enums\DocumentType;
+use App\Enums\DocumentVisibility;
 use App\Models\Document;
 use App\Models\DocumentRating;
 use App\Models\User;
@@ -72,8 +73,9 @@ class DocumentService
      * Stocke le fichier sur MinIO puis enregistre les métadonnées (statut : en attente).
      *
      * @param  array{module_id: string, type: string, title: string, description?: string|null, year_concern?: int|null}  $data
+     * @param  DocumentVisibility  $visibility  « class » pour un dépôt fait depuis l'espace d'une classe de Planner
      */
-    public function upload(User $author, UploadedFile $file, array $data): Document
+    public function upload(User $author, UploadedFile $file, array $data, DocumentVisibility $visibility = DocumentVisibility::School): Document
     {
         $path = $file->store('documents', self::DISK);
 
@@ -89,6 +91,7 @@ class DocumentService
             'year_concern' => $data['year_concern'] ?? null,
             // Enseignants et administration publient directement ; les étudiants passent par la modération
             'status' => $author->role->publishesWithoutModeration() ? DocumentStatus::Approved->value : DocumentStatus::Pending->value,
+            'visibility' => $visibility->value,
         ]);
     }
 

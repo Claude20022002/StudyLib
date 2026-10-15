@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\DocumentStatus;
 use App\Enums\DocumentType;
+use App\Enums\DocumentVisibility;
 use Database\Factories\DocumentFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -32,6 +33,7 @@ class Document extends Model
         'mime_type',
         'year_concern',
         'status',
+        'visibility',
     ];
 
     protected $hidden = [
@@ -44,12 +46,38 @@ class Document extends Model
         return [
             'type' => DocumentType::class,
             'status' => DocumentStatus::class,
+            'visibility' => DocumentVisibility::class,
             'file_size' => 'integer',
             'year_concern' => 'integer',
             'downloads_count' => 'integer',
             'ratings_count' => 'integer',
             'avg_rating' => 'float',
         ];
+    }
+
+    /** Nom de la portée globale qui écarte les documents de classe (§ 3 du plan espace-de-cours). */
+    public const SCOPE_SCHOOL = 'portee_ecole';
+
+    /**
+     * Refus par défaut : un document de classe n'apparaît dans aucune requête de StudyLib (listes,
+     * recherche, compteurs, liaison de route). Seule l'API de classe lève cette portée, explicitement.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(self::SCOPE_SCHOOL, function (Builder $query): void {
+            $query->where($query->qualifyColumn('visibility'), DocumentVisibility::School->value);
+        });
+    }
+
+    /** @return Builder<Document> requête qui voit aussi les documents de classe */
+    public static function withClassDocuments(): Builder
+    {
+        return static::query()->withoutGlobalScope(self::SCOPE_SCHOOL);
+    }
+
+    public function isClassOnly(): bool
+    {
+        return $this->visibility === DocumentVisibility::ClassOnly;
     }
 
     /** @param Builder<Document> $query */

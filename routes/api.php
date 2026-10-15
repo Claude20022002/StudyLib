@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\ClassDocumentController;
+use App\Http\Controllers\Api\InternalDocumentController;
 use App\Http\Controllers\Api\MobileController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EventController;
@@ -34,3 +36,19 @@ Route::middleware(['auth:api', 'throttle:api'])->group(function () {
     Route::get('/project-ideas', [ProjectIdeaController::class, 'index']);
     Route::get('/events', [EventController::class, 'index']);
 });
+
+/*
+ * Espace de cours de Planner (plan espace-de-cours.md, § 3) : documents de classe, déposés et
+ * retirés par le serveur de Planner avec le jeton de l'enseignant (garde « api »).
+ */
+Route::middleware(['auth:api', 'throttle:api'])->prefix('classe/documents')->group(function () {
+    Route::post('/', [ClassDocumentController::class, 'store'])->middleware('throttle:uploads');
+    Route::get('/{document}', [ClassDocumentController::class, 'show'])->whereUuid('document');
+    Route::patch('/{document}/publier', [ClassDocumentController::class, 'publish'])->whereUuid('document');
+    Route::delete('/{document}', [ClassDocumentController::class, 'destroy'])->whereUuid('document');
+});
+
+// Lien d'un document pour un étudiant de la classe : jeton de service de Planner, jamais un utilisateur
+Route::middleware(['planner.service:document:lien', 'throttle:interne'])
+    ->get('/interne/documents/{document}/lien', [InternalDocumentController::class, 'link'])
+    ->whereUuid('document');

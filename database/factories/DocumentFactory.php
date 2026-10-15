@@ -44,4 +44,10 @@ class DocumentFactory extends Factory
     {
         return $this->state(fn () => ['status' => DocumentStatus::Pending->value]);
     }
+
+    /** Document déposé depuis l'espace d'une classe dans Planner */
+    public function classOnly(): static
+    {
+        return $this->state(fn () => ['visibility' => 'class']);
+    }
 }

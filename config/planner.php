@@ -19,6 +19,8 @@ return [
 
     'issuer' => env('PLANNER_ISSUER', 'hestim-planner'),
     'audience' => 'studylib',
+    // Jetons de service de Planner (lien d'un document de classe) : jamais acceptés comme connexion
+    'service_audience' => 'studylib-interne',
     // Tolérance d'horloge entre les deux serveurs (secondes)
     'leeway' => 30,
 
