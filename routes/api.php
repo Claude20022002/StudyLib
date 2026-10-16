@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\ClassDocumentController;
 use App\Http\Controllers\Api\InternalDocumentController;
+use App\Http\Controllers\Api\InternshipOfferController;
 use App\Http\Controllers\Api\InternshipReviewMobileController;
 use App\Http\Controllers\Api\MobileController;
 use App\Http\Controllers\DocumentController;
@@ -34,6 +35,14 @@ Route::middleware(['auth:api', 'throttle:api'])->group(function () {
     Route::get('/internship-reviews/mobile', [InternshipReviewMobileController::class, 'index']);
     Route::get('/internship-reviews/miens', [InternshipReviewMobileController::class, 'mine']);
     Route::get('/internship-reviews/filtres', [InternshipReviewMobileController::class, 'filters']);
+    // Offres de stage partagées par un lien : lecture de la page ou du texte collé, puis publication
+    Route::post('/offres/analyser', [InternshipOfferController::class, 'analyser'])->middleware('throttle:offres-analyse');
+    Route::post('/offres/analyser-texte', [InternshipOfferController::class, 'analyserTexte'])->middleware('throttle:offres-analyse');
+    Route::get('/offres/disponibilite', [InternshipOfferController::class, 'disponibilite']);
+    Route::get('/offres/miennes', [InternshipOfferController::class, 'mine']);
+    Route::get('/offres', [InternshipOfferController::class, 'index']);
+    Route::post('/offres', [InternshipOfferController::class, 'store'])->middleware('throttle:offres-publier');
+    Route::delete('/offres/{offre}', [InternshipOfferController::class, 'destroy'])->whereUuid('offre');
     Route::get('/internship-reviews/{review}/photo', [MobileController::class, 'internshipReviewPhoto'])->whereUuid('review');
     Route::get('/internship-reviews', [InternshipReviewController::class, 'index']);
     Route::post('/internship-reviews', [InternshipReviewController::class, 'store']);

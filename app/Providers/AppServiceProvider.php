@@ -81,6 +81,10 @@ class AppServiceProvider extends ServiceProvider
         // Liens demandés par le serveur de Planner pour toute l'école (une seule adresse) : Planner
         // limite déjà chaque étudiant ; ce plafond ne fait que borner un serveur emballé
         RateLimiter::for('interne', fn (Request $request) => Limit::perMinute(600)->by($request->ip()));
+
+        // Offres de stage : chaque analyse fait lire une page au serveur (ou appelle l'IA)
+        RateLimiter::for('offres-analyse', fn (Request $request) => Limit::perHour(20)->by($request->user()?->getKey() ?? $request->ip()));
+        RateLimiter::for('offres-publier', fn (Request $request) => Limit::perHour(10)->by($request->user()?->getKey() ?? $request->ip()));
     }
 
     /**

@@ -6,6 +6,9 @@
         </div>
     </div>
 
+    {{-- Offres de stage partagées par des étudiants, en attente --}}
+    <livewire:admin.offres-a-moderer />
+
     {{-- KPI --}}
     <div class="sl-adm-kpi-grid">
         <div @class(['sl-adm-kpi', 'sl-adm-kpi--alert' => $counts['pending'] > 0])>
