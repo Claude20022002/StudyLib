@@ -34,7 +34,8 @@
     <livewire:ui.notification-bell />
 
     @if ($user)
-        <a href="{{ route('profile.show') }}" wire:navigate class="sl-user-chip" aria-label="Profil">
+        {{-- Le profil de l'enseignant est dans Planner (lot E-9) --}}
+        <a @if ($user->isTeacher()) href="{{ config('planner.pages.parametres') }}" @else href="{{ route('profile.show') }}" wire:navigate @endif class="sl-user-chip" aria-label="Profil">
             <div class="sl-desktop-only text-right">
                 <div class="text-sm font-semibold">{{ $user->name }}</div>
                 <div class="text-xs text-muted">

@@ -32,16 +32,45 @@ class TeacherSpaceTest extends TestCase
         return User::factory()->create(['role' => UserRole::Student->value, 'email_verified_at' => now()]);
     }
 
-    public function test_teacher_dashboard_has_no_student_events_nor_cv_suggestions(): void
+    /** Lot E-9 : l'enseignant a son tableau de bord, son profil et ses notifications dans Planner. */
+    public function test_teacher_is_sent_to_planner_for_dashboard_profile_and_notifications(): void
+    {
+        $teacher = $this->teacher();
+
+        $this->actingAs($teacher)->get(route('dashboard'))->assertRedirect('/tableau');
+        $this->actingAs($teacher)->get(route('profile.show'))->assertRedirect('/parametres');
+        $this->actingAs($teacher)->get(route('notifications.index'))->assertRedirect('/notifications');
+        // L'accueil de StudyLib l'amène sur les documents
+        $this->actingAs($teacher)->get(route('home'))->assertRedirect(route('documents.index'));
+
+        // Les réponses JSON (cloche, application) ne changent pas
+        $this->actingAs($teacher)->getJson(route('notifications.index'))->assertOk();
+        $this->actingAs($teacher)->getJson(route('profile.show'))->assertOk();
+    }
+
+    public function test_teacher_library_has_no_dashboard_nor_profile_entry_and_links_to_planner(): void
     {
         $this->actingAs($this->teacher())
-            ->get(route('dashboard'))
+            ->get(route('documents.index'))
             ->assertOk()
-            ->assertSee('Recommandés pour vous', false)
-            ->assertDontSee('Événements proches', false)
-            ->assertDontSee('Suggestion IA', false)
-            ->assertDontSee('Vidéos recommandées', false)
-            ->assertDontSee(route('events.index'), false);
+            ->assertDontSee('href="'.route('dashboard').'"', false)
+            ->assertDontSee('href="'.route('profile.show').'"', false)
+            ->assertDontSee(route('events.index'), false)
+            ->assertSee('href="/parametres"', false)
+            ->assertSee('href="/notifications"', false);
+    }
+
+    public function test_student_keeps_dashboard_profile_and_notifications_in_studylib(): void
+    {
+        $student = $this->student();
+
+        $this->actingAs($student)->get(route('dashboard'))->assertOk();
+        $this->actingAs($student)->get(route('home'))->assertRedirect(route('dashboard'));
+        $this->actingAs($student)
+            ->get(route('documents.index'))
+            ->assertOk()
+            ->assertSee('href="'.route('profile.show').'"', false)
+            ->assertSee('href="'.route('notifications.index').'"', false);
     }
 
     public function test_student_still_sees_events_in_the_menu(): void

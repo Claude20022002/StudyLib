@@ -30,6 +30,14 @@ return [
     // Page de connexion de Planner (même origine) ; `next` y ramène après connexion
     'login_url' => env('PLANNER_LOGIN_URL', '/connexion'),
 
+    // Pages de Planner (même origine) où l'enseignant est renvoyé : son tableau de bord, son profil
+    // et ses notifications vivent dans Planner (espace-de-cours.md, lot E-9)
+    'pages' => [
+        'tableau' => '/tableau',
+        'parametres' => '/parametres',
+        'notifications' => '/notifications',
+    ],
+
     // Synchronisation des filières et modules (php artisan planner:sync)
     'integration_token' => env('PLANNER_INTEGRATION_TOKEN'),
 ];

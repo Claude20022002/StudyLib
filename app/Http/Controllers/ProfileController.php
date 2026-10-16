@@ -17,12 +17,16 @@ class ProfileController extends Controller
         private readonly ProfileService $profile,
     ) {}
 
-    public function show(Request $request): View|JsonResponse
+    public function show(Request $request): View|JsonResponse|RedirectResponse
     {
         if ($request->expectsJson()) {
             return response()->json(
                 $request->user()->load('filiere'),
             );
+        }
+        // Le profil de l'enseignant se règle dans Planner (lot E-9)
+        if ($request->user()->isTeacher()) {
+            return redirect()->away(config('planner.pages.parametres'));
         }
 
         return view('pages.profile.show', [

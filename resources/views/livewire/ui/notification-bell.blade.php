@@ -1,6 +1,11 @@
+{{-- L'enseignant lit ses notifications dans Planner (lot E-9) : lien simple, sans wire:navigate --}}
 <a
-    href="{{ route('notifications.index') }}"
-    wire:navigate
+    @if (auth()->user()?->isTeacher())
+        href="{{ config('planner.pages.notifications') }}"
+    @else
+        href="{{ route('notifications.index') }}"
+        wire:navigate
+    @endif
     class="sl-icon-btn"
     aria-label="{{ $unreadCount > 0 ? $unreadCount.' notifications non lues' : 'Notifications' }}"
 >
