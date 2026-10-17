@@ -168,7 +168,7 @@
 @media (max-width: 1080px) {
     .sl-stg-grid,
     .sl-prj-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .sl-lib-grid {

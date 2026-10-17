@@ -1546,7 +1546,9 @@
 
     .sl-lib-layout {
         @apply grid items-start gap-5;
-        grid-template-columns: 248px 1fr;
+        /* minmax(0, 1fr) : une colonne en 1fr ne descend pas sous la largeur de son plus long contenu
+           (pastille de filière sans retour à la ligne) et la page débordait sur téléphone */
+        grid-template-columns: 248px minmax(0, 1fr);
     }
 
     .sl-lib-scrim {
@@ -2010,7 +2012,7 @@
 
 @media (max-width: 1080px) {
     .sl-lib-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .sl-doc-layout {
@@ -2521,7 +2523,7 @@
 
 .sl-prj-grid {
     @apply mb-8 grid gap-4;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr));
 }
 
 .sl-prj-card {
@@ -2559,6 +2561,15 @@
 
 .sl-prj-card__badges {
     @apply flex flex-wrap gap-1.5;
+}
+
+/* Un nom de filière long passe à la ligne au lieu d'élargir la carte */
+.sl-prj-card__badges .sl-badge {
+    max-width: 100%;
+    height: auto;
+    min-height: 24px;
+    padding-block: 3px;
+    white-space: normal;
 }
 
 .sl-prj-card__meta {
