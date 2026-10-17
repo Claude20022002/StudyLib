@@ -11,7 +11,8 @@ return [
     */
     'nav' => [
         'main' => [
-            ['label' => 'Accueil', 'route' => 'dashboard', 'icon' => 'home'],
+            // L'enseignant a son accueil et son profil dans Planner (lot E-9)
+            ['label' => 'Accueil', 'route' => 'dashboard', 'icon' => 'home', 'sauf' => ['teacher']],
             ['label' => 'Bibliothèque', 'route' => 'documents.index', 'icon' => 'library'],
             ['label' => 'Stages', 'route' => 'internship-reviews.index', 'icon' => 'briefcase'],
             ['label' => 'Projets', 'route' => 'project-ideas.index', 'icon' => 'layers'],
@@ -21,14 +22,14 @@ return [
         'personal' => [
             ['label' => 'Mes dépôts', 'route' => 'documents.index', 'icon' => 'upload', 'query' => ['mine' => '1']],
             ['label' => 'Favoris', 'route' => null, 'icon' => 'bookmark', 'disabled' => true],
-            ['label' => 'Profil', 'route' => 'profile.show', 'icon' => 'user'],
+            ['label' => 'Profil', 'route' => 'profile.show', 'icon' => 'user', 'sauf' => ['teacher']],
         ],
         'mobile' => [
-            ['label' => 'Accueil', 'route' => 'dashboard', 'icon' => 'home'],
+            ['label' => 'Accueil', 'route' => 'dashboard', 'icon' => 'home', 'sauf' => ['teacher']],
             ['label' => 'Biblio', 'route' => 'documents.index', 'icon' => 'library'],
             ['label' => 'Stages', 'route' => 'internship-reviews.index', 'icon' => 'briefcase'],
             ['label' => 'Projets', 'route' => 'project-ideas.index', 'icon' => 'layers'],
-            ['label' => 'Profil', 'route' => 'profile.show', 'icon' => 'user'],
+            ['label' => 'Profil', 'route' => 'profile.show', 'icon' => 'user', 'sauf' => ['teacher']],
         ],
     ],
 

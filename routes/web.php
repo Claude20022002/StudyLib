@@ -19,8 +19,13 @@ use App\Http\Controllers\ProjectIdeaController;
 use App\Http\Controllers\YoutubeRecommendationController;
 use Illuminate\Support\Facades\Route;
 
-// Un utilisateur déjà connecté n'a pas à repasser par la page d'accueil : il arrive sur son tableau de bord
-Route::get('/', fn () => auth()->check() ? redirect()->route('dashboard') : view('pages.landing'))->name('home');
+// Un utilisateur déjà connecté n'a pas à repasser par la page d'accueil : il arrive sur son tableau de
+// bord ; l'enseignant, dont le tableau de bord est dans Planner, sur les documents (lot E-9)
+Route::get('/', fn () => match (true) {
+    ! auth()->check() => view('pages.landing'),
+    auth()->user()->isTeacher() => redirect()->route('documents.index'),
+    default => redirect()->route('dashboard'),
+})->name('home');
 
 Route::get('/filieres', [FiliereController::class, 'index'])->name('filieres.index');
 Route::get('/filieres/{filiere}/modules', [ModuleController::class, 'index'])->name('filieres.modules');
