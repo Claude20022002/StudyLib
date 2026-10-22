@@ -18,7 +18,7 @@ COPY --from=vendor /app /app
 RUN npm run build
 
 # ── Exécution ──────────────────────────────────────────────────────────────────
-FROM serversideup/php:8.3-fpm-nginx
+FROM serversideup/php:8.5-fpm-nginx
 ENV PHP_OPCACHE_ENABLE=1 \
     SSL_MODE=off
 WORKDIR /var/www/html
